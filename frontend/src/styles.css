@@ -1,0 +1,1522 @@
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  width: 20px;
+  background-color: black;
+}
+
+::-webkit-scrollbar-track {
+  background-color: black;
+  -webkit-box-shadow: inset 0 0 5px #eb8a1a;
+          box-shadow: inset 0 0 5px #eb8a1a;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #790f0f;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #690000;
+}
+
+div#open {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  margin: 1.5% 2.5% 0 0;
+  z-index: 9999;
+  background-color: black;
+  border-radius: 50%;
+  border: solid 3px rgba(255, 255, 255, 0.699);
+  -webkit-box-shadow: rgba(255, 255, 255, 0.671) 0px 3px 10px;
+          box-shadow: rgba(255, 255, 255, 0.671) 0px 3px 10px;
+  cursor: pointer;
+}
+
+div#open svg rect {
+  fill: white;
+  transform-box: fill-box;
+}
+
+div#open svg rect.a {
+  -webkit-transition: -webkit-transform 500ms;
+  transition: -webkit-transform 500ms;
+  transition: transform 500ms;
+  transition: transform 500ms, -webkit-transform 500ms;
+  -webkit-transform: translate(10px, 12px);
+          transform: translate(10px, 12px);
+}
+
+div#open svg rect.b {
+  -webkit-transition: -webkit-transform 500ms;
+  transition: -webkit-transform 500ms;
+  transition: transform 500ms;
+  transition: transform 500ms, -webkit-transform 500ms;
+  -webkit-transform: translate(10px, 19px);
+          transform: translate(10px, 19px);
+}
+
+div#open svg rect.c {
+  -webkit-transition: -webkit-transform 500ms;
+  transition: -webkit-transform 500ms;
+  transition: transform 500ms;
+  transition: transform 500ms, -webkit-transform 500ms;
+  -webkit-transform: translate(10px, 26px);
+          transform: translate(10px, 26px);
+}
+
+nav#nav {
+  position: fixed;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  top: 0;
+  right: -500px;
+  width: 500px;
+  height: 100vh;
+  z-index: 9998;
+  background-color: #a31818;
+  color: white;
+  -webkit-transition: right 400ms;
+  transition: right 400ms;
+}
+
+nav#nav ul {
+  width: 100%;
+}
+
+nav#nav ul a {
+  text-decoration: none;
+}
+
+nav#nav ul a li {
+  list-style: none;
+  padding: 8% 0;
+  text-align: center;
+  text-decoration: none;
+  font-size: 25px;
+  font-family: "Encode Sans", sans-serif;
+  color: #eb8a1a;
+}
+
+nav#nav ul a li:hover {
+  background-color: #eb8a1a41;
+}
+
+body.clicked div#open svg rect.a {
+  -webkit-transition: -webkit-transform 500ms;
+  transition: -webkit-transform 500ms;
+  transition: transform 500ms;
+  transition: transform 500ms, -webkit-transform 500ms;
+  -webkit-transform: translate(13px, 12px) rotate(0.125turn);
+          transform: translate(13px, 12px) rotate(0.125turn);
+}
+
+body.clicked div#open svg rect.b {
+  -webkit-transition: -webkit-transform 500ms;
+  transition: -webkit-transform 500ms;
+  transition: transform 500ms;
+  transition: transform 500ms, -webkit-transform 500ms;
+  opacity: 0%;
+}
+
+body.clicked div#open svg rect.c {
+  -webkit-transition: -webkit-transform 500ms;
+  transition: -webkit-transform 500ms;
+  transition: transform 500ms;
+  transition: transform 500ms, -webkit-transform 500ms;
+  -webkit-transform: translate(12px, 26px) rotate(-0.125turn);
+          transform: translate(12px, 26px) rotate(-0.125turn);
+}
+
+body.clicked nav#nav {
+  right: 0;
+  -webkit-box-shadow: -5px 0px 10px rgba(0, 0, 0, 0.514);
+          box-shadow: -5px 0px 10px rgba(0, 0, 0, 0.514);
+}
+
+#slide-container {
+  position: relative;
+}
+
+#slide-container .item_slider {
+  background-size: cover;
+  height: 80vh;
+  margin-bottom: -5px;
+}
+
+#slide-container #slide-content {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 2%;
+  color: white;
+  z-index: 1;
+  pointer-events: none;
+}
+
+#slide-container #slide-content img {
+  max-width: 500px;
+  display: block;
+  margin-left: auto;
+  -webkit-filter: drop-shadow(5px 5px 5px black);
+          filter: drop-shadow(5px 5px 5px black);
+}
+
+#slide-container #slide-content h2 {
+  font-size: 35px;
+  font-family: "Merienda", "Amita", cursive;
+  text-align: right;
+  line-height: 150%;
+  text-shadow: 5px 5px 5px black;
+}
+
+#homeHeader {
+  padding: 1% 0;
+  background-color: #eb8a1a;
+  text-align: center;
+  font-family: "Merienda", "Amita", cursive;
+  color: white;
+}
+
+#homeHeader p {
+  position: relative;
+  top: 50%;
+  margin: 0 auto;
+  font-size: 2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  -webkit-animation: typewriter 6s steps(80) 1s 1 normal both;
+          animation: typewriter 6s steps(80) 1s 1 normal both;
+}
+
+@-webkit-keyframes typewriter {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes typewriter {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+#welcomeParallax {
+  position: relative;
+  height: 100%;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-bottom: 10rem;
+  text-align: center;
+  color: white;
+}
+
+#welcomeParallax h2 {
+  padding: 2% 0;
+  font-family: "Merienda", "Amita", cursive;
+  font-size: 25px;
+}
+
+#welcomeParallax p {
+  padding: 0 7% 1%;
+  font-family: "Encode Sans", sans-serif;
+  font-size: 20px;
+}
+
+#welcomeParallax p span {
+  line-height: 200%;
+  font-family: "Merienda", "Amita", cursive;
+  font-size: 35px;
+  color: #eb8a1a;
+}
+
+#welcomeParallax p p {
+  font-family: "Merienda", "Amita", cursive;
+  font-size: 25px;
+}
+
+#homeMenuCont .chooseMenuCont {
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  grid-gap: 5%;
+}
+
+#homeMenuCont .chooseMenuCont .menuCards {
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+          box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+  max-width: 20vw;
+  height: 300px;
+}
+
+#homeMenuCont #TwoColMenu {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  padding: 10rem 0 2%;
+  background-color: #a31818;
+  font-family: "Encode Sans", sans-serif;
+}
+
+#homeMenuCont #TwoColMenu #leftCol, #homeMenuCont #TwoColMenu #rightCol {
+  width: 25%;
+  min-width: 250px;
+  margin: 0 30px;
+  padding: 10px;
+}
+
+#homeMenuCont #TwoColMenu #leftCol .innerMenu, #homeMenuCont #TwoColMenu #rightCol .innerMenu {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  min-width: 265px;
+  color: white;
+  font-size: 100%;
+  white-space: nowrap;
+}
+
+.headers {
+  margin-bottom: 2%;
+  background-color: #a31818;
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.555);
+          box-shadow: 0 5px 10px rgba(0, 0, 0, 0.555);
+}
+
+.headers .headerTitle {
+  padding: 1% 0;
+  text-align: center;
+  font-size: 35px;
+  font-family: "Merienda", "Amita", cursive;
+  color: #eb8a1a;
+}
+
+.headers .headerTitle a {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  margin: 1.5% 0 0 2.5%;
+}
+
+#form_container {
+  position: relative;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 3% 0;
+  text-align: center;
+}
+
+#form_container div #formOpenBtn {
+  outline: none;
+  padding: 15px;
+  font-family: "Encode Sans", sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+  border: solid 3px green;
+  border-radius: 5px;
+  background-color: green;
+  color: white;
+  -webkit-transition: border 300ms ease-in;
+  transition: border 300ms ease-in;
+  margin-bottom: 3%;
+}
+
+#form_container div #formOpenBtn:hover {
+  border: solid 3px #eb8a1a;
+  cursor: pointer;
+}
+
+#form_container div #formOpenBtn:active {
+  background-color: #005000;
+}
+
+#form_container #form_div {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2%;
+  border-radius: 5px;
+  background-color: #a31818;
+}
+
+#form_container #form_div form {
+  border: solid 2px white;
+  border-radius: 5px;
+  padding: 5%;
+}
+
+#form_container #form_div form label {
+  font-size: 20px;
+  font-weight: 700;
+  font-family: "Merienda", "Amita", cursive;
+  color: #eb8a1a;
+}
+
+#form_container #form_div form input {
+  margin: 1% 0 2%;
+  padding: 1% 2%;
+  font-size: 20px;
+  outline: none;
+  font-family: "Encode Sans", sans-serif;
+  font-weight: bolder;
+  border: solid 3px white;
+  border-radius: 5px;
+  background-color: white;
+  color: black;
+  cursor: pointer;
+  -webkit-transition: all 200ms ease-in;
+  transition: all 200ms ease-in;
+}
+
+#form_container #form_div form input:hover {
+  border: solid 3px green;
+  background-color: #eb8a1a;
+  color: white;
+}
+
+#form_container #form_div form input[type="text"], #form_container #form_div form input[type="email"] {
+  text-align: center;
+  width: 60%;
+}
+
+#form_container #form_div form input[type="number"] {
+  text-align: center;
+}
+
+#form_container #form_div form input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+#form_container #form_div form input[type="time"] {
+  text-align: center;
+}
+
+#form_container #form_div form input[type="time"]:hover::-webkit-calendar-picker-indicator {
+  -webkit-filter: invert(100%);
+          filter: invert(100%);
+}
+
+#form_container #form_div form input[type="date"]:hover::-webkit-calendar-picker-indicator {
+  -webkit-filter: invert(100%);
+          filter: invert(100%);
+  cursor: pointer;
+}
+
+#form_container #form_div form .messageDiv {
+  margin: 0 0 10px 0;
+  font-size: 18px;
+  font-family: "Encode Sans", sans-serif;
+  color: white;
+  text-shadow: 1px 1px 5px green;
+  z-index: 1;
+}
+
+#form_container #form_div form .formflex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  gap: 10%;
+  padding: 2% 0;
+}
+
+#form_container #form_div form .formflex .formflex-item {
+  position: relative;
+  padding: 0 0 5%;
+  width: 200px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 0%;
+}
+
+#form_container #form_div form .formflex .formflex-item label {
+  padding-bottom: 5%;
+}
+
+#form_container #form_div form .formflex .formflex-item input {
+  padding: 4%;
+  width: 100%;
+}
+
+#form_container #form_div form .formflex .formflex-item #message3 {
+  position: absolute;
+  bottom: 0;
+  -webkit-transform: translateY(55%);
+          transform: translateY(55%);
+  font-size: 18px;
+  font-family: "Encode Sans", sans-serif;
+  color: white;
+  text-shadow: 1px 1px 5px green;
+  z-index: 1;
+}
+
+#form_container #form_div form .formflex .formflex-item #message4 {
+  position: absolute;
+  bottom: 0;
+  -webkit-transform: translateY(55%);
+          transform: translateY(55%);
+  font-size: 18px;
+  font-family: "Encode Sans", sans-serif;
+  color: white;
+  text-shadow: 1px 1px 5px green;
+  z-index: 1;
+}
+
+#form_container #form_div form .formflex .formflex-item #message5 {
+  position: absolute;
+  bottom: 0;
+  -webkit-transform: translateY(55%);
+          transform: translateY(55%);
+  font-size: 18px;
+  font-family: "Encode Sans", sans-serif;
+  color: white;
+  text-shadow: 1px 1px 5px green;
+  z-index: 1;
+}
+
+#form_container #form_div form #submit_Btn {
+  outline: none;
+  padding: 15px;
+  font-family: "Encode Sans", sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+  border: solid 3px green;
+  border-radius: 5px;
+  background-color: green;
+  color: white;
+  -webkit-transition: border 300ms ease-in;
+  transition: border 300ms ease-in;
+  opacity: 100%;
+  margin: 10px;
+}
+
+#form_container #form_div form #submit_Btn:hover {
+  border: solid 3px #eb8a1a;
+  cursor: pointer;
+}
+
+#form_container #form_div form #submit_Btn:active {
+  background-color: #005000;
+}
+
+#form_container #form_div form #submit_Btn:disabled {
+  opacity: 50%;
+  pointer-events: none;
+  -webkit-transition: opacity 300ms ease-in;
+  transition: opacity 300ms ease-in;
+}
+
+.appear {
+  -webkit-filter: opacity(1) blur(0);
+          filter: opacity(1) blur(0);
+  -webkit-transition: -webkit-filter 0s;
+  transition: -webkit-filter 0s;
+  transition: filter 0s;
+  transition: filter 0s, -webkit-filter 0s;
+}
+
+.disappear {
+  -webkit-filter: opacity(0) blur(5px);
+          filter: opacity(0) blur(5px);
+  -webkit-transition: -webkit-filter 2s ease-out;
+  transition: -webkit-filter 2s ease-out;
+  transition: filter 2s ease-out;
+  transition: filter 2s ease-out, -webkit-filter 2s ease-out;
+}
+
+@media only screen and (max-width: 499px) {
+  .formflex {
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+  }
+  .formflex .formflex-item {
+    padding: 1% 0;
+  }
+}
+
+#menuBG {
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100vh;
+}
+
+#menuBG .menuOptionsCont {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  gap: 10%;
+  padding-bottom: 10%;
+}
+
+#menuBG .menuOptionsCont .menuCards {
+  vertical-align: middle;
+  margin: 5px;
+}
+
+#menuItemBG {
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100vh;
+}
+
+#menuItemBG #menuItemsCont {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  gap: 2%;
+  padding: 8% 0;
+}
+
+#menuItemBG #menuItemsCont .littleCards {
+  position: relative;
+  -webkit-transform: translate(0, -50);
+          transform: translate(0, -50);
+  width: 200px;
+  min-width: 150px;
+  margin: 10px;
+  padding: 5px 0;
+  border: solid 3px #eb8a1a;
+  border-radius: 5px;
+  background-color: #a31818;
+  font-family: "Encode Sans", sans-serif;
+  font-size: 18px;
+  color: #eb8a1a;
+  text-align: center;
+  -webkit-box-shadow: 0 5px 10px black;
+          box-shadow: 0 5px 10px black;
+  -webkit-transition: border-radius 200ms ease-in;
+  transition: border-radius 200ms ease-in;
+}
+
+#menuItemBG #menuItemsCont .littleCards:hover {
+  cursor: pointer;
+}
+
+#menuItemBG #menuItemsCont .littleCards .cardImages.pizzas {
+  width: 200px;
+  padding: 5px 0;
+}
+
+#menuItemBG #menuItemsCont .littleCards .cardImages.hamburgers {
+  height: 200px;
+}
+
+#menuItemBG #menuItemsCont .littleCards .cardImages.drinks {
+  height: 200px;
+  padding: 5px 0;
+}
+
+#menuItemBG #menuItemsCont .littleCards .itemName {
+  font-weight: 700;
+}
+
+#menuItemBG #menuItemsCont .littleCards .itemNamePrice {
+  padding-top: 10px;
+}
+
+#menuItemBG #menuItemsCont .littleCards .glutenFree {
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  padding-top: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: underline;
+}
+
+#reservationBG {
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100vh;
+}
+
+#reservationBG .formflex-item span label {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.reservCont {
+  padding: 2% 0 6%;
+}
+
+.reservCont .reservCardsOut {
+  background-color: #a31818;
+  width: 80%;
+  padding: 1%;
+  margin: 20px auto;
+  -webkit-box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.514);
+          box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.514);
+}
+
+.reservCont .reservCardsOut .reservCardsIn {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 5%;
+  border: solid 3px black;
+}
+
+.reservCont .reservCardsOut .reservCardsIn .cardInfos {
+  font-family: "Encode Sans", sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: #eb8a1a;
+}
+
+.formflex-item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  gap: 20px;
+}
+
+.formflex-item span {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-family: "Encode Sans", sans-serif;
+  font-size: 20px;
+  color: white;
+  gap: 5px;
+}
+
+.formflex-item span input {
+  outline: none;
+  padding: 12px 5px;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: "Encode Sans", sans-serif;
+  text-align: center;
+  border-radius: 5px;
+  border: solid 3px rgba(255, 0, 0, 0);
+  -webkit-transition: border 100ms ease-in, background-color 100ms ease-out;
+  transition: border 100ms ease-in, background-color 100ms ease-out;
+}
+
+.formflex-item span input:hover {
+  border: solid 3px green;
+  background-color: #eb8a1a;
+  color: white;
+  cursor: pointer;
+}
+
+.formflex-item span input:hover::-webkit-calendar-picker-indicator {
+  -webkit-filter: invert(100%);
+          filter: invert(100%);
+  cursor: pointer;
+}
+
+.formflex-item button {
+  outline: none;
+  padding: 15px;
+  font-family: "Encode Sans", sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+  border: solid 3px green;
+  border-radius: 5px;
+  background-color: green;
+  color: white;
+  -webkit-transition: border 300ms ease-in;
+  transition: border 300ms ease-in;
+}
+
+.formflex-item button:hover {
+  border: solid 3px #eb8a1a;
+  cursor: pointer;
+}
+
+.formflex-item button:active {
+  background-color: #005000;
+}
+
+.menuCards {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 260px;
+  height: 300px;
+  padding: 5px 0;
+  border-radius: 0px 50px 0px 50px;
+  background-color: #eb8a1a;
+  text-align: center;
+  cursor: pointer;
+  -webkit-transition: background-color 300ms ease-out,  border-radius 300ms ease-out;
+  transition: background-color 300ms ease-out,  border-radius 300ms ease-out;
+}
+
+.menuCards .iconPic {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  max-width: 100%;
+  z-index: 2;
+}
+
+.menuCards .iconName {
+  position: absolute;
+  bottom: 0;
+  padding-bottom: 5px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  font-family: "Merienda", "Amita", cursive;
+  font-size: 20px;
+  color: white;
+}
+
+.menuCards:hover {
+  border-radius: 50px 0px 50px 0px;
+  background-color: green;
+  -webkit-transition: background-color 300ms ease-out,  border-radius 300ms ease-out;
+  transition: background-color 300ms ease-out,  border-radius 300ms ease-out;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+.modal .modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 0px;
+  border-radius: 5px;
+  max-width: 90vw;
+  -webkit-transition: 1000ms all;
+  transition: 1000ms all;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.modal .modal-content .inner {
+  position: relative;
+  height: auto;
+  -webkit-transition: 300ms all;
+  transition: 300ms all;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  background: #a31818;
+  border: solid 3px #eb8a1a;
+  padding: 12px;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  border-radius: 5px;
+}
+
+.modal .modal-content .inner .close {
+  position: absolute;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  right: -15px;
+  top: -15px;
+  padding: 7px 10px;
+  border-radius: 50%;
+  background: black;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  border: 2px solid #fff;
+}
+
+.modal .modal-content .inner .close:hover, .modal .modal-content .inner .close:focus {
+  color: #999;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal .modal-content .inner .innerContent {
+  text-align: center;
+}
+
+.modal .modal-content .inner .innerContent img {
+  max-width: 250px;
+}
+
+.modal .modal-content .inner .innerContent .ModalText {
+  color: #eb8a1a;
+  font-family: "Encode Sans", sans-serif;
+}
+
+.modal .modal-content .inner .innerContent #ModalGluten.ModalText {
+  color: #eb8a1a;
+  font-family: "Merienda", "Amita", cursive;
+  font-size: 20px;
+}
+
+.modal .modal-content .inner .innerContent #modalName.ModalText {
+  color: #eb8a1a;
+  font-family: "Merienda", "Amita", cursive;
+  font-size: 25px;
+}
+
+.modal .modal-content .inner .innerContent #modalPrice.ModalText {
+  color: #eb8a1a;
+  font-family: "Merienda", "Amita", cursive;
+  font-size: 20px;
+  padding-bottom: 2%;
+}
+
+#filters {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  gap: 5%;
+  font-size: 20px;
+  font-family: "Encode Sans", sans-serif;
+  color: white;
+}
+
+#filters .menuFilterCont {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 250px;
+  text-align: center;
+}
+
+#filters .menuFilterCont #radioButtons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  gap: 20%;
+  padding: 5% 0;
+}
+
+#filters .menuFilterCont #radioButtons .container {
+  position: relative;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+#filters .menuFilterCont #radioButtons .container input {
+  margin: 0 10px;
+  opacity: 0;
+  cursor: pointer;
+}
+
+#filters .menuFilterCont #radioButtons .checkmark {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  height: 15px;
+  width: 15px;
+  background-color: #eee;
+  border-radius: 50%;
+}
+
+#filters .menuFilterCont #radioButtons .container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+#filters .menuFilterCont #radioButtons .container input:checked ~ .checkmark {
+  background-color: #b61717;
+}
+
+#filters .menuFilterCont #textFilter {
+  outline: none;
+  margin: 10px 0;
+  padding: 5px;
+  font-size: 20px;
+  font-family: "Encode Sans", sans-serif;
+  text-align: center;
+  border-radius: 5px;
+  border: solid 3px rgba(255, 0, 0, 0);
+  -webkit-transition: border 100ms ease-in, background-color 100ms ease-out;
+  transition: border 100ms ease-in, background-color 100ms ease-out;
+}
+
+#filters .menuFilterCont #textFilter:focus {
+  border: solid 3px green;
+  background-color: #eb8a1a;
+  color: white;
+}
+
+#filters .menuFilterCont #numberFilter {
+  outline: none;
+  margin: 10px 0;
+  padding: 5px;
+  font-size: 20px;
+  font-family: "Encode Sans", sans-serif;
+  text-align: center;
+  border-radius: 5px;
+  border: solid 3px rgba(255, 0, 0, 0);
+  -webkit-transition: border 100ms ease-in, background-color 100ms ease-out;
+  transition: border 100ms ease-in, background-color 100ms ease-out;
+}
+
+#filters .menuFilterCont #numberFilter:focus {
+  border: solid 3px green;
+  background-color: #eb8a1a;
+  color: white;
+}
+
+#menuReset {
+  padding-top: 2%;
+  text-align: center;
+}
+
+#menuReset button {
+  outline: none;
+  padding: 15px;
+  font-family: "Encode Sans", sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+  border: solid 3px green;
+  border-radius: 5px;
+  background-color: green;
+  color: white;
+  -webkit-transition: border 300ms ease-in;
+  transition: border 300ms ease-in;
+}
+
+#menuReset button:hover {
+  border: solid 3px #eb8a1a;
+  cursor: pointer;
+}
+
+#menuReset button:active {
+  background-color: #005000;
+}
+
+#contactsBG {
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100vh;
+}
+
+#contactsBG #contactsContent {
+  font-family: "Encode Sans", sans-serif;
+  padding: 0 0 4%;
+}
+
+#contactsBG #contactsContent #upperhalf {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  gap: 10%;
+  padding: 2% 0;
+}
+
+#contactsBG #contactsContent #upperhalf .contactsFlexItems {
+  max-width: 70%;
+  min-width: 225px;
+}
+
+#contactsBG #contactsContent #upperhalf .contactsFlexItems p a {
+  color: white;
+  text-decoration: none;
+  -webkit-transition: color 200ms ease-in;
+  transition: color 200ms ease-in;
+}
+
+#contactsBG #contactsContent #upperhalf .contactsFlexItems p a:hover {
+  color: #eb8a1a;
+}
+
+#contactsBG #contactsContent #upperhalf #infoPart {
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+  font-size: 30px;
+  line-height: 200%;
+  color: white;
+}
+
+#contactsBG #contactsContent #upperhalf #infoPart span {
+  text-decoration: underline;
+}
+
+#contactsBG #contactsContent #downerhalf {
+  color: white;
+}
+
+#contactsBG #contactsContent #downerhalf h2 {
+  background-color: #eb8a1a;
+  padding: 1%;
+  font-size: 30px;
+  font-family: "Merienda", "Amita", cursive;
+  text-align: center;
+}
+
+#contactsBG #contactsContent #downerhalf #downerhalfInner {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  gap: 30px;
+  padding: 2% 0;
+}
+
+#contactsBG #contactsContent #downerhalf #downerhalfInner #openingList {
+  max-width: 40%;
+  width: 100%;
+  min-width: 250px;
+  padding: 0 2%;
+}
+
+#contactsBG #contactsContent #downerhalf #downerhalfInner #openingList .uniqueDays {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  font-size: 20px;
+  padding: 3px;
+}
+
+#contactsBG #contactsContent #downerhalf #downerhalfInner #openingList .uniqueDays .openingDay {
+  font-weight: 700;
+}
+
+#contactsBG #contactsContent #downerhalf #downerhalfInner #openingList .uniqueDays span:nth-child(2) {
+  min-width: 120px;
+  text-align: right;
+}
+
+#contactsBG #contactsContent #downerhalf #downerhalfInner #actualOpening {
+  max-width: 40%;
+  width: 100%;
+  min-width: 250px;
+  padding: 0 2%;
+  text-align: center;
+}
+
+#contactsBG #contactsContent #downerhalf #downerhalfInner #actualOpening h3 {
+  padding-bottom: 3%;
+  font-size: 25px;
+  font-family: "Merienda", "Amita", cursive;
+  text-align: center;
+}
+
+#contactsBG #contactsContent #downerhalf #downerhalfInner #actualOpening button {
+  outline: none;
+  padding: 15px;
+  font-family: "Encode Sans", sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+  border: solid 3px green;
+  border-radius: 5px;
+  background-color: green;
+  color: white;
+  -webkit-transition: border 300ms ease-in;
+  transition: border 300ms ease-in;
+  padding: 5px;
+  margin-bottom: 3%;
+}
+
+#contactsBG #contactsContent #downerhalf #downerhalfInner #actualOpening button:hover {
+  border: solid 3px #eb8a1a;
+  cursor: pointer;
+}
+
+#contactsBG #contactsContent #downerhalf #downerhalfInner #actualOpening button:active {
+  background-color: #005000;
+}
+
+.notExist {
+  background-color: black;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 100vh;
+}
+
+.notExist h1 {
+  padding-bottom: 5%;
+  font-family: "Merienda", "Amita", cursive;
+  color: white;
+}
+
+.notExist button {
+  outline: none;
+  padding: 15px;
+  font-family: "Encode Sans", sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+  border: solid 3px green;
+  border-radius: 5px;
+  background-color: green;
+  color: white;
+  -webkit-transition: border 300ms ease-in;
+  transition: border 300ms ease-in;
+}
+
+.notExist button:hover {
+  border: solid 3px #eb8a1a;
+  cursor: pointer;
+}
+
+.notExist button:active {
+  background-color: #005000;
+}
+
+@media screen and (max-width: 749px) {
+  #slide-container #slide-content img {
+    max-width: 80%;
+  }
+  #slide-container #slide-content h2 {
+    font-size: 30px;
+  }
+  #homeMenuCont .chooseMenuCont span .menuCards {
+    height: 23vh;
+  }
+  #homeMenuCont .chooseMenuCont span .menuCards .iconName {
+    font-size: 2vw;
+  }
+  #form_container #form_div form .formflex .formflex-item input {
+    margin-bottom: 5%;
+  }
+  #form_container #form_div form .formflex .formflex-item #message3 {
+    font-size: 90%;
+  }
+  #form_container #form_div form .formflex .formflex-item #message4 {
+    font-size: 90%;
+  }
+  #form_container #form_div form .formflex .formflex-item #message5 {
+    -webkit-transform: translateY(70%);
+            transform: translateY(70%);
+    font-size: 80%;
+  }
+}
+
+@media screen and (max-width: 499px) {
+  nav#nav {
+    width: 100%;
+  }
+  #slide-container #slide-content img {
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #slide-container #slide-content h2 {
+    text-align: center;
+  }
+  #homeHeader p {
+    font-size: 1.5rem;
+  }
+  #welcomeParallax {
+    padding-bottom: 7rem;
+  }
+  #homeMenuCont .chooseMenuCont {
+    grid-gap: 10px;
+    gap: 10px;
+  }
+  #homeMenuCont .chooseMenuCont span .menuCards {
+    width: 30vw;
+    height: 25vh;
+  }
+  #homeMenuCont .chooseMenuCont span .menuCards .iconPic {
+    max-width: 100%;
+  }
+  #homeMenuCont .chooseMenuCont span .menuCards .iconName {
+    display: none;
+  }
+  #homeMenuCont #TwoColMenu {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    font-size: 18px;
+  }
+  #homeMenuCont #TwoColMenu #leftCol, #homeMenuCont #TwoColMenu #rightCol {
+    min-width: 315px;
+    width: 80%;
+  }
+  #reservationBG .headers .headerTitle {
+    font-size: 7vw;
+  }
+  #reservationBG .formflex-item span {
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+  }
+  #reservationBG .formflex-item span label {
+    text-align: center;
+  }
+  #contactsBG #contactsContent #upperhalf .contactsFlexItems p {
+    text-align: center;
+    font-size: 20px;
+  }
+  #form_container #form_div form .formflex .formflex-item input {
+    margin-bottom: 5%;
+  }
+  #form_container #form_div form .formflex .formflex-item #message3 {
+    font-size: 90%;
+  }
+  #form_container #form_div form .formflex .formflex-item #message4 {
+    font-size: 90%;
+  }
+  #form_container #form_div form .formflex .formflex-item #message5 {
+    -webkit-transform: translateY(55%);
+            transform: translateY(55%);
+    font-size: 80%;
+  }
+}
+
+@media screen and (max-width: 349px) {
+  div#open {
+    width: 40px;
+    height: 40px;
+    margin: 1.5% 0 0 0;
+  }
+  #slide-container #slide-content h2 {
+    font-size: 26px;
+  }
+  #homeHeader p {
+    font-size: 1rem;
+  }
+  #homeMenuCont .chooseMenuCont span .menuCards {
+    height: 20vh;
+  }
+  #homeMenuCont #TwoColMenu {
+    font-size: 4vw;
+    padding: 5rem 0 2%;
+  }
+  #homeMenuCont #TwoColMenu #leftCol, #homeMenuCont #TwoColMenu #rightCol {
+    min-width: 150px;
+    width: 90%;
+    margin: 0 auto;
+  }
+  #homeMenuCont #TwoColMenu #leftCol .innerMenu, #homeMenuCont #TwoColMenu #rightCol .innerMenu {
+    min-width: 160px;
+  }
+  #menuBG .headers .headerTitle {
+    font-size: 10vw;
+  }
+  .menuOptionsCont .menuCards {
+    width: 80vw;
+  }
+  .menuOptionsCont .menuCards .iconPic {
+    width: 100%;
+  }
+  #menuItemBG .headers {
+    height: 60px;
+  }
+  #menuItemBG .headers .headerTitle.responsiveHeader {
+    padding-top: 10px;
+    font-size: 9vw;
+  }
+  #menuItemBG .headers .headerTitle a {
+    margin: 1.5% 0 0 0;
+  }
+  #menuItemBG #filters .menuFilterCont {
+    width: 80vw;
+  }
+  #menuItemBG #menuItemsCont .littleCards .cardImages {
+    width: 70%;
+  }
+  #menuItemBG #myModal .modal-content .inner .innerContent #modalPic {
+    max-width: 60vw;
+  }
+  #reservationBG .headers .headerTitle {
+    font-size: 6vw;
+  }
+  #reservationBG .formflex-item span #dateFilter {
+    width: 70vw;
+  }
+  #reservationBG .reservCont .reservCardsOut .reservCardsIn {
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    text-align: center;
+  }
+  #contactsBG .headers .headerTitle {
+    font-size: 7vw;
+  }
+  #contactsBG #contactsContent #upperhalf .contactsFlexItems p {
+    text-align: center;
+    font-size: 20px;
+  }
+  #contactsBG #contactsContent #downerhalf h2 {
+    font-size: 1.5rem;
+  }
+  #form_container #form_div form .formflex .formflex-item input {
+    margin-bottom: 5%;
+  }
+  #form_container #form_div form .formflex .formflex-item #message3 {
+    font-size: 90%;
+  }
+  #form_container #form_div form .formflex .formflex-item #message4 {
+    font-size: 90%;
+  }
+  #form_container #form_div form .formflex .formflex-item #message5 {
+    font-size: 75%;
+  }
+}
+
+@media screen and (max-height: 649px) {
+  #slide-container #slide-content img {
+    max-width: 50%;
+  }
+  #slide-container #slide-content h2 {
+    font-size: 20px;
+  }
+  .iconPic {
+    height: 50%;
+  }
+  #welcomeParallax {
+    padding-bottom: 10rem;
+  }
+  #homeMenuCont #TwoColMenu {
+    padding: 10rem 0 2%;
+  }
+}
+
+@media screen and (max-height: 399px) {
+  #slide-container #slide-content img {
+    max-width: 35%;
+  }
+  #slide-container #slide-content h2 {
+    font-size: 14px;
+  }
+}
+/*# sourceMappingURL=styles.css.map */
