@@ -1,61 +1,56 @@
 const express = require('express');
-const bodyParser = require('body-parser');
+const connectDB = require('./config/db');
 const app = express();
-
-//Can the frontend do GET request
-app.use(function (req, res, next) {
-	// Website you wish to allow to connect
-	res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-
-	// Request methods you wish to allow
-	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-
-	// Request headers you wish to allow
-	res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-
-	// Set to true if you need the website to include cookies in the requests sent
-	// to the API (e.g. in case you use sessions)
-	res.setHeader('Access-Control-Allow-Credentials', true);
-
-	// Pass to next layer of middleware
-	next();
-});
-
-//Can post from frontend
+require('dotenv').config();
 const cors = require('cors');
-const corsOptions = {
-	origin: 'http://localhost:3000',
-	credentials: true,            //access-control-allow-credentials:true
-	optionSuccessStatus: 200
-}
+const allowCors = require('./middleware/allowCors');
+const corsOptions = require('./middleware/corsOptions');
+const auth = require('./middleware/auth');
+const notExists = require('./middleware/notExists');
+
+const Hamburger = require('./models/Hamburger');
+const Pizza = require('./models/Pizza');
+const Drink = require('./models/Drink');
+
+
+const PORT = process.env.PORT || 8080;
+
+// Connect Database
+connectDB();
+
+// Init Middleware
+app.use(express.json());
+app.use(allowCors);
 app.use(cors(corsOptions));
 
-//Can write my original data file
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json())
-const port = 8080
-const fs = require('fs');
 
-//Menu data
-let menuContent = fs.readFileSync("./menudb.json");
-let menuJsonContent = JSON.parse(menuContent);
-
-//Opening data
-let openingContent = fs.readFileSync("./openingdb.json");
-let openingJsonContent = JSON.parse(openingContent);
-
-//Array of menu
-app.get('/menu', (req, res) => {
-	res.send(menuJsonContent);
-})
-
-//Types of menus
-app.get('/menu/:type', (req, res) => {
-	let chosen = Object.keys(menuJsonContent[0]).indexOf(req.params.type);
-
-	res.send(Object.values(menuJsonContent[0]).filter((el, index) => index === chosen)[0]);
+//GET - Basic route
+//Public
+app.get('/api/', async (req, res) => {
+	res.send('Backend is on')
 });
 
+//GET - Get all kind of menu types
+//Public
+app.get('/api/menu/:type', async (req, res) => {
+	switch (req.params.type) {
+		case 'hamburgers':
+			const hamburgers = await Hamburger.find();
+			return res.json(hamburgers);
+		case 'pizzas':
+			const pizzas = await Pizza.find();
+			return res.json(pizzas);
+		case 'drinks':
+			const drinks = await Drink.find();
+			return res.json(drinks);
+		default:
+			return res.json(null);
+	}
+});
+
+
+
+/* 
 //Items of types by ID
 app.get('/menu/:type/:id', (req, res) => {
 	let chosen = Object.keys(menuJsonContent[0]).indexOf(req.params.type);
@@ -94,15 +89,15 @@ app.get('/reservations', (req, res) => {
 		} else {
 			ending = "GMT-00:00";
 		}
+ */
+//		let now = new Date().toString();
+//		let timeZone = " (" + now.replace(/.*[(](.*)[)].*/, '$1') + ")";
+//		let today = new Date().toString().replace(timeZone, "").slice(0, -8) + ending;
 
-		let now = new Date().toString();
-		let timeZone = " (" + now.replace(/.*[(](.*)[)].*/, '$1') + ")";
-		let today = new Date().toString().replace(timeZone, "").slice(0, -8) + ending;
+//		return new Date(today);
+//	}
 
-		return new Date(today);
-	}
-
-
+/*
 	let todayFormat = timeZoneTime().toISOString().split('T')[0];
 
 	let filtered = reservationsJsonContent.filter(item => new Date(item.date).getTime() >= new Date(todayFormat).getTime());
@@ -114,7 +109,7 @@ app.get('/reservations', (req, res) => {
 	res.send(sortedByDay);
 })
 
-//Reservations by ID
+ //Reservations by ID
 app.get('/reservations/:date', (req, res) => {
 	//Reservation data
 	let reservationsContent = fs.readFileSync("./reservationsdb.json");
@@ -166,15 +161,8 @@ app.post('/reservations', (req, res) => {
 		fs.writeFile("./reservationsdb.json", json, 'utf8', function () { });
 		res.send([true, "Foglalását rögzítettük"])
 	}
-})
+}) */
 
+app.use(notExists);
 
-//404 error
-app.use(function (req, res, next) {
-	res.status(404).send("No such page can be found")
-})
-
-//Console log
-app.listen(port, () => {
-	console.log(`Example app listening at http://localhost:${port}`);
-})
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
