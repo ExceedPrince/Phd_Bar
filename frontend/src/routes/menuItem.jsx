@@ -1,70 +1,69 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Fade from 'react-reveal/Fade';
 import { getMenu, clearMenuData, getMenuItem } from '../redux/actions';
-import { useSelector, useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import Modal from '../components/modal';
 
-const MenuItem = (props) => {
+const MenuItem = ({ allData, getMenu, clearMenuData, getMenuItem }) => {
 	const [clicked, setClicked] = useState(false);
 	const [chosen, setChosen] = useState(1);
-
-	const allData = useSelector(state => state.allData);
-	const dispatch = useDispatch();
-
 	const [glutenFiltered, setGlutenFiltered] = useState(null);
 	const [nameFiltered, setNameFiltered] = useState([]);
 	const [numberFiltered, setNumberFiltered] = useState("");
 
+	const { id } = useParams();
+
 	useEffect(() => {
 		async function loadData() {
-			await dispatch(getMenu(props.match.params.id));
-			dispatch(getMenuItem(props.match.params.id, chosen));
-			if (props.match.params.id === "pizzas" || props.match.params.id === "hamburgers" || props.match.params.id === "drinks") {
+			await getMenu(id);
+			await getMenuItem(id, chosen);
+			if (id === "pizzas" || id === "hamburgers" || id === "drinks") {
 				const btn = document.getElementById('resetBtn');
 				btn.click();
 			}
 		}
 		loadData()
 		return () => {
-			dispatch(clearMenuData());
+			clearMenuData();
 		}
 	}, [])
 
 	useEffect(() => {
-		dispatch(getMenuItem(props.match.params.id, chosen));
+		getMenuItem(id, chosen);
 	}, [clicked])
 
-	//Filtered by glutenfree in all cases
+	//Filtered by safe in all cases
 	useEffect(() => {
 		if (allData.menus) {
 			let glutenFilter = allData.menus;
 			if (nameFiltered && glutenFiltered !== null && numberFiltered !== "") {
 				glutenFilter = glutenFilter.filter(item => {
 					return (
-						item.glutenfree === glutenFiltered && item.name.toLowerCase().includes(document.getElementById("textFilter").value.toLowerCase()) && item.price <= numberFiltered
+						item.safe === glutenFiltered && item.name.toLowerCase().includes(document.getElementById("textFilter").value.toLowerCase()) && item.price <= numberFiltered
 					)
 				});
 				setNameFiltered(glutenFilter);
 			} else if (nameFiltered && glutenFiltered !== null) {
 				glutenFilter = glutenFilter.filter(item => {
 					return (
-						item.glutenfree === glutenFiltered && item.name.toLowerCase().includes(document.getElementById("textFilter").value.toLowerCase())
+						item.safe === glutenFiltered && item.name.toLowerCase().includes(document.getElementById("textFilter").value.toLowerCase())
 					)
 				});
 				setNameFiltered(glutenFilter);
 			} else if (numberFiltered !== "" && glutenFiltered !== null) {
 				glutenFilter = glutenFilter.filter(item => {
 					return (
-						item.glutenfree === glutenFiltered && item.price <= numberFiltered
+						item.safe === glutenFiltered && item.price <= numberFiltered
 					)
 				});
 				setNameFiltered(glutenFilter);
 			} else if (glutenFiltered !== null) {
 				glutenFilter = glutenFilter.filter(item => {
 					return (
-						item.glutenfree === glutenFiltered
+						item.safe === glutenFiltered
 					)
 				});
 				setNameFiltered(glutenFilter);
@@ -84,7 +83,7 @@ const MenuItem = (props) => {
 				if (nameFiltered && glutenFiltered !== null) {
 					numberFilter = numberFilter.filter(item => {
 						return (
-							item.name.toLowerCase().includes(document.getElementById("textFilter").value.toLowerCase()) && item.glutenfree === glutenFiltered
+							item.name.toLowerCase().includes(document.getElementById("textFilter").value.toLowerCase()) && item.safe === glutenFiltered
 						)
 					});
 					setNameFiltered(numberFilter);
@@ -98,7 +97,7 @@ const MenuItem = (props) => {
 				} else if (glutenFiltered !== null) {
 					numberFilter = numberFilter.filter(item => {
 						return (
-							item.glutenfree === glutenFiltered
+							item.safe === glutenFiltered
 						)
 					});
 					setNameFiltered(numberFilter);
@@ -109,7 +108,7 @@ const MenuItem = (props) => {
 				if (nameFiltered && glutenFiltered !== null) {
 					numberFilter = numberFilter.filter(item => {
 						return (
-							item.price <= numberFiltered && item.name.toLowerCase().includes(document.getElementById("textFilter").value.toLowerCase()) && item.glutenfree === glutenFiltered
+							item.price <= numberFiltered && item.name.toLowerCase().includes(document.getElementById("textFilter").value.toLowerCase()) && item.safe === glutenFiltered
 						)
 					});
 					setNameFiltered(numberFilter);
@@ -123,7 +122,7 @@ const MenuItem = (props) => {
 				} else if (glutenFiltered !== null) {
 					numberFilter = numberFilter.filter(item => {
 						return (
-							item.price <= numberFiltered && item.glutenfree === glutenFiltered
+							item.price <= numberFiltered && item.safe === glutenFiltered
 						)
 					});
 					setNameFiltered(numberFilter);
@@ -141,7 +140,7 @@ const MenuItem = (props) => {
 	}, [numberFiltered])
 
 
-	if (props.match.params.id !== "pizzas" && props.match.params.id !== "hamburgers" && props.match.params.id !== "drinks") {
+	if (id !== "pizzas" && id !== "hamburgers" && id !== "drinks") {
 		return (
 			<div className="notExist">
 				<h1>Ez az oldal nem létezik!</h1>
@@ -169,7 +168,7 @@ const MenuItem = (props) => {
 		if (keywords.length !== 0 && numberFiltered.length !== 0 && glutenFiltered !== null) {
 			filtered = filtered.filter(item => {
 				return (
-					item.name.toLowerCase().includes(keywords) && item.price <= numberFiltered && item.glutenfree === glutenFiltered
+					item.name.toLowerCase().includes(keywords) && item.price <= numberFiltered && item.safe === glutenFiltered
 				)
 			})
 			setNameFiltered(filtered);
@@ -183,7 +182,7 @@ const MenuItem = (props) => {
 		} else if (keywords.length !== 0 && glutenFiltered !== null) {
 			filtered = filtered.filter(item => {
 				return (
-					item.name.toLowerCase().includes(keywords) && item.glutenfree === glutenFiltered
+					item.name.toLowerCase().includes(keywords) && item.safe === glutenFiltered
 				)
 			})
 			setNameFiltered(filtered);
@@ -197,7 +196,7 @@ const MenuItem = (props) => {
 		} else if (keywords.length === 0 && numberFiltered.length !== 0 && glutenFiltered !== null) {
 			filtered = filtered.filter(item => {
 				return (
-					item.name.toLowerCase().includes(keywords) && item.price <= numberFiltered && item.glutenfree === glutenFiltered
+					item.name.toLowerCase().includes(keywords) && item.price <= numberFiltered && item.safe === glutenFiltered
 				)
 			})
 			setNameFiltered(filtered);
@@ -211,14 +210,14 @@ const MenuItem = (props) => {
 		} else if (keywords.length === 0 && glutenFiltered !== null) {
 			filtered = filtered.filter(item => {
 				return (
-					item.name.toLowerCase().includes(keywords) && item.glutenfree === glutenFiltered
+					item.name.toLowerCase().includes(keywords) && item.safe === glutenFiltered
 				)
 			})
 			setNameFiltered(filtered);
 		} else if (keywords.length === 0) {
 			filtered = filtered.filter(item => {
 				return (
-					item.name.toLowerCase().includes(keywords) && item.glutenfree === glutenFiltered
+					item.name.toLowerCase().includes(keywords) && item.safe === glutenFiltered
 				)
 			})
 			setNameFiltered(allData.menus);
@@ -254,28 +253,26 @@ const MenuItem = (props) => {
 	return (
 		<div id="menuItemBG" style={{ background: `url("/img/slides/bg_01.png")` }}>
 			<div className="headers"  >
-				<h2 className={`headerTitle${props.match.params.id === "hamburgers" ? " responsiveHeader" : ""}`}>
+				<h2 className={`headerTitle${id === "hamburgers" ? " responsiveHeader" : ""}`}>
 					<Link to="/menu"><img src="/img/slides/backArrow.png" alt="backArrow" /></Link>
-					{mainTitle(props.match.params.id)}
+					{mainTitle(id)}
 				</h2>
 			</div>
 			<div id="filters">
-				{props.match.params.id === "drinks" ?
-					null
-					: <span id="searchRadios" className="menuFilterCont">
-						<h3>Gluténmentes?</h3>
-						<div id="radioButtons">
-							<label className="container">Igen
-								<input type="radio" name="item" id="itemFilter1" className="itemFilter" onChange={() => setGlutenFiltered(true)} />
-								<span className="checkmark"></span>
-							</label>
-							<label className="container">Nem
-								<input type="radio" name="item" id="itemFilter2" className="itemFilter" onChange={() => setGlutenFiltered(false)} />
-								<span className="checkmark"></span>
-							</label>
-						</div>
-					</span>
-				}
+				<span id="searchRadios" className="menuFilterCont">
+					<h3>{id === "pizzas" || id === "hamburgers" ? 'Gluténmentes?' : 'Alkoholmentes?'}</h3>
+					<div id="radioButtons">
+						<label className="container">Igen
+							<input type="radio" name="item" id="itemFilter1" className="itemFilter" onChange={() => setGlutenFiltered(true)} />
+							<span className="checkmark"></span>
+						</label>
+						<label className="container">Nem
+							<input type="radio" name="item" id="itemFilter2" className="itemFilter" onChange={() => setGlutenFiltered(false)} />
+							<span className="checkmark"></span>
+						</label>
+					</div>
+				</span>
+
 				<span id="searchName" className="menuFilterCont">
 					<h3>Keress név alapján:</h3>
 					<input type="text" id="textFilter" onChange={(e) => editSearch(e)} />
@@ -296,11 +293,14 @@ const MenuItem = (props) => {
 					nameFiltered.map((item, index) => (
 						<Fade key={index} bottom delay={80 * index} distance="80px">
 							<div className="littleCards" key={index} onClick={() => choseItem(true, item.id)}>
-								{item.glutenfree === true ? <span className="glutenFree">Gluténmentes</span> : null}
-								<img className={`cardImages ${props.match.params.id}`} src={`/img/${props.match.params.id}/${item.pic}.png`} alt={item.pic} /> <br />
+								{item.safe === true ? <span className="safe">
+									{id === "pizzas" || id === "hamburgers" ? 'Gluténmentes' : 'Alkoholmentes'}
+								</span>
+									: null}
+								<img className={`cardImages ${id}`} src={`/img/${id}/${item.pic}.png`} alt={item.pic} /> <br />
 								<span className="itemName">{item.name}</span><br />
 								<div className="itemNamePrice">
-									<span>{item.price}{props.match.params.id === "drinks" ? " Ft/dl" : " Ft"}</span>
+									<span>{item.price}{id === "drinks" ? " Ft/dl" : " Ft"}</span>
 								</div>
 							</div>
 						</Fade>
@@ -308,11 +308,22 @@ const MenuItem = (props) => {
 					: null
 				}
 			</div>
-			{ clicked === true ?
-				<Modal itemData={allData.unique} type={props.match.params.id} close={() => setClicked} />
+			{clicked === true ?
+				<Modal itemData={allData.unique} type={id} close={() => setClicked} />
 				: null}
 		</div>
 	)
-}
+};
 
-export default MenuItem;
+MenuItem.propTypes = {
+	getMenu: PropTypes.func.isRequired,
+	clearMenuData: PropTypes.func.isRequired,
+	getMenuItem: PropTypes.func.isRequired,
+	allData: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+	allData: state.allData
+});
+
+export default connect(mapStateToProps, { getMenu, clearMenuData, getMenuItem })(MenuItem);

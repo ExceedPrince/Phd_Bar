@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import Fade from 'react-reveal/Fade';
 import { getReservations, filterReservations } from '../redux/actions';
-import { useSelector, useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-const Reservations = (props) => {
-
-	const allData = useSelector(state => state.allData);
+const Reservations = ({ allData, getReservations, filterReservations }) => {
 	const [date, setDate] = useState([])
-	const dispatch = useDispatch()
 
 	useEffect(() => {
-		dispatch(getReservations())
-	}, [])
+		getReservations()
+	}, [getReservations])
 
 	useEffect(() => {
-		dispatch(filterReservations(date))
+		filterReservations(date)
 	}, [date])
 
 	function resetDateFilter() {
@@ -52,7 +50,7 @@ const Reservations = (props) => {
 				<button onClick={resetDateFilter}>Összes foglalás</button>
 			</div>
 			<div className="reservCont">
-				{allData.reserv ?
+				{allData.reserv &&
 					allData.reserv.map((item, index) => (
 						<Fade key={index} bottom distance="80px">
 							<div className="reservCardsOut">
@@ -65,10 +63,20 @@ const Reservations = (props) => {
 							</div>
 						</Fade>
 					))
-					: null}
+				}
 			</div>
 		</div>
 	)
-}
+};
 
-export default Reservations;
+Reservations.propTypes = {
+	getReservations: PropTypes.func.isRequired,
+	filterReservations: PropTypes.func.isRequired,
+	allData: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+	allData: state.allData
+})
+
+export default connect(mapStateToProps, { getReservations, filterReservations })(Reservations);

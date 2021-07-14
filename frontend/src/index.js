@@ -7,21 +7,24 @@ import Menu from './routes/menu';
 import MenuItem from './routes/menuItem';
 import Reservations from './routes/reservations';
 import Contact from './routes/contact';
-
 import Navbar from './components/navbar';
 
 import './styles.css';
 
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import promiseMiddleware from 'redux-promise';
-import reducers from './redux/reducers'
+import { composeWithDevTools } from 'redux-devtools-extension';
+import thunk from 'redux-thunk';
+import rootReducer from './redux/reducers'
 
-const myMiddleware = applyMiddleware(promiseMiddleware)(createStore)
+const initialState = {};
+const middleware = [thunk];
+
+const store = createStore(rootReducer, initialState, composeWithDevTools(applyMiddleware(...middleware)));
 
 const Index = () => {
   return (
-    <Provider store={myMiddleware(reducers)}>
+    <Provider store={store}>
       <BrowserRouter>
         <Switch>
           <Route path="/menu/:id" component={MenuItem} />

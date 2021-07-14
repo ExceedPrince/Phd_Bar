@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Fade from 'react-reveal/Fade';
 import { getOpenings } from '../redux/actions';
-import { useSelector, useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import axios from 'axios';
 import { URL } from '../redux/actions/index';
@@ -9,7 +10,7 @@ import { URL } from '../redux/actions/index';
 let date = new Date();
 let today = date.toISOString().split('T')[0];
 
-const Form = (e) => {
+const Form = ({ allData, getOpenings }) => {
 	const [formOpen, setFormOpen] = useState(false);
 
 	const [nameInput, setNameInput] = useState("");
@@ -24,12 +25,9 @@ const Form = (e) => {
 	const [timeOK, setTimeOk] = useState(false);
 	const [numberOK, setNumberOK] = useState(false);
 
-	const allData = useSelector(state => state.allData);
-	const dispatch = useDispatch();
-
 	useEffect(() => {
-		dispatch(getOpenings());
-	}, [])
+		getOpenings();
+	}, [getOpenings])
 
 	useEffect(() => {
 		if (formOpen) {
@@ -303,6 +301,16 @@ const Form = (e) => {
 
 		</>
 	)
-}
+};
 
-export default Form;
+Form.propTypes = {
+	getOpenings: PropTypes.func.isRequired,
+	allData: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+	allData: state.allData
+});
+
+export default connect(mapStateToProps, { getOpenings })(Form);
+

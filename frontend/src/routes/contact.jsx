@@ -1,21 +1,17 @@
 import React, { useEffect } from 'react';
 import Fade from 'react-reveal/Fade';
 import { getOpenings } from '../redux/actions';
-import { useSelector, useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import Map from '../components/map';
 import OpeningSection from '../components/openingSection';
 
-const Contact = () => {
-	const allData = useSelector(state => state.allData);
-	const dispatch = useDispatch()
+const Contact = ({ allData, getOpenings }) => {
 
 	useEffect(() => {
-		dispatch(getOpenings())
-
-	}, [])
-
-	console.log(allData)
+		getOpenings()
+	}, [getOpenings]);
 
 	return (
 		<div id="contactsBG" style={{ background: `url("/img/slides/bg_01.png")` }}>
@@ -46,6 +42,15 @@ const Contact = () => {
 			</div>
 		</div>
 	)
-}
+};
 
-export default Contact;
+Contact.propTypes = {
+	getOpenings: PropTypes.func.isRequired,
+	allData: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+	allData: state.allData
+})
+
+export default connect(mapStateToProps, { getOpenings })(Contact);

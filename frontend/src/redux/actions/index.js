@@ -2,67 +2,61 @@ import axios from 'axios';
 
 import { MENU_ITEMS, UNIQUE_ITEMS, RESERV_LIST, OPENINGS, CLEAR_MENU_DATA } from "../types"
 
-export const URL = "http://localhost:8080"
+export const URL = "http://localhost:8080/api"
 
-export function getMenu(item) {
+export const getMenu = (item) => async dispatch => {
 
-	const request = axios.get(`${URL}/menu/${item}`)
-		.then(response => response.data)
+	const request = await axios.get(`${URL}/menu/${item}`)
 
-	return {
+	dispatch({
 		type: MENU_ITEMS,
-		payload: request
-	}
+		payload: request.data
+	});
 }
 
-export function getMenuItem(item, id) {
+export const getMenuItem = (item, id) => async dispatch => {
 
-	const request = axios.get(`${URL}/menu/${item}/${id}`)
-		.then(response => response.data)
+	const request = await axios.get(`${URL}/menu/${item}/${id}`)
 
-	return {
+	dispatch({
 		type: UNIQUE_ITEMS,
-		payload: request
-	}
+		payload: request.data
+	});
 }
 
-export function getReservations() {
+export const getReservations = () => async dispatch => {
 
-	const request = axios.get(`${URL}/reservations`)
-		.then(response => response.data)
+	const request = await axios.get(`${URL}/reservations`)
 
-	return {
+	dispatch({
 		type: RESERV_LIST,
-		payload: request
-	}
+		payload: request.data
+	});
 }
 
-export function filterReservations(date) {
+export const filterReservations = (date) => async dispatch => {
 
-	const request = axios.get(`${URL}/reservations/${date}`)
-		.then(response => response.data)
+	const request = await axios.get(`${URL}/reservations/${date}`)
 
-	return {
+	dispatch({
 		type: RESERV_LIST,
-		payload: request
-	}
+		payload: request.data
+	});
 }
 
-export function getOpenings() {
+export const getOpenings = () => async dispatch => {
 
-	const request = axios.get(`${URL}/openings`)
-		.then(response => response.data)
-
-	return {
+	const request = await axios.get(`${URL}/openings`);
+	dispatch({
 		type: OPENINGS,
-		payload: request
-	}
+		payload: request.data
+	});
 }
 
-export function clearMenuData() {
+export const clearMenuData = () => async dispatch => {
 
-	return {
+	dispatch({
 		type: CLEAR_MENU_DATA,
 		payload: null
-	}
+	});
 }

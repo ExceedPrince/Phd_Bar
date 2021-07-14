@@ -1,24 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import Fade from 'react-reveal/Fade';
 import { getMenu } from '../redux/actions';
-import { useSelector, useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import MenuCards from '../components/menuCards';;
 
-const HomeMenu = () => {
+const HomeMenu = ({ allData, getMenu }) => {
 	const [menu, setMenu] = useState("pizzas");
 
-	const allData = useSelector(state => state.allData);
-	const dispatch = useDispatch();
-
-
 	useEffect(() => {
-		dispatch(getMenu(menu))
-	}, [])
-
-	useEffect(() => {
-		dispatch(getMenu(menu))
-	}, [menu])
+		getMenu(menu)
+	}, [getMenu, menu])
 
 	const options = ["pizzas", "hamburgers", "drinks"]
 
@@ -68,6 +61,15 @@ const HomeMenu = () => {
 			</div>
 		</>
 	)
-}
+};
 
-export default HomeMenu;
+HomeMenu.propTypes = {
+	getMenu: PropTypes.func.isRequired,
+	allData: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+	allData: state.allData
+});
+
+export default connect(mapStateToProps, { getMenu })(HomeMenu);
