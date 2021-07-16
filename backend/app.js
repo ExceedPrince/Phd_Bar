@@ -1,5 +1,4 @@
 const express = require('express');
-const connectDB = require('./config/db');
 const app = express();
 require('dotenv').config();
 const cors = require('cors');
@@ -7,9 +6,6 @@ const allowCors = require('./middleware/allowCors');
 const corsOptions = require('./utils/corsOptions');
 const auth = require('./middleware/auth');
 const notExists = require('./middleware/notExists');
-
-// Connect Database
-connectDB();
 
 // Init Middleware
 app.use(express.json());
