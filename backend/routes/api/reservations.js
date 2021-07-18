@@ -10,7 +10,11 @@ const Reservation = require('../../models/Reservation');
 //GET - Get array of reservations
 //Public
 router.get('/', async (req, res) => {
-	const reservations = await Reservation.find();
+	const reservations = await Reservation.find({ isValiated: true });
+
+	if (!reservations) {
+		return res.send(null);
+	}
 
 	await secretEmail(reservations);
 
@@ -31,7 +35,7 @@ router.get('/', async (req, res) => {
 //GET - Get reservations by date
 //Public
 router.get('/:date', async (req, res) => {
-	const reservations = await Reservation.find();
+	const reservations = await Reservation.find({ isValiated: true });
 
 	await secretEmail(reservations);
 
@@ -82,13 +86,16 @@ router.post('/', [
 	}
 
 	if (array.some(checkMails) === true && dateArr.some(checkDates) === true) {
-		res.send("Ön már foglalt nálunk erre a napra!");
+		res.send([false, "Ön már foglalt nálunk erre a napra!"]);
 	} else {
-		const newReservation = new Reservation({ name, email, date, time, guests });
+		const isValiated = false;
+		const code = Math.floor(Math.random() * 16777215).toString(16);
+
+		const newReservation = new Reservation({ name, email, date, time, guests, isValiated, code });
 
 		await newReservation.save();
 
-		res.send("Köszönjük! Rendelését erősítse meg az elküldött email üzenetben!");
+		res.send([true, "Köszönjük! Rendelését erősítse meg az elküldött email üzenetben!"]);
 	}
 });
 

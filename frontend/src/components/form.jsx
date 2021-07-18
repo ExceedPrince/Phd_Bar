@@ -264,7 +264,7 @@ const Form = ({ setAlert, allData, getOpenings, postData }) => {
 										<input type="time" id="time_input" name="time" required value={time} onChange={e => onChange(e)} onFocus={() => { checkIsDate() }} onBlur={(e) => { checkTime(e) }} />
 									</div>
 								</div>
-								<input type="submit" id="submit_Btn" value="Lefoglalom az asztalt!" />
+								<input type="submit" id="submit_Btn" value="Lefoglalom" />
 								<Alert />
 							</form>
 						</div>

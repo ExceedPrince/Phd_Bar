@@ -75,9 +75,13 @@ export const postData = (formData, resetData) => async dispatch => {
 			payload: res.data
 		});
 
-		dispatch(setAlert(res.data, 'success'));
+		if (res.data[0] === true) {
+			dispatch(setAlert(res.data[1], 'success'));
+			await resetData();
+		} else {
+			dispatch(setAlert(res.data[1], 'danger'));
+		}
 
-		await resetData();
 	} catch (err) {
 		dispatch({
 			type: RESERV_ERROR,

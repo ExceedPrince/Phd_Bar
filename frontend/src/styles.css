@@ -548,6 +548,7 @@ body.clicked nav#nav {
 }
 
 #form_container #form_div form input {
+  min-width: 200px;
   margin: 1% 0 2%;
   padding: 1% 2%;
   font-size: 20px;
@@ -614,6 +615,8 @@ body.clicked nav#nav {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
   -ms-flex-pack: distribute;
       justify-content: space-around;
   gap: 10%;
@@ -622,7 +625,7 @@ body.clicked nav#nav {
 
 #form_container #form_div form .formflex .formflex-item {
   position: relative;
-  padding: 0 0 5%;
+  padding: 0 0 2%;
   width: 200px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -639,42 +642,6 @@ body.clicked nav#nav {
   width: 100%;
 }
 
-#form_container #form_div form .formflex .formflex-item #message3 {
-  position: absolute;
-  bottom: 0;
-  -webkit-transform: translateY(55%);
-          transform: translateY(55%);
-  font-size: 18px;
-  font-family: "Encode Sans", sans-serif;
-  color: white;
-  text-shadow: 1px 1px 5px green;
-  z-index: 1;
-}
-
-#form_container #form_div form .formflex .formflex-item #message4 {
-  position: absolute;
-  bottom: 0;
-  -webkit-transform: translateY(55%);
-          transform: translateY(55%);
-  font-size: 18px;
-  font-family: "Encode Sans", sans-serif;
-  color: white;
-  text-shadow: 1px 1px 5px green;
-  z-index: 1;
-}
-
-#form_container #form_div form .formflex .formflex-item #message5 {
-  position: absolute;
-  bottom: 0;
-  -webkit-transform: translateY(55%);
-          transform: translateY(55%);
-  font-size: 18px;
-  font-family: "Encode Sans", sans-serif;
-  color: white;
-  text-shadow: 1px 1px 5px green;
-  z-index: 1;
-}
-
 #form_container #form_div form #submit_Btn {
   outline: none;
   padding: 15px;
@@ -687,8 +654,6 @@ body.clicked nav#nav {
   color: white;
   -webkit-transition: border 300ms ease-in;
   transition: border 300ms ease-in;
-  opacity: 100%;
-  margin: 10px;
 }
 
 #form_container #form_div form #submit_Btn:hover {
@@ -1442,6 +1407,24 @@ body.clicked nav#nav {
   background-color: #005000;
 }
 
+.alert {
+  width: 100;
+  padding: 2% 0;
+  -webkit-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.575);
+          box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.575);
+  color: white;
+  font-size: 20px;
+  font-family: "Encode Sans", sans-serif;
+}
+
+.alert-danger {
+  background-color: #a31818;
+}
+
+.alert-success {
+  background-color: green;
+}
+
 @media screen and (max-width: 749px) {
   #slide-container #slide-content img {
     max-width: 80%;
@@ -1457,17 +1440,6 @@ body.clicked nav#nav {
   }
   #form_container #form_div form .formflex .formflex-item input {
     margin-bottom: 5%;
-  }
-  #form_container #form_div form .formflex .formflex-item #message3 {
-    font-size: 90%;
-  }
-  #form_container #form_div form .formflex .formflex-item #message4 {
-    font-size: 90%;
-  }
-  #form_container #form_div form .formflex .formflex-item #message5 {
-    -webkit-transform: translateY(70%);
-            transform: translateY(70%);
-    font-size: 80%;
   }
 }
 
@@ -1529,19 +1501,11 @@ body.clicked nav#nav {
     text-align: center;
     font-size: 20px;
   }
+  #form_container #form_div form input {
+    padding: 2% 0%;
+  }
   #form_container #form_div form .formflex .formflex-item input {
     margin-bottom: 5%;
-  }
-  #form_container #form_div form .formflex .formflex-item #message3 {
-    font-size: 90%;
-  }
-  #form_container #form_div form .formflex .formflex-item #message4 {
-    font-size: 90%;
-  }
-  #form_container #form_div form .formflex .formflex-item #message5 {
-    -webkit-transform: translateY(55%);
-            transform: translateY(55%);
-    font-size: 80%;
   }
 }
 
@@ -1622,17 +1586,11 @@ body.clicked nav#nav {
   #contactsBG #contactsContent #downerhalf h2 {
     font-size: 1.5rem;
   }
+  #form_container #form_div form input {
+    padding: 3% 0%;
+  }
   #form_container #form_div form .formflex .formflex-item input {
     margin-bottom: 5%;
-  }
-  #form_container #form_div form .formflex .formflex-item #message3 {
-    font-size: 90%;
-  }
-  #form_container #form_div form .formflex .formflex-item #message4 {
-    font-size: 90%;
-  }
-  #form_container #form_div form .formflex .formflex-item #message5 {
-    font-size: 75%;
   }
 }
 

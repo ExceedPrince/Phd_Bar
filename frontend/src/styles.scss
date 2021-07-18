@@ -455,6 +455,7 @@ body.clicked {
 			}
 
 			input {
+				min-width: 200px;
 				margin: 1% 0 2%;
 				padding: 1% 2%;
 				font-size: 20px;
@@ -515,6 +516,7 @@ body.clicked {
 			.formflex {
 				display: flex;
 				flex-direction: row;
+				flex-wrap: wrap;
 				justify-content: space-around;
 				gap: 10%;
 				padding: 2% 0;
@@ -523,7 +525,7 @@ body.clicked {
 
 				.formflex-item {
 					position: relative;
-					padding: 0 0 5%;
+					padding: 0 0 2%;
 					width: 200px;
 					display: flex;
 					gap: 0%;
@@ -537,47 +539,12 @@ body.clicked {
 						padding: 4%;
 						width: 100%
 					}
-
-					#message3 {
-						position: absolute;
-						bottom: 0;
-						transform: translateY(55%);
-						font-size: 18px;
-						font-family: $filler-font;
-						color: white;
-						text-shadow: 1px 1px 5px green;
-						z-index: 1;
-					}
-
-					#message4 {
-						position: absolute;
-						bottom: 0;
-						transform: translateY(55%);
-						font-size: 18px;
-						font-family: $filler-font;
-						color: white;
-						text-shadow: 1px 1px 5px green;
-						z-index: 1;
-					}
-
-					#message5 {
-						position: absolute;
-						bottom: 0;
-						transform: translateY(55%);
-						font-size: 18px;
-						font-family: $filler-font;
-						color: white;
-						text-shadow: 1px 1px 5px green;
-						z-index: 1;
-					}
 				}
 			}
 
 			#submit_Btn {
 				@include buttons;
-				opacity: 100%;
-				margin: 10px;
-
+				
 				&:disabled {
 					opacity: 50%;
 					pointer-events: none;
@@ -1155,6 +1122,24 @@ body.clicked {
 	}
 }
 
+//Alert divs
+.alert {
+	width: 100;
+	padding: 2% 0;
+	box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.575);
+	color: white;
+	font-size: 20px;
+	font-family: $filler-font;
+}
+
+.alert-danger {
+	background-color: $red-color;
+}
+
+.alert-success {
+	background-color: green;
+}
+
 //Responsive settings
 
 @media screen and (max-width: 749px) {
@@ -1201,17 +1186,6 @@ body.clicked {
 	
 						input {
 							margin-bottom: 5%;
-						}
-	
-						#message3 {
-							font-size: 90%;
-						}
-						#message4 {
-							font-size: 90%;
-						}
-						#message5 {
-							transform: translateY(70%);
-							font-size: 80%;
 						}
 					}
 				}
@@ -1330,6 +1304,9 @@ body.clicked {
 		#form_div {
 	
 			form {
+				input {
+					padding: 2% 0%
+				}
 	
 				.formflex {
 	
@@ -1337,17 +1314,6 @@ body.clicked {
 	
 						input {
 							margin-bottom: 5%;
-						}
-	
-						#message3 {
-							font-size: 90%;
-						}
-						#message4 {
-							font-size: 90%;
-						}
-						#message5 {
-							transform: translateY(55%);
-							font-size: 80%;
 						}
 					}
 				}
@@ -1553,6 +1519,9 @@ body.clicked {
 		#form_div {
 	
 			form {
+				input {
+					padding: 3% 0%
+				}
 	
 				.formflex {
 	
@@ -1560,16 +1529,6 @@ body.clicked {
 	
 						input {
 							margin-bottom: 5%;
-						}
-	
-						#message3 {
-							font-size: 90%;
-						}
-						#message4 {
-							font-size: 90%;
-						}
-						#message5 {
-							font-size: 75%;
 						}
 					}
 				}
