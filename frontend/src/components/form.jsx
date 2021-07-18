@@ -1,29 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import Fade from 'react-reveal/Fade';
-import { getOpenings } from '../redux/actions';
+import Alert from './Alert';
+import { setAlert } from '../redux/actions/alert';
+import { getOpenings, postData } from '../redux/actions';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
-import axios from 'axios';
-import { URL } from '../redux/actions/index';
 
 let date = new Date();
 let today = date.toISOString().split('T')[0];
 
-const Form = ({ allData, getOpenings }) => {
+const Form = ({ setAlert, allData, getOpenings, postData }) => {
 	const [formOpen, setFormOpen] = useState(false);
-
-	const [nameInput, setNameInput] = useState("");
-	const [emailInput, setEmailInput] = useState("");
-	const [guestInput, setGuestInput] = useState("");
-	const [dateInput, setDateInput] = useState("");
-	const [timeInput, setTimeInput] = useState("");
-
+	const [inputs, setInputs] = useState({ username: '', email: '', persons: '', date: '', time: '' });
 	const [nameOK, setNameOk] = useState(false);
 	const [emailOK, setEmailOk] = useState(false);
 	const [dateOK, setDateOk] = useState(false);
 	const [timeOK, setTimeOk] = useState(false);
 	const [numberOK, setNumberOK] = useState(false);
+
+	const { username, email, persons, date, time } = inputs;
+
+	const onChange = (e) => setInputs({ ...inputs, [e.target.name]: e.target.value });
 
 	useEffect(() => {
 		getOpenings();
@@ -37,38 +34,25 @@ const Form = ({ allData, getOpenings }) => {
 
 	useEffect(() => {
 		checkSubmit();
+		console.log(nameOK, emailOK, numberOK, dateOK, timeOK);
 	}, [nameOK, emailOK, dateOK, timeOK, numberOK])
 
-	function scrollDown() {
+	const scrollDown = () => {
 		setFormOpen(true);
 		setTimeout(() => {
 			document.getElementById("form_container").scrollIntoView(false)
 		}, 300);
 	}
 
-	function message(x, text) {
-		if (formOpen) {
-			const m = document.getElementById("message" + x);
-			m.className = "messageDiv appear";
-			m.innerHTML = text;
-			setTimeout(() => {
-				m.innerHTML = "";
-				m.className = "messageDiv appear";
-			}, 3000);
-		}
-	}
-
-	function checkSubmit() {
+	const checkSubmit = () => {
 		if (nameOK && emailOK && dateOK && timeOK && numberOK) {
 			document.getElementById("submit_Btn").disabled = false;
 		}
-	}
+	};
 
-	console.log(nameOK, emailOK, numberOK, dateOK, timeOK);
-
-	function checkName(e) {
-		if (formOpen && nameInput.length < 6) {
-			message(1, "Legalább 5 karaktert írjon be!");
+	const checkName = (e) => {
+		if (formOpen && username.length < 5) {
+			setAlert('Legalább 5 karaktert írjon be!', 'danger');
 			setNameOk(false)
 			document.getElementById("submit_Btn").disabled = true;
 			e.target.focus();
@@ -77,33 +61,33 @@ const Form = ({ allData, getOpenings }) => {
 		}
 	}
 
-	function checkEmail(e) {
+	const checkEmail = (e) => {
 		let mailformat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-		if (formOpen && emailInput.match(mailformat) && emailInput.length > 5) {
+		if (formOpen && email.match(mailformat) && email.length > 5) {
 			setEmailOk(true);
 		} else {
-			message(2, "Az emailcím hibásan van megadva.")
+			setAlert('Az emailcím hibásan van megadva.', 'danger');
 			setEmailOk(false);
 			document.getElementById("submit_Btn").disabled = true;
 			e.target.focus();
 		}
 	}
 
-	function checkGuest(e) {
-		if (formOpen && guestInput > 0 && guestInput < 11) {
+	const checkGuest = (e) => {
+		if (formOpen && +persons > 0 && +persons < 11) {
 			setNumberOK(true);
 		} else {
-			message(3, "1 és 10 között válasszon!")
+			setAlert('1 és 10 között válasszon!', 'danger');
 			setNumberOK(false);
 			document.getElementById("submit_Btn").disabled = true;
 			e.target.focus();
 		}
 	}
 
-	function checkDate(e) {
-		if (formOpen && new Date(dateInput).getDay() === 0) {
-			message(4, "Vasárnapra nem lehet foglalni!");
+	const checkDate = (e) => {
+		if (formOpen && new Date(date).getDay() === 0) {
+			setAlert('Vasárnapra nem lehet foglalni!', 'danger');
 			setDateOk(false);
 			document.getElementById("submit_Btn").disabled = true;
 			document.querySelector("input[name='time']").disabled = true;
@@ -114,12 +98,12 @@ const Form = ({ allData, getOpenings }) => {
 		}
 	}
 
-	function minTime() {
+	const minTime = () => {
 		let bookedDayIndex;
 		let hour;
 		let minute;
-		if (formOpen && dateInput !== "" && dateInput !== today) {
-			bookedDayIndex = new Date(dateInput).getDay();
+		if (formOpen && date !== "" && date !== today) {
+			bookedDayIndex = new Date(date).getDay();
 			let selectedDay = allData.openings.filter(day => day.index === bookedDayIndex)[0];
 
 			if (String(selectedDay.open[0]).length === 1) {
@@ -131,7 +115,7 @@ const Form = ({ allData, getOpenings }) => {
 			minute = selectedDay.open[1] + "0";
 
 			document.querySelector("input[name='time']").setAttribute("min", hour + ":" + minute);
-		} else if (formOpen && dateInput !== "" && dateInput === today) {
+		} else if (formOpen && date !== "" && date === today) {
 			bookedDayIndex = new Date().getDay();
 			let selectedDay = allData.openings.filter(day => day.index === bookedDayIndex)[0];
 
@@ -144,18 +128,18 @@ const Form = ({ allData, getOpenings }) => {
 			minute = selectedDay.open[1] + "0";
 
 			document.querySelector("input[name='time']").setAttribute("min", hour + ":" + minute);
-		} else if (formOpen && dateInput === "") {
+		} else if (formOpen && date === "") {
 			return null;
 		}
 	}
 
-	function maxTime() {
+	const maxTime = () => {
 		let bookedDayIndex;
 		let hour;
 		let min;
 
-		if (formOpen && dateInput !== "" && dateInput !== today) {
-			bookedDayIndex = new Date(dateInput).getDay();
+		if (formOpen && date !== "" && date !== today) {
+			bookedDayIndex = new Date(date).getDay();
 			let selectedDay = allData.openings.filter(day => day.index === bookedDayIndex)[0];
 
 			if (String(selectedDay.close[0]).length === 1) {
@@ -167,7 +151,7 @@ const Form = ({ allData, getOpenings }) => {
 			min = selectedDay.close[1] + "0";
 
 			document.querySelector("input[name='time']").setAttribute("max", hour + ":" + min);
-		} else if (formOpen && dateInput !== "" && dateInput === today) {
+		} else if (formOpen && date !== "" && date === today) {
 			bookedDayIndex = new Date().getDay();
 			let selectedDay = allData.openings.filter(day => day.index === bookedDayIndex)[0];
 
@@ -180,14 +164,14 @@ const Form = ({ allData, getOpenings }) => {
 			min = selectedDay.close[1] + "0";
 
 			document.querySelector("input[name='time']").setAttribute("max", hour + ":" + min);
-		} else if (formOpen && (dateInput === "" || new Date(dateInput).getDay() === 0)) {
+		} else if (formOpen && (date === "" || new Date(date).getDay() === 0)) {
 			return null;
 		}
 	}
 
-	function checkIsDate() {
-		if (formOpen && (dateInput === "" || new Date(dateInput).getDay() === 0)) {
-			message(5, "Előbb válasszon dátumot!");
+	const checkIsDate = () => {
+		if (formOpen && (date === "" || new Date(date).getDay() === 0)) {
+			setAlert('Előbb válasszon dátumot!', 'danger');
 			setTimeOk(false);
 			document.getElementById("submit_Btn").disabled = true;
 			document.querySelector("input[name='time']").disabled = true;
@@ -197,35 +181,35 @@ const Form = ({ allData, getOpenings }) => {
 		}
 	}
 
-	function checkTime(e) {
+	const checkTime = (e) => {
 		let minTime = document.querySelector("input[name='time']").min;
 		let maxTime = document.querySelector("input[name='time']").max;
 		let thisHour = new Date().getHours();
 		let thismin = new Date().getMinutes();
 
-		if (formOpen && dateInput !== today) {
-			if (+timeInput.split(":")[0] >= +minTime.split(":")[0] && +timeInput.split(":")[0] < +maxTime.split(":")[0] - 1) {
+		if (formOpen && date !== today) {
+			if (+time.split(":")[0] >= +minTime.split(":")[0] && +time.split(":")[0] < +maxTime.split(":")[0] - 1) {
 				setTimeOk(true);
 			} else {
-				message(5, "A megadott időpont nem megfelelő.");
+				setAlert('A megadott időpont nem megfelelő!', 'danger');
 				setTimeOk(false);
 				document.getElementById("submit_Btn").disabled = true;
 				e.target.focus();
 			}
-		} else if (formOpen && dateInput === today) {
-			if (+timeInput.split(":")[0] >= +minTime.split(":")[0] && +timeInput.split(":")[0] < +maxTime.split(":")[0] - 1) {
-				if (+timeInput.split(":")[0] - thisHour > 1) {
+		} else if (formOpen && date === today) {
+			if (+time.split(":")[0] >= +minTime.split(":")[0] && +time.split(":")[0] < +maxTime.split(":")[0] - 1) {
+				if (+time.split(":")[0] - thisHour > 1) {
 					setTimeOk(true);
-				} else if (+timeInput.split(":")[0] - thisHour === 1 && +timeInput.split(":")[1] > thismin) {
+				} else if (+time.split(":")[0] - thisHour === 1 && +time.split(":")[1] > thismin) {
 					setTimeOk(true);
 				} else {
-					message(5, "Legalább 1 órával előre lehet csak asztalt foglalni.")
+					setAlert('Legalább 1 órával előre lehet csak asztalt foglalni!', 'danger');
 					setTimeOk(false);
 					document.getElementById("submit_Btn").disabled = true;
 					e.target.focus();
 				}
 			} else {
-				message(5, "A megadott időpont nem megfelelő.");
+				setAlert('A megadott időpont nem megfelelő!', 'danger');
 				setTimeOk(false);
 				document.getElementById("submit_Btn").disabled = true;
 				e.target.focus();
@@ -233,29 +217,23 @@ const Form = ({ allData, getOpenings }) => {
 		}
 	}
 
-	function postData() {
+
+	const onSubmit = async (e) => {
+		e.preventDefault();
 		if (formOpen && nameOK && emailOK && dateOK && timeOK && numberOK) {
-			function resetData() {
-				let inputs = document.querySelectorAll("input");
-				for (let i = 0; i < inputs.length; i++) {
-					inputs[i].value = ""
-				}
+			const resetData = () => {
+				setInputs({ username: "", email: "", persons: "", date: "", time: "" })
+
 				document.getElementById("submit_Btn").disabled = true;
 			}
 
 			let formData = {
-				name: nameInput, email: emailInput, date: dateInput, time: timeInput, guests: guestInput
+				name: username, email: email, date: date, time: time, guests: +persons
 			}
 
-			axios.post(`${URL}/reservations`, formData)
-				.then(response => {
-					response.data[0] === true ? (function () { message(6, response.data[1]); console.log(formData); resetData() })()
-						: message(6, response.data[1])
-				},
-					error => {
-						console.log(error);
-					})
+			postData(formData, resetData);
 		}
+		console.log(username, email, date, time, +persons)
 	}
 
 	return (
@@ -267,32 +245,27 @@ const Form = ({ allData, getOpenings }) => {
 				{formOpen ?
 					<Fade bottom delay={200} distance="40px">
 						<div id="form_div">
-							<form>
+							<form onSubmit={e => onSubmit(e)}>
 								<label htmlFor="name">Név:</label> <br />
-								<input type="text" name="username" required value={nameInput} onChange={(e) => setNameInput(e.target.value)} onBlur={(e) => { checkName(e) }} /> <br />
-								<div id="message1" className="messageDiv"></div>
+								<input type="text" name="username" required value={username} onChange={e => onChange(e)} onBlur={(e) => { checkName(e) }} /> <br />
 								<label htmlFor="email">Email cím:</label> <br />
-								<input type="email" name="email" required value={emailInput} onChange={(e) => setEmailInput(e.target.value)} onBlur={(e) => { checkEmail(e) }} /> <br />
-								<div id="message2" className="messageDiv"></div>
+								<input type="email" name="email" required value={email} onChange={e => onChange(e)} onBlur={(e) => { checkEmail(e) }} /> <br />
 								<div className="formflex">
 									<div className="formflex-item">
 										<label htmlFor="persons">Vendégek:</label>
-										<input type="number" id="number_input" min="1" max="10" name="persons" required value={guestInput} onChange={(e) => setGuestInput(+e.target.value)} onBlur={(e) => { checkGuest(e) }} />
-										<div id="message3" className="messageDiv"></div>
+										<input type="number" id="number_input" min="1" max="10" name="persons" required value={persons} onChange={e => onChange(e)} onBlur={(e) => { checkGuest(e) }} />
 									</div>
 									<div className="formflex-item">
 										<label htmlFor="date">Dátum:</label>
-										<input type="date" name="date" min={today} required value={dateInput} onChange={(e) => setDateInput(e.target.value)} onBlur={(e) => { checkDate(e) }} />
-										<div id="message4" className="messageDiv"></div>
+										<input type="date" name="date" min={today} required value={date} onChange={e => onChange(e)} onBlur={(e) => { checkDate(e) }} />
 									</div>
 									<div className="formflex-item">
 										<label htmlFor="time">Időpont:</label>
-										<input type="time" id="time_input" name="time" required value={timeInput} onChange={(e) => setTimeInput(e.target.value)} onFocus={() => { checkIsDate() }} onBlur={(e) => { checkTime(e) }} />
-										<div id="message5" className="messageDiv"></div>
+										<input type="time" id="time_input" name="time" required value={time} onChange={e => onChange(e)} onFocus={() => { checkIsDate() }} onBlur={(e) => { checkTime(e) }} />
 									</div>
 								</div>
-								<button id="submit_Btn" type="button" onClick={postData}><b>Lefoglalom az asztalt!</b></button>
-								<div id="message6" className="messageDiv"></div>
+								<input type="submit" id="submit_Btn" value="Lefoglalom az asztalt!" />
+								<Alert />
 							</form>
 						</div>
 					</Fade>
@@ -304,7 +277,9 @@ const Form = ({ allData, getOpenings }) => {
 };
 
 Form.propTypes = {
+	setAlert: PropTypes.func.isRequired,
 	getOpenings: PropTypes.func.isRequired,
+	postData: PropTypes.func.isRequired,
 	allData: PropTypes.object.isRequired
 };
 
@@ -312,5 +287,5 @@ const mapStateToProps = state => ({
 	allData: state.allData
 });
 
-export default connect(mapStateToProps, { getOpenings })(Form);
+export default connect(mapStateToProps, { setAlert, getOpenings, postData })(Form);
 

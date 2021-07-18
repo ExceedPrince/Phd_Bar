@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const { body, validationResult } = require('express-validator');
 const secretEmail = require('../../utils/secretEmail');
 const timeZoneTime = require('../../utils/timeZoneTime');
-//express-validator itt fog kelleni a post request-nél!!!
 
 const Reservation = require('../../models/Reservation');
 
@@ -49,7 +49,18 @@ router.get('/:date', async (req, res) => {
 //POST - POST /api/reservations/
 //POST - Post a new reservation
 //Public
-router.post('/', async (req, res) => {
+router.post('/', [
+	body('name', 'Legalább 5 karaktert írjon be!').isLength({ min: 5 }),
+	body('email', 'Adjon meg valós email címet!').isEmail(),
+	body('guests', '1 és 10 között válasszon helyet!').isLength({ min: 1, max: 10 }),
+	body('date', 'Válasszon másik dátumot!').not().isEmpty(),
+	body('time', 'Válasszon másik időpontot!').not().isEmpty()
+], async (req, res) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(400).json({ errors: errors.array() }); // bad request
+	};
+
 	const reservations = await Reservation.find();
 
 	const { name, email, date, time, guests } = req.body;
@@ -71,13 +82,13 @@ router.post('/', async (req, res) => {
 	}
 
 	if (array.some(checkMails) === true && dateArr.some(checkDates) === true) {
-		res.send([false, "Ön már foglalt nálunk erre a napra!"])
+		res.send("Ön már foglalt nálunk erre a napra!");
 	} else {
 		const newReservation = new Reservation({ name, email, date, time, guests });
 
 		await newReservation.save();
 
-		res.send([true, "Foglalását rögzítettük"])
+		res.send("Köszönjük! Rendelését erősítse meg az elküldött email üzenetben!");
 	}
 });
 

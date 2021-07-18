@@ -20,14 +20,14 @@ const ReservationSchema = new mongoose.Schema({
 		type: Number,
 		required: true
 	},
-	isValiated: {
-		type: Boolean,
-		required: true
-	},
-	code: {
-		type: String,
-		required: true
-	},
+	/* 	isValiated: {
+			type: Boolean,
+			required: true
+		},
+		code: {
+			type: String,
+			required: true
+		}, */
 	createdDate: {
 		type: Date,
 		default: Date.now

@@ -1,6 +1,6 @@
 import axios from 'axios';
-
-import { MENU_ITEMS, UNIQUE_ITEMS, RESERV_LIST, OPENINGS, CLEAR_MENU_DATA } from "../types"
+import { MENU_ITEMS, UNIQUE_ITEMS, RESERV_LIST, RESERV_POST, RESERV_ERROR, OPENINGS, CLEAR_MENU_DATA, } from "../types";
+import { setAlert } from '../actions/alert';
 
 export const URL = "http://localhost:8080/api"
 
@@ -59,4 +59,31 @@ export const clearMenuData = () => async dispatch => {
 		type: CLEAR_MENU_DATA,
 		payload: null
 	});
-}
+};
+
+export const postData = (formData, resetData) => async dispatch => {
+	const config = {
+		header: {
+			'Content-Type': 'application/json'
+		}
+	}
+	try {
+		const res = await axios.post(`${URL}/reservations/`, formData, config);
+
+		dispatch({
+			type: RESERV_POST,
+			payload: res.data
+		});
+
+		dispatch(setAlert(res.data, 'success'));
+
+		await resetData();
+	} catch (err) {
+		dispatch({
+			type: RESERV_ERROR,
+			payload: { msg: err.response.statusText, status: err.response.status }
+		});
+
+		dispatch(setAlert(err.response.statusText, 'danger'));
+	}
+};
