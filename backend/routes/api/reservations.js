@@ -4,7 +4,7 @@ const sgMail = require('@sendgrid/mail');
 const { body, validationResult } = require('express-validator');
 const secretEmail = require('../../utils/secretEmail');
 const timeZoneTime = require('../../utils/timeZoneTime');
-const { validationEmail, successEmail } = require('../../utils/reservationVerification');
+const { validationEmail, successEmail } = require('../../utils/sendGridEmails');
 
 const Reservation = require('../../models/Reservation');
 

@@ -9,6 +9,8 @@ import Reservations from './routes/reservations';
 import Contact from './routes/contact';
 import Navbar from './components/navbar';
 import Verification from './routes/Verification';
+import ForgottenPassword from './routes/ForgottenPassword';
+import ValidatePassword from './routes/ValidatePassword';
 
 import './styles.css';
 
@@ -33,6 +35,8 @@ const Index = () => {
           <Route path="/contacts" component={Contact} />
           <Route path="/reservations" component={Reservations} />
           <Route path="/verification" component={Verification} />
+          <Route path="/reset-password" component={ForgottenPassword} />
+          <Route path="/new-password" component={ValidatePassword} />
           <Route path="/" exact component={Home} />
           <Route render={() =>
             <div className="notExist">

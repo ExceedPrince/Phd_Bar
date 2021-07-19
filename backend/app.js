@@ -22,6 +22,7 @@ app.get('/', async (req, res) => {
 app.use('/api/menu', require('./routes/api/menu'));
 app.use('/api/openings', require('./routes/api/openings'));
 app.use('/api/reservations', require('./routes/api/reservations'));
+app.use('/api/admin', require('./routes/api/admin'));
 
 app.use(notExists);
 

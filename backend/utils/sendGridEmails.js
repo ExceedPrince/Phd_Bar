@@ -64,4 +64,27 @@ const successEmail = (email, name, date, time, guests) => {
 	}
 };
 
-module.exports = { validationEmail, successEmail };
+//Sending email to verify a reservation
+const newPAssEmail = (email, code, date, newPass) => {
+
+	return {
+		to: { email: email },
+		from: { email: email, name: "PhD Bár" },
+		subject: "Új jelszó kérvényezése",
+		html: `<h1>Új jelszó kérvényezése!</h1>
+		<div>
+		<h2>Tisztelt Admin!</h2>
+		<p>Rendszerünkbe új kérés érkezett jelszó módosítással kapcsolatosan!</p>
+		<p>Amennyiben ez a kérés Öntől érkezett, az alábbi linkre kattintva, kérjük, hogy <u>5 percen belül</u> erősítse meg szándékát a megadott kód felhasználásával!<br>
+		Ha nem Ön volt, kérjük azonnali hatállyal jelentkezzen a honlap fejlesztőjénél!</p>
+		<p>Új jelszó: <span style="color:green; font-size:20px;">${newPass}</span></p>
+		<p>Megerősítő kód: <span style="color:red; font-size:20px;">${code}</span></p>
+		<p>Link eléréséhez <a href=${process.env.FRONTEND_PORT}/new-password?user=${email}&time=${date}>Kattinson ide</a></p>
+		<br>
+		<h2>Üdvözlettel, <br>PhD Bár</h2>
+		</div>
+		`
+	}
+};
+
+module.exports = { validationEmail, successEmail, newPAssEmail };

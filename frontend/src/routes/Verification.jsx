@@ -29,12 +29,10 @@ const Verification = ({ reservValidate }) => {
 		}
 
 		await reservValidate(formData, history);
-	}
-
-	console.log(new Date().getTime())
+	};
 
 	return (
-		<div class="verify">
+		<div className="verify" style={{ backgroundImage: `url("/img/slides/bg_01.png")` }}>
 			<h1>Foglalás megerősítése</h1>
 			<form onSubmit={e => onSubmit(e)}>
 				<label htmlFor="email">Email cím:</label><br />

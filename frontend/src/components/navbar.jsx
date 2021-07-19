@@ -60,7 +60,8 @@ const Navbar = () => {
 								<label htmlFor="email">Email: </label> <br />
 								<input type="email" name="email" placeholder="admin@email.com" value={email} onChange={e => onChange(e)} /><br />
 								<label htmlFor="password">Jelszó: </label><br />
-								<input type="password" name="password" placeholder="Jelszó" value={password} onChange={e => onChange(e)} /><br /><br />
+								<input type="password" name="password" placeholder="Jelszó" value={password} onChange={e => onChange(e)} /><br />
+								<Link to="/reset-password" exact ><span onClick={clickEvent}>Elfelejtettem a jelszavam</span></Link><br /><br />
 								<div>
 									<input type="submit" value="Belépés" />
 									<button onClick={() => { setShowForm(!showForm); setFormData({ ...formData, email: '', password: '' }) }}>Visszalépek</button>

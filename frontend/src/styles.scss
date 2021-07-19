@@ -208,6 +208,19 @@ nav#nav {
 				}
 			}
 		}
+		a {
+			color: white;
+			text-decoration: none;
+			transition: color 200ms ease-in;
+
+			&:hover {
+				color: $yellow-color;
+			}
+
+			span {
+				font-size: 15px;
+			}
+		}
 		div {
 			width: 100%;
 			display: flex;
@@ -1140,6 +1153,132 @@ body.clicked {
 	background-color: green;
 }
 
+//Reservation verification page
+
+.verify {
+	position: relative;
+  height: 100%; 
+	min-height: 100vh;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: repeat-y;
+  background-size: cover;
+	padding-bottom: 2rem;
+	text-align: center;
+	color: white;
+
+	h1 {
+		padding-top: 1%;
+		font-family: $title-font;
+	}
+
+			form {
+
+				padding: 3%;
+	
+				label {
+					font-size: 25px;
+					font-weight: 700;
+					font-family: $title-font;
+					color: $yellow-color;
+				}
+	
+				input {
+					width: 330px;
+					min-width: 200px;
+					margin: 1% 0 2%;
+					padding: 1% 1%;
+					font-size: 20px;
+					outline: none;
+					text-align: center;
+					font-family: $filler-font;
+					font-weight: bolder;
+					border: solid 3px white;
+					border-radius: 5px;
+					background-color: white;
+					color:rgb(0, 0, 0);
+					cursor: pointer;
+					transition: all 200ms ease-in;
+	
+					&:hover {
+						border: solid 3px green;
+						background-color: $yellow-color;
+						color:rgb(255, 255, 255);
+					}
+				}
+
+				input[type=submit] {
+					@include buttons;
+					width: auto;
+				}
+		
+	}
+}
+
+//New password first page
+.reset_div {
+	position: relative;
+  height: 100vh; 
+	max-height: 100vh;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: repeat-y;
+  background-size: cover;
+	padding-bottom: 10rem;
+	text-align: center;
+	color: white;
+
+	h1 {
+		padding-top: 8%;
+		font-family: $title-font;
+	}
+
+			form {
+
+				padding: 3%;
+	
+				label {
+					font-size: 25px;
+					font-weight: 700;
+					font-family: $title-font;
+					color: $yellow-color;
+				}
+	
+				input {
+					width: 330px;
+					min-width: 200px;
+					margin: 3% 0 2%;
+					padding: 1% 1%;
+					font-size: 20px;
+					outline: none;
+					text-align: center;
+					font-family: $filler-font;
+					font-weight: bolder;
+					border: solid 3px white;
+					border-radius: 5px;
+					background-color: white;
+					color:rgb(0, 0, 0);
+					cursor: pointer;
+					transition: all 200ms ease-in;
+	
+					&:hover {
+						border: solid 3px green;
+						background-color: $yellow-color;
+						color:rgb(255, 255, 255);
+					}
+				}
+
+				input[type=submit] {
+					@include buttons;
+					width: auto;
+				}
+		
+	}
+}
+
+//New password second page
+
+
 //Responsive settings
 
 @media screen and (max-width: 749px) {
@@ -1317,6 +1456,20 @@ body.clicked {
 						}
 					}
 				}
+			}
+		}
+	}
+
+	.verify {
+		padding-top: 20%;
+	}
+
+	.reset_div {
+		padding-top: 20%;
+
+		form {
+			input[type=email] {
+				max-width: 80%;
 			}
 		}
 	}
@@ -1532,6 +1685,14 @@ body.clicked {
 						}
 					}
 				}
+			}
+		}
+	}
+
+	.verify {
+		form {
+			input {
+				max-width: 90%;
 			}
 		}
 	}
