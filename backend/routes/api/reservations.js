@@ -1,10 +1,16 @@
 const express = require('express');
 const router = express.Router();
+const sgMail = require('@sendgrid/mail');
 const { body, validationResult } = require('express-validator');
 const secretEmail = require('../../utils/secretEmail');
 const timeZoneTime = require('../../utils/timeZoneTime');
+const { validationEmail, successEmail } = require('../../utils/reservationVerification');
 
 const Reservation = require('../../models/Reservation');
+
+//Connect to SendGrid
+require('dotenv').config();
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 //GET - GET /api/reservations
 //GET - Get array of reservations
@@ -95,7 +101,44 @@ router.post('/', [
 
 		await newReservation.save();
 
+		await sgMail.send(validationEmail(email, name, code, date));
+
 		res.send([true, "Köszönjük! Rendelését erősítse meg az elküldött email üzenetben!"]);
+	}
+});
+
+//POST - POST /api/reservations/validate/
+//POST - Validate a reservation
+//Public
+router.post('/validate/', [
+	body('email', 'Adjon meg valós email címet!').isEmail(),
+	body('validation', 'Adja meg a megerősítő kódját!').not().isEmpty()
+], async (req, res) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(400).json({ errors: errors.array() }); // bad request
+	};
+
+	const { email, validation, reservDate, date } = req.body;
+
+	const user = await Reservation.findOne({ email: email, date: reservDate });
+
+	if (!user) {
+		return res.status(400).json({ errors: [{ msg: 'Ezzel a címmel nincs erre a napra érvényesítendő foglalás!' }] });
+	};
+
+	if (new Date(date).getTime() < new Date(user.createdDate).getTime() + 300000 && user.code === validation) {
+		user.isValiated = true;
+
+		await user.save();
+
+		await sgMail.send(successEmail(user.email, user.name, user.date, user.time, user.guests));
+
+		res.json([true, 'Foglalását sikeresen megerősítette, visszairányítjuk a főoldalra!']);
+	} else {
+		await Reservation.findByIdAndDelete(user._id);
+
+		res.json([false, 'Hibás megerősítés miatt foglalását töröltük, visszairányítjuk a főoldalra!']);
 	}
 });
 

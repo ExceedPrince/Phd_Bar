@@ -8,6 +8,7 @@ import MenuItem from './routes/menuItem';
 import Reservations from './routes/reservations';
 import Contact from './routes/contact';
 import Navbar from './components/navbar';
+import Verification from './routes/Verification';
 
 import './styles.css';
 
@@ -31,6 +32,7 @@ const Index = () => {
           <Route path="/menu" component={Menu} />
           <Route path="/contacts" component={Contact} />
           <Route path="/reservations" component={Reservations} />
+          <Route path="/verification" component={Verification} />
           <Route path="/" exact component={Home} />
           <Route render={() =>
             <div className="notExist">
