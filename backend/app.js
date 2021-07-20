@@ -4,7 +4,6 @@ require('dotenv').config();
 const cors = require('cors');
 const allowCors = require('./middleware/allowCors');
 const corsOptions = require('./utils/corsOptions');
-const auth = require('./middleware/auth');
 const notExists = require('./middleware/notExists');
 
 // Init Middleware

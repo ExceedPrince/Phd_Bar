@@ -85,6 +85,10 @@ nav#nav {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
@@ -100,6 +104,11 @@ nav#nav {
   color: white;
   -webkit-transition: right 400ms;
   transition: right 400ms;
+  overflow-y: scroll;
+}
+
+nav#nav::-webkit-scrollbar {
+  display: none;
 }
 
 nav#nav ul {
@@ -112,7 +121,7 @@ nav#nav ul a {
 
 nav#nav ul a li {
   list-style: none;
-  padding: 8% 0;
+  padding: 6% 0;
   text-align: center;
   text-decoration: none;
   font-size: 25px;
@@ -140,11 +149,11 @@ nav#nav ul li#login_icon {
   cursor: pointer;
 }
 
-nav#nav div {
+nav#nav div#formItems {
   width: 70%;
 }
 
-nav#nav div h1 {
+nav#nav div#formItems h1 {
   text-align: center;
   padding-bottom: 20%;
   color: #eb8a1a;
@@ -152,17 +161,17 @@ nav#nav div h1 {
   font-size: 35px;
 }
 
-nav#nav div form.login-form {
+nav#nav div#formItems form.login-form {
   text-align: center;
   font-family: "Encode Sans", sans-serif;
   font-size: 25px;
 }
 
-nav#nav div form.login-form label {
+nav#nav div#formItems form.login-form label {
   color: #eb8a1a;
 }
 
-nav#nav div form.login-form input[type=email] {
+nav#nav div#formItems form.login-form input[type=email] {
   outline: none;
   width: 100%;
   margin: 5% 0%;
@@ -179,13 +188,13 @@ nav#nav div form.login-form input[type=email] {
   transition: 0.2s ease-in-out;
 }
 
-nav#nav div form.login-form input[type=email]:focus {
+nav#nav div#formItems form.login-form input[type=email]:focus {
   background-color: white;
   -webkit-box-shadow: 0px 0px 0px 3px #eb8a1a;
           box-shadow: 0px 0px 0px 3px #eb8a1a;
 }
 
-nav#nav div form.login-form input[type=password] {
+nav#nav div#formItems form.login-form input[type=password] {
   outline: none;
   width: 100%;
   margin: 5% 0%;
@@ -202,28 +211,28 @@ nav#nav div form.login-form input[type=password] {
   transition: 0.2s ease-in-out;
 }
 
-nav#nav div form.login-form input[type=password]:focus {
+nav#nav div#formItems form.login-form input[type=password]:focus {
   background-color: white;
   -webkit-box-shadow: 0px 0px 0px 3px #eb8a1a;
           box-shadow: 0px 0px 0px 3px #eb8a1a;
 }
 
-nav#nav div form.login-form a {
+nav#nav div#formItems form.login-form a {
   color: white;
   text-decoration: none;
   -webkit-transition: color 200ms ease-in;
   transition: color 200ms ease-in;
 }
 
-nav#nav div form.login-form a:hover {
+nav#nav div#formItems form.login-form a:hover {
   color: #eb8a1a;
 }
 
-nav#nav div form.login-form a span {
+nav#nav div#formItems form.login-form a span {
   font-size: 15px;
 }
 
-nav#nav div form.login-form div {
+nav#nav div#formItems form.login-form div {
   width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -234,7 +243,7 @@ nav#nav div form.login-form div {
       justify-content: space-around;
 }
 
-nav#nav div form.login-form div input[type=submit] {
+nav#nav div#formItems form.login-form div input[type=submit] {
   margin: 2%;
   outline: none;
   padding: 15px;
@@ -249,16 +258,16 @@ nav#nav div form.login-form div input[type=submit] {
   transition: border 300ms ease-in;
 }
 
-nav#nav div form.login-form div input[type=submit]:hover {
+nav#nav div#formItems form.login-form div input[type=submit]:hover {
   border: solid 3px #eb8a1a;
   cursor: pointer;
 }
 
-nav#nav div form.login-form div input[type=submit]:active {
+nav#nav div#formItems form.login-form div input[type=submit]:active {
   background-color: #005000;
 }
 
-nav#nav div form.login-form div button {
+nav#nav div#formItems form.login-form div button {
   margin: 2%;
   outline: none;
   padding: 15px;
@@ -273,13 +282,21 @@ nav#nav div form.login-form div button {
   transition: border 300ms ease-in;
 }
 
-nav#nav div form.login-form div button:hover {
+nav#nav div#formItems form.login-form div button:hover {
   border: solid 3px #eb8a1a;
   cursor: pointer;
 }
 
-nav#nav div form.login-form div button:active {
+nav#nav div#formItems form.login-form div button:active {
   background-color: #005000;
+}
+
+nav#nav div#forAlert {
+  position: absolute;
+  bottom: 0;
+  width: 600px;
+  min-width: 100%;
+  text-align: center;
 }
 
 body.clicked div#open svg rect.a {
@@ -1793,6 +1810,9 @@ body.clicked nav#nav {
   #homeMenuCont #TwoColMenu {
     padding: 10rem 0 2%;
   }
+  nav#nav ul a li {
+    padding: 4% 0;
+  }
 }
 
 @media screen and (max-height: 399px) {
@@ -1801,6 +1821,9 @@ body.clicked nav#nav {
   }
   #slide-container #slide-content h2 {
     font-size: 14px;
+  }
+  nav#nav ul a li {
+    padding: 2.5% 0;
   }
 }
 /*# sourceMappingURL=styles.css.map */

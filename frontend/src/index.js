@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
 
@@ -11,7 +11,10 @@ import Navbar from './components/navbar';
 import Verification from './routes/Verification';
 import ForgottenPassword from './routes/ForgottenPassword';
 import ValidatePassword from './routes/ValidatePassword';
+import AdminDashboard from './routes/AdminDashboard';
 
+import { loadUser } from './redux/actions/';
+import setAuthToken from './setAuthToken';
 import './styles.css';
 
 import { Provider } from 'react-redux';
@@ -25,13 +28,24 @@ const middleware = [thunk];
 
 const store = createStore(rootReducer, initialState, composeWithDevTools(applyMiddleware(...middleware)));
 
+if (localStorage.token) {
+  setAuthToken(localStorage.token);
+}
+
 const Index = () => {
+
+  useEffect(() => {
+    // dispatch loadUser action (dispatch is a method of the store)
+    store.dispatch(loadUser());
+  }, []);
+
   return (
     <Provider store={store}>
       <BrowserRouter>
         <Switch>
           <Route path="/menu/:id" component={MenuItem} />
           <Route path="/menu" component={Menu} />
+          <Route path="/admin" component={AdminDashboard} />
           <Route path="/contacts" component={Contact} />
           <Route path="/reservations" component={Reservations} />
           <Route path="/verification" component={Verification} />

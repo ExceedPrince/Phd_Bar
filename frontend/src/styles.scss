@@ -100,6 +100,7 @@ div#open {
 nav#nav {
   position: fixed;
   display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
   top: 0;
@@ -110,6 +111,11 @@ nav#nav {
   background-color: $red-color;
   color: white;
   transition: right 400ms;
+	overflow-y: scroll;
+
+	&::-webkit-scrollbar {
+		display: none;
+		}
 
 	ul {
 		width: 100%;
@@ -119,7 +125,7 @@ nav#nav {
 
 			li {
 				list-style: none;
-				padding: 8% 0;
+				padding: 6% 0;
 				text-align: center;
 				text-decoration: none;
 				font-size: 25px;
@@ -146,7 +152,8 @@ nav#nav {
 			}
 		}
 	}
-	div {
+
+	div#formItems {
 		width: 70%;
 
 	h1 {
@@ -237,6 +244,13 @@ nav#nav {
 			}
 		}
 	}
+}
+div#forAlert {
+	position: absolute;
+	bottom: 0;
+	width: 600px;
+	min-width: 100%;
+	text-align: center;
 }
 }
 
@@ -1734,6 +1748,19 @@ body.clicked {
 			}
 		}
 	}
+
+	nav#nav {
+
+		ul {
+
+			a {
+	
+				li {
+					padding: 4% 0;
+				}
+			}
+		}
+	}
 }
 
 @media screen and (max-height: 399px) {
@@ -1747,6 +1774,19 @@ body.clicked {
 
 			h2 {
 				font-size: 14px;
+			}
+		}
+	}
+
+	nav#nav {
+
+		ul {
+
+			a {
+	
+				li {
+					padding: 2.5% 0;
+				}
 			}
 		}
 	}

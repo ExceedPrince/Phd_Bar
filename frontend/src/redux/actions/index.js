@@ -1,11 +1,15 @@
 import axios from 'axios';
 import {
 	MENU_ITEMS, UNIQUE_ITEMS, RESERV_LIST, RESERV_POST, RESERV_ERROR, RESERV_OK, RESERV_FAIL, OPENINGS,
-	CLEAR_MENU_DATA, NEW_PASSWORD, NEW_PASSWORD_FAIL, VALIDATE_PASSWORD, VALIDATE_PASSWORD_FAIL
+	CLEAR_MENU_DATA, NEW_PASSWORD, NEW_PASSWORD_FAIL, VALIDATE_PASSWORD, VALIDATE_PASSWORD_FAIL,
+	LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT, USER_LOADED, AUTH_ERROR
 } from "../types";
 import { setAlert } from '../actions/alert';
+import setAuthToken from '../../setAuthToken';
 
 export const URL = "http://localhost:8080/api"
+
+//Basic GET requests
 
 export const getMenu = (item) => async dispatch => {
 
@@ -63,6 +67,8 @@ export const clearMenuData = () => async dispatch => {
 		payload: null
 	});
 };
+
+//reservation functions
 
 export const postData = (formData, resetData) => async dispatch => {
 	const config = {
@@ -132,6 +138,8 @@ export const reservValidate = (formData, history) => async dispatch => {
 	}
 };
 
+//Reset password
+
 export const askNewPassword = (formData) => async dispatch => {
 	const config = {
 		header: {
@@ -187,4 +195,61 @@ export const validateNewPassword = (formData, history) => async dispatch => {
 
 		dispatch(setAlert(err.response.data.errors[0].msg, 'danger'));
 	}
+};
+
+//Authentication
+
+export const loadUser = () => async dispatch => {
+	if (localStorage.token) {
+		setAuthToken(localStorage.token);
+	}
+
+	try {
+		setAuthToken(localStorage.token);
+		const res = await axios.get(`${URL}/admin/auth`);
+		dispatch({
+			type: USER_LOADED,
+			payload: res.data
+		});
+
+	} catch (err) {
+		dispatch({
+			type: AUTH_ERROR
+		})
+	}
+};
+
+export const login = (email, password, history, clickevent) => async dispatch => {
+	const config = {
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	};
+
+	const body = JSON.stringify({ email, password });
+
+	try {
+		const res = await axios.post(`${URL}/admin/login`, body, config);
+		dispatch({
+			type: LOGIN_SUCCESS,
+			payload: res.data
+		});
+
+		dispatch(loadUser());
+		await clickevent();
+
+		history.push('/admin');
+	} catch (err) {
+		const errors = err.response.data.errors;
+		if (errors) {
+			errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+		}
+		dispatch({
+			type: LOGIN_FAIL
+		});
+	}
+};
+
+export const logout = () => dispatch => {
+	dispatch({ type: LOGOUT })
 };
