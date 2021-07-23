@@ -47,6 +47,10 @@ router.post('/login', [
 		return res.status(400).json({ errors: [{ msg: 'Hibás azonosítás' }] });
 	}
 
+	if (!user.isAdmin) {
+		return res.status(400).json({ errors: [{ msg: 'Érvénytelen felhasználó' }] });
+	}
+
 	// comparing plain text password with password from db
 	const isMatch = await bcrypt.compare(password, user.password);
 

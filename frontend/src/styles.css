@@ -1613,6 +1613,50 @@ body.clicked nav#nav {
   background-color: #005000;
 }
 
+.adminBG {
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100vh;
+}
+
+.adminBG h1 {
+  text-align: center;
+  color: #eb8a1a;
+  font-family: "Merienda", "Amita", cursive;
+  font-size: 35px;
+  padding: 5% 0%;
+}
+
+.adminBG h2 {
+  font-size: 30px;
+  color: #eb8a1a;
+  font-family: "Merienda", "Amita", cursive;
+  text-align: center;
+}
+
+.adminBG ul {
+  text-align: center;
+  padding: 3% 0%;
+}
+
+.adminBG ul a {
+  text-decoration: none;
+}
+
+.adminBG ul a li {
+  list-style: none;
+  padding: 25px 0;
+  text-decoration: none;
+  font-size: 25px;
+  font-family: "Encode Sans", sans-serif;
+  color: white;
+}
+
+.adminBG ul a li:hover {
+  text-decoration: underline;
+}
+
 @media screen and (max-width: 749px) {
   #slide-container #slide-content img {
     max-width: 80%;
@@ -1628,6 +1672,9 @@ body.clicked nav#nav {
   }
   #form_container #form_div form .formflex .formflex-item input {
     margin-bottom: 5%;
+  }
+  .adminBG h1 {
+    padding: 80px 0%;
   }
 }
 

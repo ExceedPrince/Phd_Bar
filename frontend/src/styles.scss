@@ -1290,7 +1290,50 @@ body.clicked {
 	}
 }
 
-//New password second page
+//Admin pages
+.adminBG {
+	top:0;
+	left: 0;
+	min-width: 100%;
+	min-height: 100vh;
+
+	h1 {
+		text-align: center;
+		color: $yellow-color;
+		font-family: $title-font;
+		font-size: 35px;
+		padding: 5% 0%;
+	}
+
+	h2 {
+		font-size: 30px;
+		color: $yellow-color;
+		font-family: $title-font;
+		text-align: center;
+	}
+
+	ul {
+		text-align: center;
+		padding: 3% 0%;
+
+		a {
+			text-decoration: none;
+
+			li {
+				list-style: none;
+				padding: 25px 0;
+				text-decoration: none;
+				font-size: 25px;
+				font-family: $filler-font;
+				color: white;
+
+				&:hover {
+					text-decoration: underline;
+				}
+			}
+		}
+	}
+}
 
 
 //Responsive settings
@@ -1343,6 +1386,13 @@ body.clicked {
 					}
 				}
 			}
+		}
+	}
+
+	.adminBG {
+	
+		h1 {
+			padding: 80px 0%;
 		}
 	}
 }
