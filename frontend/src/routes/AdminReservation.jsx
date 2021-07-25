@@ -13,8 +13,7 @@ const AdminReservation = ({ admin, getAdminReservations }) => {
 		console.log(admin.openings)
 	}
 
-	//GET request egy új /api/admin/reservations endpointról (emailek is rendesen láthatók)
-	//legyen idő szerint csökkenő és oldalként 20 látható
+	//oldalként 20 látható
 
 	//legyen egy input=text, mellette 2 radiobutton, hogy név vagy email alapján szűrjünk frontenden
 

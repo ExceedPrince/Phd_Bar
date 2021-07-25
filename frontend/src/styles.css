@@ -1620,6 +1620,13 @@ body.clicked nav#nav {
   min-height: 100vh;
 }
 
+.adminBG a img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 1.5% 0 0 2.5%;
+}
+
 .adminBG h1 {
   text-align: center;
   color: #eb8a1a;
@@ -1655,6 +1662,54 @@ body.clicked nav#nav {
 
 .adminBG ul a li:hover {
   text-decoration: underline;
+}
+
+.adminBG #admin-listed-openings {
+  width: 80%;
+  margin: auto;
+}
+
+.adminBG #admin-listed-openings .admin-listed-opening-item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 15px 0;
+  color: white;
+}
+
+.adminBG #admin-listed-openings .admin-listed-opening-item span {
+  width: 150px;
+  font-family: "Encode Sans", sans-serif;
+  margin: auto;
+  padding: 5px;
+}
+
+.adminBG #admin-listed-openings .admin-listed-opening-item span button {
+  outline: none;
+  padding: 5px;
+  font-family: "Encode Sans", sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+  border: solid 3px green;
+  border-radius: 5px;
+  background-color: green;
+  color: white;
+  -webkit-transition: border 300ms ease-in;
+  transition: border 300ms ease-in;
+}
+
+.adminBG #admin-listed-openings .admin-listed-opening-item span button:hover {
+  border: solid 3px #eb8a1a;
+  cursor: pointer;
+}
+
+.adminBG #admin-listed-openings .admin-listed-opening-item span button:active {
+  background-color: #005000;
 }
 
 @media screen and (max-width: 749px) {
