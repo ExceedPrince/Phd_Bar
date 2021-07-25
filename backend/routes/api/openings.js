@@ -7,7 +7,7 @@ const Opening = require('../../models/Opening');
 //GET - Get opening hours
 //Public
 router.get('/', async (req, res) => {
-	const openings = await Opening.find();
+	const openings = await Opening.find().sort({ _id: 1 });
 	res.json(openings);
 });
 

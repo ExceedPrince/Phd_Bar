@@ -11,13 +11,13 @@ const Drink = require('../../models/Drink');
 router.get('/:type', async (req, res) => {
 	switch (req.params.type) {
 		case 'hamburgers':
-			const hamburgers = await Hamburger.find();
+			const hamburgers = await Hamburger.find().sort({ price: 1 });
 			return res.json(hamburgers);
 		case 'pizzas':
-			const pizzas = await Pizza.find();
+			const pizzas = await Pizza.find().sort({ price: 1 });
 			return res.json(pizzas);
 		case 'drinks':
-			const drinks = await Drink.find();
+			const drinks = await Drink.find().sort({ price: 1 });
 			return res.json(drinks);
 		default:
 			return res.json(null);

@@ -1,15 +1,16 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, { useState, useEffect } from 'react';
+import { getMenu } from '../redux/actions';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-const AdminMenu = props => {
+const AdminMenu = ({ allData, getMenu }) => {
+	const [menu, setMenu] = useState("pizzas");
 
-	//GET request egy ??? endpointról 
-	//alapból pizzákkal indítunk, de lehet váltogatni a típusok között
-	//ez a váltogatás egy POST request a ??? endpointra, hogy mikor melyiket kérjük le
+	useEffect(() => {
+		getMenu(menu)
+	}, [getMenu, menu]);
 
-	//legyen egy input=text, hogy név vagy email alapján szűrjünk frontenden
-
-	//egyen egy gomb, ami visszaállítja az összes létező kínálatot
+	const onChange = (e) => setMenu(e.target.value);
 
 	//újat lehet felvenni egy örökösen látható üres formról legalul
 
@@ -19,14 +20,33 @@ const AdminMenu = props => {
 	//ott PUT request-el lehet módosítást küldeni
 
 	return (
-		<div>
-			AdminMenu
+		<div className="adminBG" style={{ background: `url("/img/slides/bg_01.png")` }}>
+			<h1>Menükínálat módosítása</h1>
+			<form id='admin-menu-radios'>
+				<input type="radio" name="menu" id="pizzas" value="pizzas" onChange={e => onChange(e)} checked={menu === "pizzas"} /> Pizzák
+				<input type="radio" name="menu" id="hamburgers" value="hamburgers" onChange={e => onChange(e)} checked={menu === "hamburgers"} /> Hamburgerek
+				<input type="radio" name="menu" id="drinks" value="drinks" onChange={e => onChange(e)} checked={menu === "drinks"} /> Italok
+			</form>
+			<div id="admin-listed-menus">
+				{allData.menus &&
+					allData.menus.map((item, index) => (
+						<div className="admin-listed-menu-item" style={{ color: "white" }} key={index}>
+							{JSON.stringify(item)}
+						</div>
+					))
+				}
+			</div>
 		</div>
 	)
-}
+};
 
 AdminMenu.propTypes = {
+	getMenu: PropTypes.func.isRequired,
+	allData: PropTypes.object.isRequired
+};
 
-}
+const mapStateToProps = state => ({
+	allData: state.allData
+});
 
-export default AdminMenu;
+export default connect(mapStateToProps, { getMenu })(AdminMenu);

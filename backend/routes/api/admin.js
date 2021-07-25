@@ -8,6 +8,7 @@ const bcrypt = require("bcryptjs");
 const { newPAssEmail } = require('../../utils/sendGridEmails');
 
 const User = require('../../models/User');
+const Reservation = require('../../models/Reservation');
 
 //Connect to SendGrid
 require('dotenv').config();
@@ -115,7 +116,7 @@ router.post('/newpass', [
 
 });
 
-//POST - POST /api/admin/newpass
+//POST - POST /api/admin/validatepass
 //POST - Post admin's email if it's correct
 //Public
 router.post('/validatepass', [
@@ -160,6 +161,14 @@ router.post('/validatepass', [
 	await user.save();
 
 	res.json('Módosítás sikeresen végrehajtva! Visszairányítás után lépjen be új jelszavával!');
+});
+
+//GET - GET /api/admin/openings
+//GET - Get reservations uncensored for admin
+//Public
+router.get('/reservations', async (req, res) => {
+	const reservations = await Reservation.find().sort({ date: -1 }).sort({ time: -1 });
+	res.json(reservations);
 });
 
 module.exports = router;
