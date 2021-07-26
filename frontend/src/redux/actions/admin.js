@@ -1,5 +1,9 @@
 import axios from 'axios';
-import { ADMIN_RESERV_LIST } from "../types";
+import {
+	ADMIN_RESERV_LIST, ADMIN_UNIQUE_OPEN, ADMIN_UNIQUE_OPEN_ERROR, OPENING_CHANGE_SUCCESS,
+	OPENING_CHANGE_ERROR
+} from "../types";
+import { setAlert } from '../actions/alert';
 
 export const URL = "http://localhost:8080/api"
 
@@ -13,4 +17,53 @@ export const getAdminReservations = () => async dispatch => {
 		type: ADMIN_RESERV_LIST,
 		payload: request.data
 	});
-}
+};
+
+export const adminGetUniqueOpening = (id) => async dispatch => {
+
+	try {
+		const request = await axios.get(`${URL}/admin/openings/${id}`)
+
+		dispatch({
+			type: ADMIN_UNIQUE_OPEN,
+			payload: request.data
+		});
+	} catch (err) {
+		const errors = err.response.data.errors;
+		if (errors) {
+			errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+		}
+		dispatch({
+			type: ADMIN_UNIQUE_OPEN_ERROR
+		});
+	}
+};
+
+export const adminChangeOpenings = (formData) => async dispatch => {
+
+	const config = {
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	};
+
+	try {
+		const res = await axios.put(`${URL}/admin/openings`, formData, config);
+		dispatch({
+			type: OPENING_CHANGE_SUCCESS,
+			payload: res.data
+		});
+
+		console.log('második: ', formData)
+
+		await dispatch(setAlert(res.data, 'success'));
+	} catch (err) {
+		const errors = err.response.data.errors;
+		if (errors) {
+			errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+		}
+		dispatch({
+			type: OPENING_CHANGE_ERROR
+		});
+	}
+};

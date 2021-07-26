@@ -9,6 +9,7 @@ const { newPAssEmail } = require('../../utils/sendGridEmails');
 
 const User = require('../../models/User');
 const Reservation = require('../../models/Reservation');
+const Opening = require('../../models/Opening');
 
 //Connect to SendGrid
 require('dotenv').config();
@@ -163,12 +164,87 @@ router.post('/validatepass', [
 	res.json('Módosítás sikeresen végrehajtva! Visszairányítás után lépjen be új jelszavával!');
 });
 
-//GET - GET /api/admin/openings
+//GET - GET /api/admin/reservations
 //GET - Get reservations uncensored for admin
 //Public
-router.get('/reservations', async (req, res) => {
+router.get('/reservations', auth, async (req, res) => {
 	const reservations = await Reservation.find().sort({ date: -1 }).sort({ time: -1 });
 	res.json(reservations);
+});
+
+//GET - GET /api/admin/openings/:id
+//GET - Get reservations uncensored for admin
+//Public
+router.get('/openings/:id', auth, async (req, res) => {
+	const open = await Opening.findOne({ _id: req.params.id });
+
+	if (!open) {
+		return res.status(400).json({ errors: [{ msg: 'Hibás azonosító' }] });
+	}
+
+	res.json(open);
+});
+
+//PUT - PUT /api/admin/openings/
+//PUT - Admin can change the opening hours
+//Public
+router.put('/openings', [
+	body('opening', '0 és 23 között adjon meg számot!').notEmpty().isFloat({ min: 0, max: 23 }),
+	body('closing', '0 és 23 között adjon meg számot!').notEmpty().isFloat({ min: 0, max: 23 }),
+	body('id', 'Nincs azonosító!').exists()
+], auth, async (req, res) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(400).json({ errors: errors.array() });
+	}
+
+	const { opening, closing, id } = req.body;
+
+	try {
+		let chosen = await Opening.findOne({ _id: id });
+
+		if (!chosen) {
+			return res.status(400).json({ errors: [{ msg: 'Hibás azonosító' }] });
+		};
+
+		if ((opening === closing) && (opening === 0 && closing === 0)) {
+			console.log('passed')
+		}
+		else if ((opening >= closing) && (opening !== 0 && closing !== 0)) {
+			return res.status(400).json({ errors: [{ msg: 'Záróra nem lehet korábban, mint a nyitó óra!' }] });
+		} else if ((opening >= closing) && (opening === 0 || closing === 0)) {
+			return res.status(400).json({ errors: [{ msg: 'Záróra nem lehet korábban, mint a nyitó óra!' }] });
+		};
+
+		const openingFields = {};
+		openingFields.index = chosen.index;
+		openingFields.day = chosen.day;
+		if (opening && opening !== 0) {
+			openingFields.open = [opening, 0]
+		} else {
+			openingFields.open = null;
+		};
+		if (closing && closing !== 0) {
+			openingFields.close = [closing, 0]
+		} else {
+			openingFields.close = null;
+		};
+
+		if (chosen) {
+			// Update
+			chosen = await Opening.findOneAndUpdate(
+				{ _id: id },
+				{ $set: openingFields },
+				{ new: true }
+			);
+			res.json('Nyitvatartás sikeresen módosítva');
+		}
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).send('Server Error');
+	}
+
+
 });
 
 module.exports = router;

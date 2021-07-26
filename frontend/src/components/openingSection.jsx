@@ -72,7 +72,7 @@ const OpeningSection = ({ allData }) => {
 				setOpenClose(" múlva zárunk!");
 			} else if (hour >= close && nextOpen === null) {
 				setBg("#a31818");
-				setOpenClose("Hétfő reggel nyitunk!");
+				setOpenClose("Holnap zárva vagyunk!");
 			} else if (hour >= close && nextOpen !== null) {
 				startTime(hour + (23 - hour) + nextOpen);
 				setBg("#a31818");
@@ -92,14 +92,15 @@ const OpeningSection = ({ allData }) => {
 
 		if (allData.openings) {
 			thisDay = allData.openings.filter(day => day.index === todayIndex)[0];
-			if (todayIndex === 6) {
-				nextDay = allData.openings.filter(day => day.index === 0)[0];
+			nextDay = allData.openings.filter(day => day.index === todayIndex + 1)[0];
+
+			if (thisDay.open !== null && nextDay.open === null) {
 				openSection(thisDay.open[0], thisDay.close[0], nextDay.open);
-			} else if (todayIndex === 0) {
-				nextDay = allData.openings.filter(day => day.index === todayIndex + 1)[0];
+			} else if (thisDay.open === null && nextDay.open === null) {
+				openSection(thisDay.open, thisDay.close, nextDay.open);
+			} else if (thisDay.open === null && nextDay.open !== null) {
 				openSection(thisDay.open, thisDay.close, nextDay.open[0]);
 			} else {
-				nextDay = allData.openings.filter(day => day.index === todayIndex + 1)[0];
 				openSection(thisDay.open[0], thisDay.close[0], nextDay.open[0]);
 			}
 		}

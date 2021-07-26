@@ -1348,6 +1348,10 @@ body.clicked {
 		width: 80%;
 		margin: auto;
 
+		.alert {
+			text-align: center;
+		}
+
 		.admin-listed-opening-item {
 			display: flex;
 			flex-wrap: wrap;
@@ -1358,12 +1362,30 @@ body.clicked {
 			span {
 				width: 150px;
 				font-family: $filler-font;
-
 				margin: auto;
+  			padding: 5px;
 
-  padding: 5px;
+				input[type=number] {
+					width: 40px;
+					font-size: 16px;
+					outline: none;
+					text-align: center;
+					font-family: $filler-font;
+					border: solid 3px white;
+					border-radius: 5px;
+					background-color: white;
+					color:rgb(0, 0, 0);
+					cursor: pointer;
+					transition: all 200ms ease-in;
+	
+					&:hover {
+						border: solid 3px green;
+						background-color: $yellow-color;
+						color:rgb(255, 255, 255);
+					}
+				}
 
-				button {
+				input[type=submit] {
 					outline: none;
 					padding: 5px;
 					font-family: $filler-font;
@@ -1388,6 +1410,7 @@ body.clicked {
 
 		}
 	}
+
 }
 
 

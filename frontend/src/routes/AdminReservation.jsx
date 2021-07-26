@@ -9,8 +9,8 @@ const AdminReservation = ({ admin, getAdminReservations }) => {
 		getAdminReservations()
 	}, [getAdminReservations])
 
-	if (admin.openings) {
-		console.log(admin.openings)
+	if (admin.reservations) {
+		console.log(admin.reservations)
 	}
 
 	//oldalként 20 látható
@@ -57,8 +57,8 @@ const AdminReservation = ({ admin, getAdminReservations }) => {
 				</span> */}
 			</form>
 			<div id="admin-listed-reservations">
-				{admin.openings &&
-					admin.openings.map((item, index) => (
+				{admin.reservations &&
+					admin.reservations.map((item, index) => (
 						<div className="admin-listed-opening-item" style={{ color: "white" }} key={index}>
 							{JSON.stringify(item)}
 						</div>

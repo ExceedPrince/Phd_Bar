@@ -1,23 +1,56 @@
-import React from 'react';
-import { Link, useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { adminChangeOpenings } from '../redux/actions/admin';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-const AdminOpeningModify = props => {
+const AdminOpeningModify = ({ item, index, adminChangeOpenings }) => {
+	const [formData, setFormData] = useState({ open: '', close: '' })
 
-	const { id } = useParams();
+	useEffect(() => {
+		if (item && item.open && item.close) {
+			setFormData({ ...formData, open: item.open[0], close: item.close[0] })
+		} else {
+			setFormData({ ...formData, open: 0, close: 0 })
+		}
+	}, []);
 
-	console.log(id)
+	const onSubmit = async (e) => {
+		e.preventDefault();
+
+		let data = {
+			opening: Number(formData.open), closing: Number(formData.close), id: item._id
+		}
+
+		console.log('első: ', data)
+
+		await adminChangeOpenings(data);
+	};
+
 	return (
-		<div>
-			<Link to="/admin/opening"><img src="/img/slides/backArrow.png" alt="backArrow" /></Link>
-			választott nap: {id}
-		</div>
+		<>
+			<form className="admin-listed-opening-item" key={index} onSubmit={e => onSubmit(e)}>
+				<span><b>{item.day}</b></span>
+				<span>
+					Nyitás: <input type="number" name="open" min={0} max={23} value={formData.open} onChange={e => setFormData({ ...formData, open: e.target.value })} required />:00
+				</span>
+				<span>
+					Zárás: <input type="number" name="close" min={0} max={23} value={formData.close} onChange={e => setFormData({ ...formData, close: e.target.value })} required />:00
+				</span>
+				<span>
+					<input type="submit" value="Módosítás" />
+				</span>
+			</form>
+		</>
 	)
-}
+};
 
 AdminOpeningModify.propTypes = {
+	adminChangeOpenings: PropTypes.func.isRequired,
+	item: PropTypes.object.isRequired,
+	index: PropTypes.number.isRequired
+};
 
-}
+export default connect(null, { adminChangeOpenings })(AdminOpeningModify);
 
-export default AdminOpeningModify;
+
+

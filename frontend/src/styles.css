@@ -1669,6 +1669,10 @@ body.clicked nav#nav {
   margin: auto;
 }
 
+.adminBG #admin-listed-openings .alert {
+  text-align: center;
+}
+
 .adminBG #admin-listed-openings .admin-listed-opening-item {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1689,7 +1693,28 @@ body.clicked nav#nav {
   padding: 5px;
 }
 
-.adminBG #admin-listed-openings .admin-listed-opening-item span button {
+.adminBG #admin-listed-openings .admin-listed-opening-item span input[type=number] {
+  width: 40px;
+  font-size: 16px;
+  outline: none;
+  text-align: center;
+  font-family: "Encode Sans", sans-serif;
+  border: solid 3px white;
+  border-radius: 5px;
+  background-color: white;
+  color: black;
+  cursor: pointer;
+  -webkit-transition: all 200ms ease-in;
+  transition: all 200ms ease-in;
+}
+
+.adminBG #admin-listed-openings .admin-listed-opening-item span input[type=number]:hover {
+  border: solid 3px green;
+  background-color: #eb8a1a;
+  color: white;
+}
+
+.adminBG #admin-listed-openings .admin-listed-opening-item span input[type=submit] {
   outline: none;
   padding: 5px;
   font-family: "Encode Sans", sans-serif;
@@ -1703,12 +1728,12 @@ body.clicked nav#nav {
   transition: border 300ms ease-in;
 }
 
-.adminBG #admin-listed-openings .admin-listed-opening-item span button:hover {
+.adminBG #admin-listed-openings .admin-listed-opening-item span input[type=submit]:hover {
   border: solid 3px #eb8a1a;
   cursor: pointer;
 }
 
-.adminBG #admin-listed-openings .admin-listed-opening-item span button:active {
+.adminBG #admin-listed-openings .admin-listed-opening-item span input[type=submit]:active {
   background-color: #005000;
 }
 
