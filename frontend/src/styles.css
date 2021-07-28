@@ -1737,6 +1737,70 @@ body.clicked nav#nav {
   background-color: #005000;
 }
 
+.adminBG #admin-listed-reservations {
+  width: 80%;
+  margin: auto;
+}
+
+.adminBG #admin-listed-reservations .admin-listed-reservation-item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 15px 0;
+  color: white;
+}
+
+.adminBG #admin-listed-reservations .admin-listed-reservation-item span {
+  width: 120px;
+  font-family: "Encode Sans", sans-serif;
+  margin: auto;
+  padding: 5px;
+}
+
+.adminBG #admin-listed-reservations .admin-listed-reservation-item span button {
+  outline: none;
+  padding: 5px;
+  margin: 0 5px;
+  font-size: 25px;
+  border-radius: 5px;
+  color: white;
+  -webkit-transition: border 300ms ease-in;
+  transition: border 300ms ease-in;
+}
+
+.adminBG #admin-listed-reservations .admin-listed-reservation-item span button:first-child {
+  border: solid 3px #eb8a1a;
+  background-color: #eb8a1a;
+}
+
+.adminBG #admin-listed-reservations .admin-listed-reservation-item span button:first-child:hover {
+  border: solid 3px #a31818;
+  cursor: pointer;
+}
+
+.adminBG #admin-listed-reservations .admin-listed-reservation-item span button:first-child:active {
+  background-color: #d47800;
+}
+
+.adminBG #admin-listed-reservations .admin-listed-reservation-item span button:nth-child(2) {
+  border: solid 3px #a31818;
+  background-color: #a31818;
+}
+
+.adminBG #admin-listed-reservations .admin-listed-reservation-item span button:nth-child(2):hover {
+  border: solid 3px white;
+  cursor: pointer;
+}
+
+.adminBG #admin-listed-reservations .admin-listed-reservation-item span button:nth-child(2):active {
+  background-color: #970000;
+}
+
 @media screen and (max-width: 749px) {
   #slide-container #slide-content img {
     max-width: 80%;

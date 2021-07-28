@@ -172,6 +172,23 @@ router.get('/reservations', auth, async (req, res) => {
 	res.json(reservations);
 });
 
+//DELETE - DELETE /api/admin/reservations/:id
+//DELETE - Delete a reservation by id
+//Public
+router.delete('/reservations/:id', auth, async (req, res) => {
+	const reservation = await Reservation.findOne({ _id: req.params.id });
+
+	if (!reservation) {
+		return res.status(400).json({ errors: [{ msg: 'Hiba a törlés során!' }] });
+	}
+
+	await Reservation.findOneAndRemove({ _id: req.params.id });
+
+	const newReservations = await Reservation.find().sort({ date: -1 }).sort({ time: -1 });;
+
+	res.json(newReservations);
+});
+
 //GET - GET /api/admin/openings/:id
 //GET - Get reservations uncensored for admin
 //Public

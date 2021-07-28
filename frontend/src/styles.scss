@@ -1411,6 +1411,67 @@ body.clicked {
 		}
 	}
 
+	#admin-listed-reservations {
+		width: 80%;
+		margin: auto;
+
+		.admin-listed-reservation-item {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-between;
+			padding: 15px 0;
+			color: white;
+
+			span {
+				width: 120px;
+				font-family: $filler-font;
+				margin: auto;
+  			padding: 5px;
+
+			button {
+				outline: none;
+				padding: 5px;
+				margin: 0 5px;
+				font-size: 25px;
+				border-radius: 5px;
+				color:rgb(255, 255, 255);
+				transition: border 300ms ease-in;
+
+				&:first-child{
+					border: solid 3px $yellow-color;
+					background-color: $yellow-color;
+
+					&:hover {
+						border: solid 3px $red-color;
+						cursor: pointer;
+					}
+				
+					&:active {
+						background-color: rgb(212, 120, 0);
+					}
+				}
+
+				&:nth-child(2){
+					border: solid 3px $red-color;
+					background-color: $red-color;
+
+					&:hover {
+						border: solid 3px white;
+						cursor: pointer;
+					}
+				
+					&:active {
+						background-color: rgb(151, 0, 0);
+					}
+				}
+
+			}
+				
+			}
+
+		}
+	}
+
 }
 
 

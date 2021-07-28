@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { getAdminReservations } from '../redux/actions/admin';
+import { Link } from 'react-router-dom';
+import { getAdminReservations, deleteReservation } from '../redux/actions/admin';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-const AdminReservation = ({ admin, getAdminReservations }) => {
+const AdminReservation = ({ admin, getAdminReservations, deleteReservation }) => {
 
 	useEffect(() => {
 		getAdminReservations()
@@ -59,9 +60,24 @@ const AdminReservation = ({ admin, getAdminReservations }) => {
 			<div id="admin-listed-reservations">
 				{admin.reservations &&
 					admin.reservations.map((item, index) => (
-						<div className="admin-listed-opening-item" style={{ color: "white" }} key={index}>
-							{JSON.stringify(item)}
-						</div>
+						<>
+							<div className="admin-listed-reservation-item" key={index}>
+								<span>{item.date}</span>
+								<span>{item.time}</span>
+								<span>{item.name}</span>
+								<span>{item.email.split('@')[0]}<wbr />@{item.email.split('@')[1]}</span>
+								<span>{item.guests} (fő)</span>
+								<span>{item.isValiated ? "Validálva" : "Nincs validálva"}</span>
+								<span>Kód: {item.code}</span>
+								<span>
+									<Link to={`/admin/reservation/${item._id}`} >
+										<button><i class="fa fa-edit"></i></button>
+									</Link>
+									<button onClick={() => deleteReservation(item._id)} ><i class="fa fa-trash"></i></button>
+								</span>
+							</div>
+							<hr />
+						</>
 					))
 				}
 			</div>
@@ -71,6 +87,7 @@ const AdminReservation = ({ admin, getAdminReservations }) => {
 
 AdminReservation.propTypes = {
 	getAdminReservations: PropTypes.func.isRequired,
+	deleteReservation: PropTypes.func.isRequired,
 	admin: PropTypes.object.isRequired
 };
 
@@ -78,4 +95,4 @@ const mapStateToProps = state => ({
 	admin: state.admin
 })
 
-export default connect(mapStateToProps, { getAdminReservations })(AdminReservation);
+export default connect(mapStateToProps, { getAdminReservations, deleteReservation })(AdminReservation);
