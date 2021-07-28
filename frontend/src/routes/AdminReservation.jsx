@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { getAdminReservations, deleteReservation } from '../redux/actions/admin';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-const AdminReservation = ({ admin, getAdminReservations, deleteReservation }) => {
+const AdminReservation = ({ admin, isAuthenticated, getAdminReservations, deleteReservation }) => {
 
 	useEffect(() => {
 		getAdminReservations()
 	}, [getAdminReservations])
-
-	if (admin.reservations) {
-		console.log(admin.reservations)
-	}
 
 	//oldalként 20 látható
 
@@ -24,11 +20,11 @@ const AdminReservation = ({ admin, getAdminReservations, deleteReservation }) =>
 
 	//egyen egy gomb, ami visszaállítja az összes létező időpontot
 
-	//újat nem lehet felvenni, de meglévőt lehet törölni módosítani
-	//törlés lehetséges itt is egy törlés gombbal
-	//módosításhoz is itt van egy gomb, az átvisz egy egyedi id-s oldalra
 	//ott PUT request-el lehet módosítást küldeni
 
+	if (!isAuthenticated) {
+		return <Redirect to='/' />
+	}
 
 	return (
 		<div className="adminBG" style={{ background: `url("/img/slides/bg_01.png")` }}>
@@ -88,11 +84,13 @@ const AdminReservation = ({ admin, getAdminReservations, deleteReservation }) =>
 AdminReservation.propTypes = {
 	getAdminReservations: PropTypes.func.isRequired,
 	deleteReservation: PropTypes.func.isRequired,
-	admin: PropTypes.object.isRequired
+	admin: PropTypes.object.isRequired,
+	isAuthenticated: PropTypes.bool
 };
 
 const mapStateToProps = state => ({
-	admin: state.admin
+	admin: state.admin,
+	isAuthenticated: state.auth.isAuthenticated
 })
 
 export default connect(mapStateToProps, { getAdminReservations, deleteReservation })(AdminReservation);

@@ -172,6 +172,14 @@ router.get('/reservations', auth, async (req, res) => {
 	res.json(reservations);
 });
 
+//GET - GET /api/admin/reservations/:id
+//GET - Get reservations uncensored for admin
+//Public
+router.get('/reservations/:id', auth, async (req, res) => {
+	const reservations = await Reservation.findOne({ _id: req.params.id });
+	res.json(reservations);
+});
+
 //DELETE - DELETE /api/admin/reservations/:id
 //DELETE - Delete a reservation by id
 //Public

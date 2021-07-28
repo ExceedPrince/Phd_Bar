@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {
 	ADMIN_RESERV_LIST, ADMIN_UNIQUE_OPEN, ADMIN_UNIQUE_OPEN_ERROR, OPENING_CHANGE_SUCCESS,
-	OPENING_CHANGE_ERROR, DELETE_RESERVATION, DELETE_RESERVATION_ERROR
+	OPENING_CHANGE_ERROR, DELETE_RESERVATION, DELETE_RESERVATION_ERROR, ADMIN_RESERV_UNIQUE, CLEAR_RESERVATION_DATA
 } from "../types";
 import { setAlert } from '../actions/alert';
 
@@ -16,6 +16,24 @@ export const getAdminReservations = () => async dispatch => {
 	dispatch({
 		type: ADMIN_RESERV_LIST,
 		payload: request.data
+	});
+};
+
+export const getAdminUniqueReservation = (id) => async dispatch => {
+
+	const request = await axios.get(`${URL}/admin/reservations/${id}`)
+
+	dispatch({
+		type: ADMIN_RESERV_UNIQUE,
+		payload: request.data
+	});
+};
+
+export const clearReservationData = () => async dispatch => {
+
+	dispatch({
+		type: CLEAR_RESERVATION_DATA,
+		payload: null
 	});
 };
 

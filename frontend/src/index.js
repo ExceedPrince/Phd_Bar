@@ -15,6 +15,7 @@ import AdminDashboard from './routes/AdminDashboard';
 import AdminMenu from './routes/AdminMenu';
 import AdminOpening from './routes/AdminOpening';
 import AdminReservation from './routes/AdminReservation';
+import AdminReservationUnique from './routes/AdminReservationUnique';
 
 import { loadUser } from './redux/actions/';
 import setAuthToken from './setAuthToken';
@@ -46,6 +47,7 @@ const Index = () => {
     <Provider store={store}>
       <BrowserRouter>
         <Switch>
+          <Route path="/admin/reservation/:id" component={AdminReservationUnique} />
           <Route path="/menu/:id" component={MenuItem} />
           <Route path="/admin/menu" component={AdminMenu} />
           <Route path="/admin/reservation" component={AdminReservation} />
