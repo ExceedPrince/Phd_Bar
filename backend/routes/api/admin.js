@@ -18,7 +18,7 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 //GET - GET /api/admin/auth
 //GET - Get the loaded admin user
-//Public
+//private
 router.get('/auth', auth, async (req, res) => {
 	try {
 		const user = await User.findById(req.user.id).select('-password');
@@ -166,7 +166,7 @@ router.post('/validatepass', [
 
 //GET - GET /api/admin/reservations
 //GET - Get reservations uncensored for admin
-//Public
+//private
 router.get('/reservations', auth, async (req, res) => {
 	const reservations = await Reservation.find().sort({ date: -1 }).sort({ time: -1 });
 	res.json(reservations);
@@ -174,15 +174,104 @@ router.get('/reservations', auth, async (req, res) => {
 
 //GET - GET /api/admin/reservations/:id
 //GET - Get reservations uncensored for admin
-//Public
+//private
 router.get('/reservations/:id', auth, async (req, res) => {
 	const reservations = await Reservation.findOne({ _id: req.params.id });
 	res.json(reservations);
 });
 
+//PUT - PUT /api/admin/reservations/:id
+//PUT - Change the values of a certain reservation
+//private
+router.put('/reservations/', [
+	body('id', 'Nincs azonosító!').exists(),
+	body('name', 'A név legalább 5 karakterből kell, hogy álljon!').notEmpty().isLength({ min: 5 }),
+	body('email', 'Valós email formátumot adjon meg!').notEmpty().isEmail(),
+	body('guests', '1 és 10 között adjon meg számot!').notEmpty().isFloat({ min: 1, max: 10 }),
+], auth, async (req, res) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(400).json({ errors: errors.array() });
+	}
+
+	const { id, name, email, date, time, guests, isValiated, code } = req.body;
+
+	//check updated date
+
+	if (date.search(/[^0-9,-]/) !== -1) {
+		return res.status(400).json({ errors: [{ msg: 'Dátum formátum nem megfelelő! (YYYY-MM-DD)' }] });
+	}
+	if (new Date().getTime() > new Date(date).getTime()) {
+		return res.status(400).json({ errors: [{ msg: 'Elmúlt napra nem lehet módosítani!' }] });
+	}
+
+	const dayIndex = new Date(date).getDay();
+
+	const choosenDay = await Opening.findOne({ index: dayIndex });
+
+	if (dayIndex === 0) {
+		return res.status(400).json({ errors: [{ msg: 'Vasárnapra nem lehet módosítani' }] });
+	}
+	if (choosenDay.open === null || choosenDay.close === null) {
+		return res.status(400).json({ errors: [{ msg: 'Zárt napra nem lehet módosítani' }] });
+	}
+
+	//check updated time
+	if (time.search(/[^0-9,:]/) !== -1) {
+		return res.status(400).json({ errors: [{ msg: 'Időpont formátuma nem megfelelő! (HH:MM)' }] });
+	}
+	if (choosenDay.open[0] > +time.split(':')[0]) {
+		return res.status(400).json({ errors: [{ msg: 'Nyitás előttre nem lehet módosítani' }] });
+	}
+	if (+time.split(':')[0] >= choosenDay.close[0] - 1) {
+		return res.status(400).json({ errors: [{ msg: 'Záróra előtti 1 órán belül és utánra sem lehet módosítani' }] });
+	}
+
+	//check validation
+	if (isValiated.toLowerCase() !== "true" && isValiated.toLowerCase() !== "false") {
+		return res.status(400).json({ errors: [{ msg: 'A státusz csak "true" vagy "false" lehet!' }] });
+	}
+
+	try {
+		let chosen = await Reservation.findOne({ _id: id });
+
+		if (!chosen) {
+			return res.status(400).json({ errors: [{ msg: 'Hibás azonosító' }] });
+		};
+
+		const reservationFields = {};
+		reservationFields.name = name;
+		reservationFields.email = email;
+		reservationFields.date = date;
+		reservationFields.time = time;
+		reservationFields.guests = guests;
+		if (isValiated === "true") {
+			reservationFields.isValiated = true;
+		} else {
+			reservationFields.isValiated = false;
+		};
+		reservationFields.code = code;
+
+
+		if (chosen) {
+			// Update
+			chosen = await Reservation.findOneAndUpdate(
+				{ _id: id },
+				{ $set: reservationFields },
+				{ new: true, upsert: true }
+			);
+			/* console.log(reservationFields) */
+			res.json('Asztalfoglalás sikeresen módosítva');
+		}
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).send('Server Error');
+	}
+});
+
 //DELETE - DELETE /api/admin/reservations/:id
 //DELETE - Delete a reservation by id
-//Public
+//private
 router.delete('/reservations/:id', auth, async (req, res) => {
 	const reservation = await Reservation.findOne({ _id: req.params.id });
 
@@ -199,7 +288,7 @@ router.delete('/reservations/:id', auth, async (req, res) => {
 
 //GET - GET /api/admin/openings/:id
 //GET - Get reservations uncensored for admin
-//Public
+//private
 router.get('/openings/:id', auth, async (req, res) => {
 	const open = await Opening.findOne({ _id: req.params.id });
 
@@ -212,7 +301,7 @@ router.get('/openings/:id', auth, async (req, res) => {
 
 //PUT - PUT /api/admin/openings/
 //PUT - Admin can change the opening hours
-//Public
+//private
 router.put('/openings', [
 	body('opening', '0 és 23 között adjon meg számot!').notEmpty().isFloat({ min: 0, max: 23 }),
 	body('closing', '0 és 23 között adjon meg számot!').notEmpty().isFloat({ min: 0, max: 23 }),
@@ -268,8 +357,6 @@ router.put('/openings', [
 		console.error(err.message);
 		res.status(500).send('Server Error');
 	}
-
-
 });
 
 module.exports = router;

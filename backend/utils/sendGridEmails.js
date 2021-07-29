@@ -16,7 +16,12 @@ const validationEmail = (email, name, code, date) => {
 		<br>
 		<h2>Üdvözlettel, <br>PhD Bár</h2>
 		</div>
-		`
+		`,
+		mail_settings: {
+			sandbox_mode: {
+				enable: process.env.NODE_ENV === 'test'
+			}
+		},
 	}
 };
 
@@ -60,7 +65,12 @@ const successEmail = (email, name, date, time, guests) => {
 		<br>
 		<h2>Üdvözlettel, <br>PhD Bár</h2>
 		</div>
-		`
+		`,
+		mail_settings: {
+			sandbox_mode: {
+				enable: process.env.NODE_ENV === 'test'
+			}
+		},
 	}
 };
 
@@ -83,7 +93,12 @@ const newPAssEmail = (email, code, date, newPass) => {
 		<br>
 		<h2>Üdvözlettel, <br>PhD Bár</h2>
 		</div>
-		`
+		`,
+		mail_settings: {
+			sandbox_mode: {
+				enable: process.env.NODE_ENV === 'test'
+			}
+		}
 	}
 };
 

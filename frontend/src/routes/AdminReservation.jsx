@@ -28,31 +28,25 @@ const AdminReservation = ({ admin, isAuthenticated, getAdminReservations, delete
 
 	return (
 		<div className="adminBG" style={{ background: `url("/img/slides/bg_01.png")` }}>
+			<Link to="/admin"><img src="/img/slides/backArrow.png" alt="backArrow" /></Link>
 			<h1>Asztalfoglalások módosítása</h1>
-			<form id="searchRadios" className="menuFilterCont">
-				{/* 					<span id="radioButtons">
-						<label className="container">Igen
-							<input type="radio" name="item" id="itemFilter1" className="itemFilter" onChange={() => setGlutenFiltered(true)} />
-							<span className="checkmark"></span>
-						</label>
-						<label className="container">Nem
-							<input type="radio" name="item" id="itemFilter2" className="itemFilter" onChange={() => setGlutenFiltered(false)} />
-							<span className="checkmark"></span>
-						</label>
-					</span>
-
-					<span id="searchName" className="menuFilterCont">
-					<h3>Keress név alapján:</h3>
-					<input type="text" id="textFilter" onChange={(e) => editSearch(e)} />
+			<div id="adminSearchReservation" className="menuFilterCont">
+				<span id="radioButtons">
+					<h3>Dátum:</h3>
+					<input type="date" name="date" id="reservFilter" className="itemFilter" /* onChange={() => setGlutenFiltered(true)} */ />
+				</span>
+				<span id="searchName" className="menuFilterCont">
+					<h3>Foglaló neve:</h3>
+					<input type="text" id="nameFilter" /* onChange={(e) => editSearch(e)} */ />
 				</span>
 				<span id="searchNum" className="menuFilterCont">
-					<h3>Legyen olcsóbb, mint:</h3>
-					<input type="number" id="numberFilter" min={lowestPrice} max={highestPrice}
-						value={numberFiltered === "" || numberFiltered > highestPrice ? highestPrice : numberFiltered}
-						onChange={(e) => setNumberFiltered(e.target.value)}
-						onBlur={() => numberFiltered === "" || numberFiltered < lowestPrice ? setNumberFiltered(highestPrice) : numberFiltered} />
-				</span> */}
-			</form>
+					<h3>Foglaló email címe:</h3>
+					<input type="text" id="emailFilter" />
+				</span>
+			</div>
+			<div id="adminSearchReservationReset">
+				<button>Szűrők törlése</button>
+			</div>
 			<div id="admin-listed-reservations">
 				{admin.reservations &&
 					admin.reservations.map((item, index) => (

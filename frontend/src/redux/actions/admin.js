@@ -1,7 +1,8 @@
 import axios from 'axios';
 import {
 	ADMIN_RESERV_LIST, ADMIN_UNIQUE_OPEN, ADMIN_UNIQUE_OPEN_ERROR, OPENING_CHANGE_SUCCESS,
-	OPENING_CHANGE_ERROR, DELETE_RESERVATION, DELETE_RESERVATION_ERROR, ADMIN_RESERV_UNIQUE, CLEAR_RESERVATION_DATA
+	OPENING_CHANGE_ERROR, DELETE_RESERVATION, DELETE_RESERVATION_ERROR, ADMIN_RESERV_UNIQUE,
+	CLEAR_RESERVATION_DATA, RESERVATION_CHANGE_SUCCESS, RESERVATION_CHANGE_ERROR
 } from "../types";
 import { setAlert } from '../actions/alert';
 
@@ -35,6 +36,30 @@ export const clearReservationData = () => async dispatch => {
 		type: CLEAR_RESERVATION_DATA,
 		payload: null
 	});
+};
+
+export const upDateReservation = (formData) => async dispatch => {
+
+	const config = {
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	};
+
+	try {
+		const res = await axios.put(`${URL}/admin/reservations/`, formData, config);
+		dispatch({
+			type: RESERVATION_CHANGE_SUCCESS,
+			payload: res.data
+		});
+
+		await dispatch(setAlert(res.data, 'success'));
+	} catch (err) {
+		const errors = err.response.data.errors;
+		if (errors) {
+			errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+		}
+	}
 };
 
 export const deleteReservation = (id) => async dispatch => {
@@ -92,8 +117,6 @@ export const adminChangeOpenings = (formData) => async dispatch => {
 			type: OPENING_CHANGE_SUCCESS,
 			payload: res.data
 		});
-
-		console.log('második: ', formData)
 
 		await dispatch(setAlert(res.data, 'success'));
 	} catch (err) {
