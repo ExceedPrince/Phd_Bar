@@ -31,10 +31,10 @@ const AdminOpeningModify = ({ item, index, adminChangeOpenings }) => {
 			<form className="admin-listed-opening-item" key={index} onSubmit={e => onSubmit(e)}>
 				<span><b>{item.day}</b></span>
 				<span>
-					Nyitás: <input type="number" name="open" min={0} max={23} value={formData.open} onChange={e => setFormData({ ...formData, open: e.target.value })} required />:00
+					Nyitás: <input type="number" name="open" min={0} max={23} value={formData.open} onChange={e => setFormData({ ...formData, open: e.target.value })} required readOnly={item.index === 0} />:00
 				</span>
 				<span>
-					Zárás: <input type="number" name="close" min={0} max={23} value={formData.close} onChange={e => setFormData({ ...formData, close: e.target.value })} required />:00
+					Zárás: <input type="number" name="close" min={0} max={23} value={formData.close} onChange={e => setFormData({ ...formData, close: e.target.value })} required readOnly={item.index === 0} />:00
 				</span>
 				<span>
 					<input type="submit" value="Módosítás" />

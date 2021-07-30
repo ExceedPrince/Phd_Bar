@@ -180,6 +180,39 @@ router.get('/reservations/:id', auth, async (req, res) => {
 	res.json(reservations);
 });
 
+//GET - GET /api/admin/reservation-filter
+//GET - Get filtered reservation coming from frontend
+//private
+router.post('/reservation-filter', auth, async (req, res) => {
+	const { date, name, email } = req.body;
+
+	if (date !== '' && name === '' && email === '') {
+		const reservations = await Reservation.find({ date: date }).sort({ date: -1 }).sort({ time: -1 });
+		res.json(reservations);
+	} else if (date === '' && name !== '' && email === '') {
+		const reservations = await Reservation.find({ "name": { "$regex": name, "$options": "i" } }).sort({ date: -1 }).sort({ time: -1 });
+		res.json(reservations);
+	} else if (date === '' && name === '' && email !== '') {
+		const reservations = await Reservation.find({ "email": { "$regex": email, "$options": "i" } }).sort({ date: -1 }).sort({ time: -1 });
+		res.json(reservations);
+	} else if (date !== '' && name !== '' && email === '') {
+		const reservations = await Reservation.find({ date: date, "name": { "$regex": name, "$options": "i" } }).sort({ date: -1 }).sort({ time: -1 });
+		res.json(reservations);
+	} else if (date !== '' && name === '' && email !== '') {
+		const reservations = await Reservation.find({ date: date, "email": { "$regex": email, "$options": "i" } }).sort({ date: -1 }).sort({ time: -1 });
+		res.json(reservations);
+	} else if (date === '' && name !== '' && email !== '') {
+		const reservations = await Reservation.find({ "name": { "$regex": name, "$options": "i" }, "email": { "$regex": email, "$options": "i" } }).sort({ date: -1 }).sort({ time: -1 });
+		res.json(reservations);
+	} else if (date !== '' && name !== '' && email !== '') {
+		const reservations = await Reservation.find({ date: date, "name": { "$regex": name, "$options": "i" }, "email": { "$regex": email, "$options": "i" } }).sort({ date: -1 }).sort({ time: -1 });
+		res.json(reservations);
+	} else {
+		const reservations = await Reservation.find().sort({ date: -1 }).sort({ time: -1 });
+		res.json(reservations);
+	}
+});
+
 //PUT - PUT /api/admin/reservations/:id
 //PUT - Change the values of a certain reservation
 //private

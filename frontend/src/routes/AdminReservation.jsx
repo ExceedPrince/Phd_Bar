@@ -1,26 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { getAdminReservations, deleteReservation } from '../redux/actions/admin';
+import { getAdminReservations, deleteReservation, adminFilterReservation } from '../redux/actions/admin';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-const AdminReservation = ({ admin, isAuthenticated, getAdminReservations, deleteReservation }) => {
+const AdminReservation = ({ admin, isAuthenticated, getAdminReservations, deleteReservation, adminFilterReservation }) => {
+	const [formData, setFormData] = useState({ date: "", name: "", email: "" });
+
+	const { date, name, email } = formData;
 
 	useEffect(() => {
 		getAdminReservations()
 	}, [getAdminReservations])
 
-	//oldalként 20 látható
-
-	//legyen egy input=text, mellette 2 radiobutton, hogy név vagy email alapján szűrjünk frontenden
-
-	//legyen egy date input is, dátum alapján szűrni
-
-	//a szűrők figyeljék egymást
-
-	//egyen egy gomb, ami visszaállítja az összes létező időpontot
-
-	//ott PUT request-el lehet módosítást küldeni
+	useEffect(() => {
+		adminFilterReservation(formData)
+	}, [formData]);
 
 	if (!isAuthenticated) {
 		return <Redirect to='/' />
@@ -33,19 +28,19 @@ const AdminReservation = ({ admin, isAuthenticated, getAdminReservations, delete
 			<div id="adminSearchReservation" className="menuFilterCont">
 				<span id="radioButtons">
 					<h3>Dátum:</h3>
-					<input type="date" name="date" id="reservFilter" className="itemFilter" /* onChange={() => setGlutenFiltered(true)} */ />
+					<input type="date" name="date" value={date} onChange={e => setFormData({ ...formData, date: e.target.value })} />
 				</span>
 				<span id="searchName" className="menuFilterCont">
 					<h3>Foglaló neve:</h3>
-					<input type="text" id="nameFilter" /* onChange={(e) => editSearch(e)} */ />
+					<input type="text" name="name" value={name} onChange={e => setFormData({ ...formData, name: e.target.value })} />
 				</span>
 				<span id="searchNum" className="menuFilterCont">
 					<h3>Foglaló email címe:</h3>
-					<input type="text" id="emailFilter" />
+					<input type="text" name="email" value={email} onChange={e => setFormData({ ...formData, email: e.target.value })} />
 				</span>
 			</div>
 			<div id="adminSearchReservationReset">
-				<button>Szűrők törlése</button>
+				<button onClick={() => setFormData({ date: "", name: "", email: "" })}>Szűrők törlése</button>
 			</div>
 			<div id="admin-listed-reservations">
 				{admin.reservations &&
@@ -78,6 +73,7 @@ const AdminReservation = ({ admin, isAuthenticated, getAdminReservations, delete
 AdminReservation.propTypes = {
 	getAdminReservations: PropTypes.func.isRequired,
 	deleteReservation: PropTypes.func.isRequired,
+	adminFilterReservation: PropTypes.func.isRequired,
 	admin: PropTypes.object.isRequired,
 	isAuthenticated: PropTypes.bool
 };
@@ -87,4 +83,4 @@ const mapStateToProps = state => ({
 	isAuthenticated: state.auth.isAuthenticated
 })
 
-export default connect(mapStateToProps, { getAdminReservations, deleteReservation })(AdminReservation);
+export default connect(mapStateToProps, { getAdminReservations, deleteReservation, adminFilterReservation })(AdminReservation);

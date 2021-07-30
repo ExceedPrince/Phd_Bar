@@ -2,7 +2,7 @@ import axios from 'axios';
 import {
 	ADMIN_RESERV_LIST, ADMIN_UNIQUE_OPEN, ADMIN_UNIQUE_OPEN_ERROR, OPENING_CHANGE_SUCCESS,
 	OPENING_CHANGE_ERROR, DELETE_RESERVATION, DELETE_RESERVATION_ERROR, ADMIN_RESERV_UNIQUE,
-	CLEAR_RESERVATION_DATA, RESERVATION_CHANGE_SUCCESS, RESERVATION_CHANGE_ERROR
+	CLEAR_RESERVATION_DATA, RESERVATION_CHANGE_SUCCESS, RESERVATION_CHANGE_ERROR, ADMIN_FILTER_RESERVATION
 } from "../types";
 import { setAlert } from '../actions/alert';
 
@@ -17,6 +17,22 @@ export const getAdminReservations = () => async dispatch => {
 	dispatch({
 		type: ADMIN_RESERV_LIST,
 		payload: request.data
+	});
+};
+
+export const adminFilterReservation = (formData) => async dispatch => {
+
+	const config = {
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	};
+
+	const res = await axios.post(`${URL}/admin/reservation-filter`, formData, config);
+
+	dispatch({
+		type: ADMIN_FILTER_RESERVATION,
+		payload: res.data
 	});
 };
 
@@ -59,6 +75,9 @@ export const upDateReservation = (formData) => async dispatch => {
 		if (errors) {
 			errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
 		}
+		dispatch({
+			type: RESERVATION_CHANGE_ERROR
+		});
 	}
 };
 

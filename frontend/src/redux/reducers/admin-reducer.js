@@ -1,7 +1,8 @@
 import {
 	ADMIN_RESERV_LIST, ADMIN_UNIQUE_OPEN, ADMIN_UNIQUE_OPEN_ERROR, OPENING_CHANGE_SUCCESS,
 	OPENING_CHANGE_ERROR, DELETE_RESERVATION, DELETE_RESERVATION_ERROR, ADMIN_RESERV_UNIQUE,
-	CLEAR_RESERVATION_DATA, RESERVATION_CHANGE_SUCCESS, RESERVATION_CHANGE_ERROR
+	CLEAR_RESERVATION_DATA, RESERVATION_CHANGE_SUCCESS, RESERVATION_CHANGE_ERROR,
+	ADMIN_FILTER_RESERVATION
 } from "../types";
 
 const initialState = {
@@ -12,6 +13,7 @@ export default function (state = initialState, action) {
 	switch (action.type) {
 		case ADMIN_RESERV_LIST:
 		case DELETE_RESERVATION:
+		case ADMIN_FILTER_RESERVATION:
 			return { ...state, reservations: action.payload, loading: false };
 		case ADMIN_RESERV_UNIQUE:
 			return { ...state, reservation: action.payload, loading: false };
