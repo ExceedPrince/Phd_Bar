@@ -1565,6 +1565,143 @@ body.clicked {
 			}
 	}
 
+	form#admin-menu-radios {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		padding-bottom: 35px;
+		font-family: $filler-font;
+		color: white;
+
+		.container {
+			position: relative;
+			margin-bottom: 12px;
+			cursor: pointer;
+			font-size: 16px;
+			user-select: none;
+	
+			input {
+				margin: 0 10px;
+				opacity: 0;
+				cursor: pointer;
+			}
+		}
+		
+		.checkmark {
+			position: absolute;
+			top: 5px;
+			right: 10px;
+			height: 15px;
+			width: 15px;
+			background-color: #eee;
+			border-radius: 50%;
+		}
+		
+		.container:hover input ~ .checkmark {
+			background-color: #ccc;
+		}
+		
+		.container input:checked ~ .checkmark {
+			background-color: #b61717;
+		}
+	}
+
+	#admin-menu-name-filter {
+		text-align: center;
+
+		h3 {
+			font-family: $filler-font;
+			color: white;
+			text-align: center;
+		}
+
+		input {
+			min-width: 200px;
+			
+			margin: 1% 0 2%;
+			padding: 0.5% 0.5%;
+			font-size: 20px;
+			outline: none;
+			text-align: center;
+			font-family: $filler-font;
+			font-weight: bolder;
+			border: solid 3px white;
+			border-radius: 5px;
+			background-color: white;
+			color:rgb(0, 0, 0);
+			cursor: pointer;
+			transition: all 200ms ease-in;
+
+			&:hover {
+				border: solid 3px green;
+				background-color: $yellow-color;
+				color:rgb(255, 255, 255);
+			}
+		}
+	}
+
+	#admin-listed-menus {
+		width: 80%;
+		margin: auto;
+
+		.admin-listed-menu-item {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-between;
+			padding: 15px 0;
+			color: white;
+
+			span {
+				width: 120px;
+				font-family: $filler-font;
+				margin: auto;
+  			padding: 5px;
+
+				i {
+					font-size: 25px;
+				}
+
+			button {
+				outline: none;
+				padding: 5px;
+				margin: 0 5px;
+				font-size: 25px;
+				border-radius: 5px;
+				color:rgb(255, 255, 255);
+				transition: border 300ms ease-in;
+
+				&:first-child{
+					border: solid 3px $yellow-color;
+					background-color: $yellow-color;
+
+					&:hover {
+						border: solid 3px $red-color;
+						cursor: pointer;
+					}
+				
+					&:active {
+						background-color: rgb(212, 120, 0);
+					}
+				}
+
+				&:nth-child(2){
+					border: solid 3px $red-color;
+					background-color: $red-color;
+
+					&:hover {
+						border: solid 3px white;
+						cursor: pointer;
+					}
+				
+					&:active {
+						background-color: rgb(151, 0, 0);
+					}
+				}
+			}
+		}
+		}
+	}
+
 }
 
 
@@ -1992,6 +2129,8 @@ body.clicked {
 			}
 		}
 	}
+
+
 }
 
 

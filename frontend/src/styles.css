@@ -1937,6 +1937,157 @@ body.clicked nav#nav {
   background-color: #005000;
 }
 
+.adminBG form#admin-menu-radios {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  padding-bottom: 35px;
+  font-family: "Encode Sans", sans-serif;
+  color: white;
+}
+
+.adminBG form#admin-menu-radios .container {
+  position: relative;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.adminBG form#admin-menu-radios .container input {
+  margin: 0 10px;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.adminBG form#admin-menu-radios .checkmark {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  height: 15px;
+  width: 15px;
+  background-color: #eee;
+  border-radius: 50%;
+}
+
+.adminBG form#admin-menu-radios .container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+.adminBG form#admin-menu-radios .container input:checked ~ .checkmark {
+  background-color: #b61717;
+}
+
+.adminBG #admin-menu-name-filter {
+  text-align: center;
+}
+
+.adminBG #admin-menu-name-filter h3 {
+  font-family: "Encode Sans", sans-serif;
+  color: white;
+  text-align: center;
+}
+
+.adminBG #admin-menu-name-filter input {
+  min-width: 200px;
+  margin: 1% 0 2%;
+  padding: 0.5% 0.5%;
+  font-size: 20px;
+  outline: none;
+  text-align: center;
+  font-family: "Encode Sans", sans-serif;
+  font-weight: bolder;
+  border: solid 3px white;
+  border-radius: 5px;
+  background-color: white;
+  color: black;
+  cursor: pointer;
+  -webkit-transition: all 200ms ease-in;
+  transition: all 200ms ease-in;
+}
+
+.adminBG #admin-menu-name-filter input:hover {
+  border: solid 3px green;
+  background-color: #eb8a1a;
+  color: white;
+}
+
+.adminBG #admin-listed-menus {
+  width: 80%;
+  margin: auto;
+}
+
+.adminBG #admin-listed-menus .admin-listed-menu-item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 15px 0;
+  color: white;
+}
+
+.adminBG #admin-listed-menus .admin-listed-menu-item span {
+  width: 120px;
+  font-family: "Encode Sans", sans-serif;
+  margin: auto;
+  padding: 5px;
+}
+
+.adminBG #admin-listed-menus .admin-listed-menu-item span i {
+  font-size: 25px;
+}
+
+.adminBG #admin-listed-menus .admin-listed-menu-item span button {
+  outline: none;
+  padding: 5px;
+  margin: 0 5px;
+  font-size: 25px;
+  border-radius: 5px;
+  color: white;
+  -webkit-transition: border 300ms ease-in;
+  transition: border 300ms ease-in;
+}
+
+.adminBG #admin-listed-menus .admin-listed-menu-item span button:first-child {
+  border: solid 3px #eb8a1a;
+  background-color: #eb8a1a;
+}
+
+.adminBG #admin-listed-menus .admin-listed-menu-item span button:first-child:hover {
+  border: solid 3px #a31818;
+  cursor: pointer;
+}
+
+.adminBG #admin-listed-menus .admin-listed-menu-item span button:first-child:active {
+  background-color: #d47800;
+}
+
+.adminBG #admin-listed-menus .admin-listed-menu-item span button:nth-child(2) {
+  border: solid 3px #a31818;
+  background-color: #a31818;
+}
+
+.adminBG #admin-listed-menus .admin-listed-menu-item span button:nth-child(2):hover {
+  border: solid 3px white;
+  cursor: pointer;
+}
+
+.adminBG #admin-listed-menus .admin-listed-menu-item span button:nth-child(2):active {
+  background-color: #970000;
+}
+
 @media screen and (max-width: 749px) {
   #slide-container #slide-content img {
     max-width: 80%;
