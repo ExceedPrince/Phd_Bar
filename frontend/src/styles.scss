@@ -1640,6 +1640,15 @@ body.clicked {
 		}
 	}
 
+	#adminNewMenuItem {
+		text-align: center;
+		
+		button {
+			margin: 2%;
+			@include buttons;
+		}
+	}
+
 	#admin-listed-menus {
 		width: 80%;
 		margin: auto;

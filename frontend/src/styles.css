@@ -2020,6 +2020,34 @@ body.clicked nav#nav {
   color: white;
 }
 
+.adminBG #adminNewMenuItem {
+  text-align: center;
+}
+
+.adminBG #adminNewMenuItem button {
+  margin: 2%;
+  outline: none;
+  padding: 15px;
+  font-family: "Encode Sans", sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+  border: solid 3px green;
+  border-radius: 5px;
+  background-color: green;
+  color: white;
+  -webkit-transition: border 300ms ease-in;
+  transition: border 300ms ease-in;
+}
+
+.adminBG #adminNewMenuItem button:hover {
+  border: solid 3px #eb8a1a;
+  cursor: pointer;
+}
+
+.adminBG #adminNewMenuItem button:active {
+  background-color: #005000;
+}
+
 .adminBG #admin-listed-menus {
   width: 80%;
   margin: auto;

@@ -10,6 +10,9 @@ const { newPAssEmail } = require('../../utils/sendGridEmails');
 const User = require('../../models/User');
 const Reservation = require('../../models/Reservation');
 const Opening = require('../../models/Opening');
+const Pizza = require('../../models/Pizza');
+const Hamburger = require('../../models/Hamburger');
+const Drink = require('../../models/Drink');
 
 //Connect to SendGrid
 require('dotenv').config();
@@ -162,6 +165,68 @@ router.post('/validatepass', [
 	await user.save();
 
 	res.json('Módosítás sikeresen végrehajtva! Visszairányítás után lépjen be új jelszavával!');
+});
+
+//POST - POST /api/admin/menu-filter
+//POST - Get filtered menu items
+//private
+router.post('/menu-filter', auth, async (req, res) => {
+	const { name, type } = req.body;
+
+	switch (type) {
+		case 'hamburgers':
+			const hamburgers = await Hamburger.find({ "name": { "$regex": name, "$options": "i" } }).sort({ price: 1 });
+			return res.json(hamburgers);
+		case 'pizzas':
+			const pizzas = await Pizza.find({ "name": { "$regex": name, "$options": "i" } }).sort({ price: 1 });
+			return res.json(pizzas);
+		case 'drinks':
+			const drinks = await Drink.find({ "name": { "$regex": name, "$options": "i" } }).sort({ price: 1 });
+			return res.json(drinks);
+		default:
+			return res.json(null);
+	}
+});
+
+//DELETE - DELETE /api/admin/reservations/:id
+//DELETE - Delete a reservation by id
+//private
+router.delete('/menu/:type/:id', auth, async (req, res) => {
+	switch (req.params.type) {
+		case 'hamburgers':
+			const hamburger = await Hamburger.findOne({ _id: req.params.id });
+
+			if (!hamburger) {
+				return res.status(400).json({ errors: [{ msg: 'Hiba a törlés során!' }] });
+			}
+			await Hamburger.findOneAndRemove({ _id: req.params.id });
+
+			const newHamburgers = await Hamburger.find().sort({ date: -1 }).sort({ time: -1 });;
+
+			return res.json(newHamburgers);
+		case 'pizzas':
+			const pizza = await Pizza.findOne({ _id: req.params.id });
+
+			if (!pizza) {
+				return res.status(400).json({ errors: [{ msg: 'Hiba a törlés során!' }] });
+			}
+			await Pizza.findOneAndRemove({ _id: req.params.id });
+
+			const newPizzas = await Pizza.find().sort({ date: -1 }).sort({ time: -1 });;
+
+			return res.json(newPizzas);
+		case 'drinks':
+			const drinks = await Drink.findOne({ _id: req.params.id });
+
+			if (!drinks) {
+				return res.status(400).json({ errors: [{ msg: 'Hiba a törlés során!' }] });
+			}
+			await Drink.findOneAndRemove({ _id: req.params.id });
+
+			const newDrinks = await Drink.find().sort({ date: -1 }).sort({ time: -1 });;
+
+			return res.json(newDrinks);
+	}
 });
 
 //GET - GET /api/admin/reservations
