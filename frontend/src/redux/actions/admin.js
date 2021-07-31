@@ -3,7 +3,7 @@ import {
 	MENU_ITEMS, ADMIN_RESERV_LIST, ADMIN_UNIQUE_OPEN, ADMIN_UNIQUE_OPEN_ERROR, OPENING_CHANGE_SUCCESS,
 	OPENING_CHANGE_ERROR, DELETE_RESERVATION, DELETE_RESERVATION_ERROR, ADMIN_RESERV_UNIQUE,
 	CLEAR_RESERVATION_DATA, RESERVATION_CHANGE_SUCCESS, RESERVATION_CHANGE_ERROR, ADMIN_FILTER_RESERVATION,
-	DELETE_MENUITEM, DELETE_MENUITEM_ERROR
+	DELETE_MENUITEM, DELETE_MENUITEM_ERROR, ADMIN_UNIQUE_MENU, CLEAR_MENUITEM_DATA
 } from "../types";
 import { setAlert } from '../actions/alert';
 
@@ -119,9 +119,23 @@ export const adminFilterMenu = (formData) => async dispatch => {
 	});
 };
 
-///getAdminUniqueMenuItem + endpoint
+export const getAdminUniqueMenuItem = (menu, id) => async dispatch => {
 
-///clearMenuItemData + endpoint
+	const request = await axios.get(`${URL}/admin/menu/${menu}/${id}`)
+
+	dispatch({
+		type: ADMIN_UNIQUE_MENU,
+		payload: request.data
+	});
+};
+
+export const clearMenuItemData = () => async dispatch => {
+
+	dispatch({
+		type: CLEAR_MENUITEM_DATA,
+		payload: null
+	});
+};
 
 //update
 export const upDateMenuItem = (formData) => async dispatch => {

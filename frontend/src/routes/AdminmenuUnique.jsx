@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Redirect, useParams } from 'react-router-dom';
-import { getAdminUniqueMenuItem, clearMenuItemData, upDateMenuItem } from '../redux/actions/admin';
+import { getAdminUniqueMenuItem, clearMenuItemData, /*upDateMenuItem */ } from '../redux/actions/admin';
 import Alert from '../components/Alert';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-const AdminmenuUnique = ({ location: { state: { menu } }, isAuthenticated, getAdminUniqueMenuItem,
-	clearMenuItemData, upDateMenuItem }) => {
+const AdminmenuUnique = ({ location: { state: { menu } }, admin, isAuthenticated, getAdminUniqueMenuItem,
+	clearMenuItemData, /* upDateMenuItem */ }) => {
 
 	const { id } = useParams();
 
@@ -14,7 +14,7 @@ const AdminmenuUnique = ({ location: { state: { menu } }, isAuthenticated, getAd
 		getAdminUniqueMenuItem(menu, id);
 
 		return () => {
-			clearMenuItemData()
+			clearMenuItemData();
 		}
 	}, [getAdminUniqueMenuItem, id, clearMenuItemData]);
 
@@ -46,23 +46,34 @@ const AdminmenuUnique = ({ location: { state: { menu } }, isAuthenticated, getAd
 		<div className="adminBG" style={{ background: `url("/img/slides/bg_01.png")` }}>
 			<Link to="/admin/menu"><img src="/img/slides/backArrow.png" alt="backArrow" /></Link>
 			<h1>Menükínálat módosítása</h1>
-			{/* <form id="adminReservationUniqueForm" onSubmit={e => onSubmit(e)}>
+			{admin.menu &&
+				<form id="adminReservationUniqueForm" /* onSubmit={e => onSubmit(e)} */>
 					<label htmlFor="name">Név:</label> <br />
-					<input type="text" name="name" defaultValue={admin.reservation.name} onChange={e => onChange(e)} placeholder={admin.reservation.name} /> <br />
-					<label htmlFor="email">Email:</label> <br />
-					<input type="email" name="email" defaultValue={admin.reservation.email} onChange={e => onChange(e)} placeholder={admin.reservation.email} /> <br />
-					<label htmlFor="date">Dátum:</label> <br />
-					<input type="text" name="date" defaultValue={admin.reservation.date} onChange={e => onChange(e)} placeholder={admin.reservation.date} /> <br />
-					<label htmlFor="time">Időpont:</label> <br />
-					<input type="text" name="time" defaultValue={admin.reservation.time} onChange={e => onChange(e)} placeholder={admin.reservation.time} /> <br />
-					<label htmlFor="guests">Vendégek száma:</label> <br />
-					<input type="number" name="guests" defaultValue={admin.reservation.guests} onChange={e => onChange(e)} placeholder={admin.reservation.guests} /> <br />
-					<label htmlFor="isValiated">Státusz:</label> <br />
-					<input type="text" name="isValiated" defaultValue={admin.reservation.isValiated.toString()} onChange={e => onChange(e)} placeholder={admin.reservation.isValiated.toString()} /> <br />
-					<label htmlFor="code">Kód:</label> <br />
-					<input type="text" name="code" defaultValue={admin.reservation.code} onChange={e => onChange(e)} placeholder={admin.reservation.code} /> <br />
+					<input type="text" name="name" defaultValue={admin.menu.name} /* onChange={e => onChange(e)} */ placeholder={admin.menu.name} /> <br />
+					<label htmlFor="price">Ár: {menu === "drinks" ? "(Ft/dl)" : "(Ft)"}</label> <br />
+					<input type="number" name="price" defaultValue={admin.menu.price} /* onChange={e => onChange(e)} */ placeholder={admin.menu.price} /> <br />
+					<label htmlFor="safe">{menu === "drinks" ? "Alkoholmentes:" : "Gluténmentes:"}</label> <br />
+					<input type="text" name="safe" defaultValue={admin.menu.safe.toString()} /* onChange={e => onChange(e)} */ placeholder={admin.menu.safe.toString()} /> <br />
+					{menu !== "drinks" && (
+						<>
+							<label htmlFor="ingedients">Összetevők:</label> <br />
+							<input type="text" name="ingedients" defaultValue={admin.menu.ingredients.join(", ")} /* onChange={e => onChange(e)} */ placeholder={admin.menu.ingredients} /> <br />
+						</>)}
+					{menu !== "drinks" && (
+						<>
+							<label htmlFor="ingedients">Allergének:</label> <br />
+							<input type="text" name="ingedients" defaultValue={admin.menu.allergens.join(", ")} /* onChange={e => onChange(e)} */ placeholder={admin.menu.allergens} /> <br />
+						</>)}
+					<label htmlFor="pic">Képfájl neve:</label> <br />
+					<input type="text" name="pic" defaultValue={admin.menu.pic} /* onChange={e => onChange(e)} */ placeholder={admin.menu.pic} /> <br />
+					<label htmlFor="file">Képfeltöltés: (csak .png)</label>
+					<div id="file-upload">
+						<input type="file" name="file" defaultValue={""} /* onChange={e => onChange(e)} */ placeholder={""} /> <br />
+						<img src="" alt="" />
+					</div>
 					<input type="submit" value="Adatok módosítása" />
-				</form> */}
+				</form>
+			}
 			<Alert />
 		</div>
 	)
@@ -71,7 +82,7 @@ const AdminmenuUnique = ({ location: { state: { menu } }, isAuthenticated, getAd
 AdminmenuUnique.propTypes = {
 	getAdminUniqueMenuItem: PropTypes.func.isRequired,
 	clearMenuItemData: PropTypes.func.isRequired,
-	upDateMenuItem: PropTypes.func.isRequired,
+	/* 		upDateMenuItem: PropTypes.func.isRequired, */
 	admin: PropTypes.object.isRequired,
 	isAuthenticated: PropTypes.bool
 };
@@ -81,4 +92,4 @@ const mapStateToProps = state => ({
 	isAuthenticated: state.auth.isAuthenticated
 })
 
-export default connect(mapStateToProps, { getAdminUniqueMenuItem, clearMenuItemData, upDateMenuItem })(AdminmenuUnique);
+export default connect(mapStateToProps, { getAdminUniqueMenuItem, clearMenuItemData,/* upDateMenuItem */ })(AdminmenuUnique);

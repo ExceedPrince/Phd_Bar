@@ -1642,10 +1642,65 @@ body.clicked {
 
 	#adminNewMenuItem {
 		text-align: center;
-		
+
 		button {
 			margin: 2%;
 			@include buttons;
+		}
+		form {
+			width: 60%;
+			min-width: 250px;
+			margin: auto;
+			padding: 1%;
+			border-radius: 5px;
+			background-color: #a31818;
+			border: 3px solid white;
+
+			.adminNewMenuPostContainer {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: space-around;
+				margin: 20px 0;
+
+				span {
+
+					label{
+						font-size: 25px;
+						font-weight: 700;
+						font-family: $title-font;
+						color: white;
+					}
+
+					input {
+						width: 250px;
+						min-width: 200px;
+						margin: 1% 0 2%;
+						padding: 1% 1%;
+						font-size: 20px;
+						outline: none;
+						text-align: center;
+						font-family: $filler-font;
+						font-weight: bolder;
+						border: solid 3px white;
+						border-radius: 5px;
+						background-color: white;
+						color:rgb(0, 0, 0);
+						cursor: pointer;
+						transition: all 200ms ease-in;
+
+						&:hover {
+							border: solid 3px green;
+							background-color: $yellow-color;
+							color:rgb(255, 255, 255);
+						}
+					}
+				}
+			}
+			
+			input[type=submit] {
+				margin: 2%;
+				@include buttons;
+			}
 		}
 	}
 

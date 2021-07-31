@@ -167,6 +167,26 @@ router.post('/validatepass', [
 	res.json('Módosítás sikeresen végrehajtva! Visszairányítás után lépjen be új jelszavával!');
 });
 
+//GET - GET /api/admin/menu/:type/:id
+//GET - Get unique menu item
+//private
+router.get('/menu/:type/:id', auth, async (req, res) => {
+
+	switch (req.params.type) {
+		case 'hamburgers':
+			const hamburgers = await Hamburger.findOne({ _id: req.params.id });
+			return res.json(hamburgers);
+		case 'pizzas':
+			const pizzas = await Pizza.findOne({ _id: req.params.id });
+			return res.json(pizzas);
+		case 'drinks':
+			const drinks = await Drink.findOne({ _id: req.params.id });
+			return res.json(drinks);
+		default:
+			return res.json(null);
+	}
+});
+
 //POST - POST /api/admin/menu-filter
 //POST - Get filtered menu items
 //private
@@ -238,7 +258,7 @@ router.get('/reservations', auth, async (req, res) => {
 });
 
 //GET - GET /api/admin/reservations/:id
-//GET - Get reservations uncensored for admin
+//GET - Get unique reservation
 //private
 router.get('/reservations/:id', auth, async (req, res) => {
 	const reservations = await Reservation.findOne({ _id: req.params.id });

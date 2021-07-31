@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 const AdminMenu = ({ allData, getMenu, clearMenuData, adminFilterMenu, isAuthenticated, deleteMenuItem }) => {
 	const [menu, setMenu] = useState("pizzas");
 	const [filtered, setFiltered] = useState("");
+	const [show, setShow] = useState(false);
 
 	useEffect(() => {
 		getMenu(menu);
@@ -55,7 +56,51 @@ const AdminMenu = ({ allData, getMenu, clearMenuData, adminFilterMenu, isAuthent
 				<input type="text" name="name" value={filtered} onChange={e => setFiltered(e.target.value)} />
 			</div>
 			<div id="adminNewMenuItem">
-				<button>új terméket veszek fel</button>
+				<button onClick={() => setShow(!show)}>{!show ? "új terméket veszek fel" : "inkább mégsem"}</button>
+				{show && (
+					<form id="">
+						<div className="adminNewMenuPostContainer">
+							<span>
+								<label htmlFor="name">Név:</label> <br />
+								<input type="text" name="name"  /* onChange={e => onChange(e)} */ /> <br />
+							</span>
+							<span>
+								<label htmlFor="price">Ár: {menu === "drinks" ? "(Ft/dl)" : "(Ft)"}</label> <br />
+								<input type="number" name="price"  /* onChange={e => onChange(e)} */ /> <br />
+							</span>
+						</div>
+						<div className="adminNewMenuPostContainer">
+							<span>
+								<label htmlFor="safe">{menu === "drinks" ? "Alkoholmentes:" : "Gluténmentes:"}</label> <br />
+								<input type="text" name="safe"  /* onChange={e => onChange(e)} */ /> <br />
+							</span>
+							{menu !== "drinks" && (
+								<span>
+									<label htmlFor="ingedients">Összetevők:</label> <br />
+									<input type="text" name="ingedients"  /* onChange={e => onChange(e)} */ /> <br />
+								</span>)}
+							{menu !== "drinks" && (
+								<span>
+									<label htmlFor="ingedients">Allergének:</label> <br />
+									<input type="text" name="ingedients"  /* onChange={e => onChange(e)} */ p /> <br />
+								</span>)}
+						</div>
+						<div className="adminNewMenuPostContainer">
+							<span>
+								<label htmlFor="pic">Képfájl neve:</label> <br />
+								<input type="text" name="pic"  /* onChange={e => onChange(e)} */ /> <br />
+							</span>
+							<span>
+								<label htmlFor="file">Képfeltöltés: (csak .png)</label>
+								<div id="file-upload">
+									<input type="file" name="file"  /* onChange={e => onChange(e)} */ /> <br />
+									<img src="" alt="" />
+								</div>
+							</span>
+						</div>
+						<input type="submit" value="Adatok módosítása" />
+					</form>
+				)}
 			</div>
 			<Alert />
 			<div id="admin-listed-menus">

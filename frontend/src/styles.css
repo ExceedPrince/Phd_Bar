@@ -2048,6 +2048,83 @@ body.clicked nav#nav {
   background-color: #005000;
 }
 
+.adminBG #adminNewMenuItem form {
+  width: 60%;
+  min-width: 250px;
+  margin: auto;
+  padding: 1%;
+  border-radius: 5px;
+  background-color: #a31818;
+  border: 3px solid white;
+}
+
+.adminBG #adminNewMenuItem form .adminNewMenuPostContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  margin: 20px 0;
+}
+
+.adminBG #adminNewMenuItem form .adminNewMenuPostContainer span label {
+  font-size: 25px;
+  font-weight: 700;
+  font-family: "Merienda", "Amita", cursive;
+  color: white;
+}
+
+.adminBG #adminNewMenuItem form .adminNewMenuPostContainer span input {
+  width: 250px;
+  min-width: 200px;
+  margin: 1% 0 2%;
+  padding: 1% 1%;
+  font-size: 20px;
+  outline: none;
+  text-align: center;
+  font-family: "Encode Sans", sans-serif;
+  font-weight: bolder;
+  border: solid 3px white;
+  border-radius: 5px;
+  background-color: white;
+  color: black;
+  cursor: pointer;
+  -webkit-transition: all 200ms ease-in;
+  transition: all 200ms ease-in;
+}
+
+.adminBG #adminNewMenuItem form .adminNewMenuPostContainer span input:hover {
+  border: solid 3px green;
+  background-color: #eb8a1a;
+  color: white;
+}
+
+.adminBG #adminNewMenuItem form input[type=submit] {
+  margin: 2%;
+  outline: none;
+  padding: 15px;
+  font-family: "Encode Sans", sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+  border: solid 3px green;
+  border-radius: 5px;
+  background-color: green;
+  color: white;
+  -webkit-transition: border 300ms ease-in;
+  transition: border 300ms ease-in;
+}
+
+.adminBG #adminNewMenuItem form input[type=submit]:hover {
+  border: solid 3px #eb8a1a;
+  cursor: pointer;
+}
+
+.adminBG #adminNewMenuItem form input[type=submit]:active {
+  background-color: #005000;
+}
+
 .adminBG #admin-listed-menus {
   width: 80%;
   margin: auto;
