@@ -1535,7 +1535,41 @@ body.clicked {
 				color: $yellow-color;
 			}
 
-			input {
+			input[type=file]{
+				color: white;
+				cursor: pointer;
+				margin: 10px;
+
+				&::-webkit-file-upload-button{
+					visibility: hidden;
+				}
+
+				&::before {
+					content: 'Kép feltöltése';
+					display: inline-block;
+					background: green;
+					border-radius: 5px;
+					border: 3px solid green;
+					margin-right: -115px;
+					padding: 10px 16px;
+					outline: none;
+					white-space: nowrap;
+					cursor: pointer;
+					font-weight: 700;
+					font-size: 10pt;
+					transition: 0.3s ease-in-out;
+				}
+
+				&:hover::before {
+					border-color: $yellow-color;
+				}
+
+				&:active::before {
+					background: rgb(0, 70, 0);
+				}
+			}
+
+			input:not([type=file]) {
 				width: 330px;
 				min-width: 200px;
 				margin: 1% 0 2%;
@@ -1557,6 +1591,11 @@ body.clicked {
 					background-color: $yellow-color;
 					color:rgb(255, 255, 255);
 				}
+			}
+
+			img{
+				width: 250px;
+				border: 3px solid white;
 			}
 
 			input[type=submit] {
@@ -1670,8 +1709,40 @@ body.clicked {
 						font-family: $title-font;
 						color: white;
 					}
+					input[type=file]{
+						color: white;
+						cursor: pointer;
 
-					input {
+						&::-webkit-file-upload-button{
+							visibility: hidden;
+						}
+
+						&::before {
+							content: 'Kép feltöltése';
+							display: inline-block;
+							background: green;
+							border-radius: 5px;
+							border: 3px solid green;
+							margin-right: -115px;
+							padding: 10px 16px;
+							outline: none;
+							white-space: nowrap;
+							cursor: pointer;
+							font-weight: 700;
+							font-size: 10pt;
+							transition: 0.3s ease-in-out;
+						}
+
+						&:hover::before {
+							border-color: $yellow-color;
+						}
+
+						&:active::before {
+							background: rgb(0, 70, 0);
+						}
+					}
+
+					input:not([type=file]) {
 						width: 250px;
 						min-width: 200px;
 						margin: 1% 0 2%;
@@ -1693,10 +1764,15 @@ body.clicked {
 							background-color: $yellow-color;
 							color:rgb(255, 255, 255);
 						}
+						
 					}
 				}
 			}
-			
+			img{
+				width: 250px;
+				border: 3px solid white;
+			}
+
 			input[type=submit] {
 				margin: 2%;
 				@include buttons;

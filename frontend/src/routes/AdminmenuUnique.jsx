@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 
 const AdminmenuUnique = ({ location: { state: { menu } }, admin, isAuthenticated, getAdminUniqueMenuItem,
 	clearMenuItemData, /* upDateMenuItem */ }) => {
+	const [imageSrc, setImageSrc] = useState('');
 
 	const { id } = useParams();
 
@@ -65,11 +66,11 @@ const AdminmenuUnique = ({ location: { state: { menu } }, admin, isAuthenticated
 							<input type="text" name="ingedients" defaultValue={admin.menu.allergens.join(", ")} /* onChange={e => onChange(e)} */ placeholder={admin.menu.allergens} /> <br />
 						</>)}
 					<label htmlFor="id">Azonosító:</label> <br />
-					<input type="number" name="id"  /* onChange={e => onChange(e)} */ /> <br />
-					<label htmlFor="file">Képfeltöltés: (csak .png)</label>
+					<input type="number" name="id" defaultValue={admin.menu.id} /* onChange={e => onChange(e)} */ /> <br />
+					<label htmlFor="file">Képfeltöltés: (csak .png, max. 500px széles)</label>
 					<div id="file-upload">
-						<input type="file" name="file" defaultValue={""} /* onChange={e => onChange(e)} */ placeholder={""} /> <br />
-						<img src="" alt="" />
+						<input type="file" name="file" onChange={e => setImageSrc(URL.createObjectURL(e.target.files[0]))} placeholder={""} /> <br />
+						<img src={imageSrc === '' ? `/img/${menu}/${admin.menu.pic}.png` : imageSrc} alt="" />
 					</div>
 					<input type="submit" value="Adatok módosítása" />
 				</form>

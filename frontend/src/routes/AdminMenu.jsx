@@ -11,6 +11,7 @@ const AdminMenu = ({ allData, getMenu, clearMenuData, adminFilterMenu, isAuthent
 	const [menu, setMenu] = useState("pizzas");
 	const [filtered, setFiltered] = useState("");
 	const [show, setShow] = useState(false);
+	const [imageSrc, setImageSrc] = useState('');
 	const [inputs, setInputs] = useState({ name: '', price: '', safe: '', ingredients: '', allergens: '', id: '', picture: '' });
 
 	const { name, price, safe, ingredients, allergens, id, picture } = inputs;
@@ -58,6 +59,7 @@ const AdminMenu = ({ allData, getMenu, clearMenuData, adminFilterMenu, isAuthent
 	if (!isAuthenticated) {
 		return <Redirect to='/' />
 	}
+
 
 	return (
 		<div className="adminBG" style={{ background: `url("/img/slides/bg_01.png")` }}>
@@ -117,12 +119,12 @@ const AdminMenu = ({ allData, getMenu, clearMenuData, adminFilterMenu, isAuthent
 								<input type="number" name="id" value={id} onChange={e => onChange(e)} /> <br />
 							</span>
 							<span>
-								<label htmlFor="file">Képfeltöltés: <br /> (csak .png, max. 500px széles)</label>
-								<div id="file-upload">
-									<input type="file" name="picture" onChange={e => setInputs({ ...inputs, picture: e.target.files[0] })} /> <br />
-									<img src="" alt="" />
-								</div>
+								<label htmlFor="file">Képfeltöltés: <br /> (csak .png, max. 500px széles)</label> <br />
+								<input type="file" name="picture" onChange={e => { setInputs({ ...inputs, picture: e.target.files[0] }); setImageSrc(URL.createObjectURL(e.target.files[0])) }} /> <br />
 							</span>
+						</div>
+						<div>
+							<img src={imageSrc} alt="" />
 						</div>
 						<input type="submit" value="Adatok módosítása" />
 					</form>
