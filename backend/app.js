@@ -2,13 +2,17 @@ const express = require('express');
 const app = express();
 require('dotenv').config();
 const cors = require('cors');
+const fileUpload = require('express-fileupload');
 const allowCors = require('./middleware/allowCors');
 const corsOptions = require('./utils/corsOptions');
 const notExists = require('./middleware/notExists');
+const uploadParameters = require('./utils/fileUpload');
 
 // Init Middleware
 app.use(express.json());
 app.use(allowCors);
+app.use(fileUpload(uploadParameters));
+app.use(express.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
 
 //GET - Basic route

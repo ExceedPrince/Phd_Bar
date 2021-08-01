@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { getMenu, clearMenuData } from '../redux/actions';
-import { adminFilterMenu, deleteMenuItem } from '../redux/actions/admin';
+import { adminFilterMenu, deleteMenuItem, postNewMenuItem } from '../redux/actions/admin';
 import Alert from '../components/Alert';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-const AdminMenu = ({ allData, getMenu, clearMenuData, adminFilterMenu, isAuthenticated, deleteMenuItem }) => {
+const AdminMenu = ({ allData, getMenu, clearMenuData, adminFilterMenu, isAuthenticated,
+	deleteMenuItem, postNewMenuItem }) => {
 	const [menu, setMenu] = useState("pizzas");
 	const [filtered, setFiltered] = useState("");
 	const [show, setShow] = useState(false);
+	const [inputs, setInputs] = useState({ name: '', price: '', safe: '', ingredients: '', allergens: '', id: '', picture: '' });
+
+	const { name, price, safe, ingredients, allergens, id, picture } = inputs;
 
 	useEffect(() => {
 		getMenu(menu);
@@ -22,11 +26,33 @@ const AdminMenu = ({ allData, getMenu, clearMenuData, adminFilterMenu, isAuthent
 	useEffect(() => {
 		let formData = { name: filtered, type: menu }
 		adminFilterMenu(formData)
-	}, [filtered, adminFilterMenu])
+	}, [filtered, adminFilterMenu]);
 
+	const onChange = (e) => setInputs({ ...inputs, [e.target.name]: e.target.value });
 
+	const onSubmit = async (e) => {
+		e.preventDefault();
 
-	//újat lehet felvenni egy örökösen látható üres formról legalul
+		const formData = new FormData();
+		formData.append('name', name);
+		formData.append('price', +price);
+		formData.append('safe', safe);
+		if (menu === "drinks") {
+			formData.append('ingredients', " ");
+			formData.append('allergens', " ");
+		} else {
+			formData.append('ingredients', ingredients);
+			formData.append('allergens', allergens);
+		}
+		formData.append('id', +id);
+		formData.append('picture', picture, picture.name);
+
+		console.log(picture)
+
+		await postNewMenuItem(menu, formData, setShow, setInputs);
+
+		return false;
+	};
 
 
 	if (!isAuthenticated) {
@@ -58,42 +84,42 @@ const AdminMenu = ({ allData, getMenu, clearMenuData, adminFilterMenu, isAuthent
 			<div id="adminNewMenuItem">
 				<button onClick={() => setShow(!show)}>{!show ? "új terméket veszek fel" : "inkább mégsem"}</button>
 				{show && (
-					<form id="">
+					<form onSubmit={e => onSubmit(e)}>
 						<div className="adminNewMenuPostContainer">
 							<span>
 								<label htmlFor="name">Név:</label> <br />
-								<input type="text" name="name"  /* onChange={e => onChange(e)} */ /> <br />
+								<input type="text" name="name" value={name} onChange={e => onChange(e)} /> <br />
 							</span>
 							<span>
 								<label htmlFor="price">Ár: {menu === "drinks" ? "(Ft/dl)" : "(Ft)"}</label> <br />
-								<input type="number" name="price"  /* onChange={e => onChange(e)} */ /> <br />
+								<input type="number" name="price" min={90} value={price} onChange={e => onChange(e)} /> <br />
 							</span>
 						</div>
 						<div className="adminNewMenuPostContainer">
 							<span>
 								<label htmlFor="safe">{menu === "drinks" ? "Alkoholmentes:" : "Gluténmentes:"}</label> <br />
-								<input type="text" name="safe"  /* onChange={e => onChange(e)} */ /> <br />
+								<input type="text" name="safe" value={safe} onChange={e => onChange(e)} placeholder="true / false" /> <br />
 							</span>
 							{menu !== "drinks" && (
 								<span>
 									<label htmlFor="ingedients">Összetevők:</label> <br />
-									<input type="text" name="ingedients"  /* onChange={e => onChange(e)} */ /> <br />
+									<input type="text" name="ingredients" value={ingredients} onChange={e => onChange(e)} placeholder="Pl.: hagyma, só, sajt..." /> <br />
 								</span>)}
 							{menu !== "drinks" && (
 								<span>
 									<label htmlFor="ingedients">Allergének:</label> <br />
-									<input type="text" name="ingedients"  /* onChange={e => onChange(e)} */ p /> <br />
+									<input type="text" name="allergens" value={allergens} onChange={e => onChange(e)} placeholder="Pl.: tej, liszt..." /> <br />
 								</span>)}
 						</div>
 						<div className="adminNewMenuPostContainer">
 							<span>
-								<label htmlFor="pic">Képfájl neve:</label> <br />
-								<input type="text" name="pic"  /* onChange={e => onChange(e)} */ /> <br />
+								<label htmlFor="id">Azonosító:</label> <br />
+								<input type="number" name="id" value={id} onChange={e => onChange(e)} /> <br />
 							</span>
 							<span>
-								<label htmlFor="file">Képfeltöltés: (csak .png)</label>
+								<label htmlFor="file">Képfeltöltés: <br /> (csak .png, max. 500px széles)</label>
 								<div id="file-upload">
-									<input type="file" name="file"  /* onChange={e => onChange(e)} */ /> <br />
+									<input type="file" name="picture" onChange={e => setInputs({ ...inputs, picture: e.target.files[0] })} /> <br />
 									<img src="" alt="" />
 								</div>
 							</span>
@@ -136,6 +162,7 @@ AdminMenu.propTypes = {
 	clearMenuData: PropTypes.func.isRequired,
 	adminFilterMenu: PropTypes.func.isRequired,
 	deleteMenuItem: PropTypes.func.isRequired,
+	postNewMenuItem: PropTypes.func.isRequired,
 	allData: PropTypes.object.isRequired,
 	isAuthenticated: PropTypes.bool
 };
@@ -145,4 +172,6 @@ const mapStateToProps = state => ({
 	isAuthenticated: state.auth.isAuthenticated
 });
 
-export default connect(mapStateToProps, { getMenu, clearMenuData, adminFilterMenu, deleteMenuItem })(AdminMenu);
+export default connect(mapStateToProps, {
+	getMenu, clearMenuData, adminFilterMenu, deleteMenuItem, postNewMenuItem
+})(AdminMenu);

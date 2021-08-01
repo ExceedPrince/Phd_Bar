@@ -21,8 +21,6 @@ const AdminOpeningModify = ({ item, index, adminChangeOpenings }) => {
 			opening: Number(formData.open), closing: Number(formData.close), id: item._id
 		}
 
-		console.log('első: ', data)
-
 		await adminChangeOpenings(data);
 	};
 

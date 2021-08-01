@@ -64,8 +64,8 @@ const AdminmenuUnique = ({ location: { state: { menu } }, admin, isAuthenticated
 							<label htmlFor="ingedients">Allergének:</label> <br />
 							<input type="text" name="ingedients" defaultValue={admin.menu.allergens.join(", ")} /* onChange={e => onChange(e)} */ placeholder={admin.menu.allergens} /> <br />
 						</>)}
-					<label htmlFor="pic">Képfájl neve:</label> <br />
-					<input type="text" name="pic" defaultValue={admin.menu.pic} /* onChange={e => onChange(e)} */ placeholder={admin.menu.pic} /> <br />
+					<label htmlFor="id">Azonosító:</label> <br />
+					<input type="number" name="id"  /* onChange={e => onChange(e)} */ /> <br />
 					<label htmlFor="file">Képfeltöltés: (csak .png)</label>
 					<div id="file-upload">
 						<input type="file" name="file" defaultValue={""} /* onChange={e => onChange(e)} */ placeholder={""} /> <br />

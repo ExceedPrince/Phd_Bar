@@ -208,6 +208,137 @@ router.post('/menu-filter', auth, async (req, res) => {
 	}
 });
 
+//POST - POST /api/admin/menu/:type/
+//POST - Post a new menu item
+//private
+router.post('/menu/:type', async (req, res) => {
+	let { name, price, safe, id, ingredients, allergens } = req.body;
+
+	//checking for errors
+	if (name.length < 5) return res.status(400).json({ errors: [{ msg: 'Legalább 5 karaktert írjon be!' }] });
+	if (+price < 90) return res.status(400).json({ errors: [{ msg: '90 Ft lehet a legolcsóbb ár!' }] });
+	if (safe === '') return res.status(400).json({ errors: [{ msg: '"Mentes" mező kitöltése kötelező!' }] });
+	if (id === '') return res.status(400).json({ errors: [{ msg: 'Azonosító megadása kötelező!' }] });
+	if (ingredients.length === 0) return res.status(400).json({ errors: [{ msg: 'Adjon meg összetevő(ke)t!' }] });
+	if (allergens.length === 0) return res.status(400).json({ errors: [{ msg: 'Adjon meg allergén(eke)t!' }] });
+	if (!req.files) return res.status(400).json({ errors: [{ msg: 'Kép feltöltése kötelező!' }] });
+
+	const { picture } = req.files;
+
+	if (picture.name.split('.')[1] !== "png") return res.status(400).json({ errors: [{ msg: 'Csak PNG kép tölthető fel!' }] });
+
+	switch (req.params.type) {
+		case 'hamburgers':
+			const hamburgers = await Hamburger.findOne({ $or: [{ 'name': name }, { 'id': id }] });
+			if (hamburgers) {
+				return res.status(400).json({ errors: [{ msg: 'Ez a termék már létezik a listán!' }] });
+			};
+
+			if (safe === "true") {
+				safe = true;
+			} else if (safe === "false") {
+				safe = false
+			} else {
+				return res.status(400).json({ errors: [{ msg: '"Mentes" mező értéke "true" vagy "false" lehet!' }] });
+			}
+
+			if (!picture) {
+				return res.status(400).json({ errors: [{ msg: 'Nincs feltöltött kép!' }] });
+			}
+
+			picture.mv("../frontend/public/img/hamburgers/" + picture.name);
+
+			const newHamburger = new Hamburger(
+				{
+					name,
+					price: +price,
+					safe,
+					id: +id,
+					ingredients: ingredients.split(", "),
+					allergens: allergens.split(","),
+					pic: picture.name.split('.')[0]
+				}
+			);
+
+			await newHamburger.save();
+
+			return res.send("Az új termék felkerült a listára!");
+
+		case 'pizzas':
+			const pizza = await Pizza.findOne({ $or: [{ 'name': name }, { 'id': id }] });
+			if (pizza) {
+				return res.status(400).json({ errors: [{ msg: 'Ez a termék már létezik a listán!' }] });
+			};
+
+			if (safe === "true") {
+				safe = true;
+			} else if (safe === "false") {
+				safe = false
+			} else {
+				return res.status(400).json({ errors: [{ msg: '"Mentes" mező értéke "true" vagy "false" lehet!' }] });
+			}
+
+			if (!picture) {
+				return res.status(400).json({ errors: [{ msg: 'Nincs feltöltött kép!' }] });
+			}
+
+			picture.mv("../frontend/public/img/pizzas/" + picture.name);
+
+			const newPizza = new Pizza(
+				{
+					name,
+					price: +price,
+					safe,
+					id: +id,
+					ingredients: ingredients.split(", "),
+					allergens: allergens.split(","),
+					pic: picture.name.split('.')[0]
+				}
+			);
+
+			await newPizza.save();
+
+			return res.send("Az új termék felkerült a listára!");
+		case 'drinks':
+			const drink = await Drink.findOne({ $or: [{ 'name': name }, { 'id': id }] });
+			if (drink) {
+				return res.status(400).json({ errors: [{ msg: 'Ez a termék már létezik a listán!' }] });
+			};
+
+			if (safe === "true") {
+				safe = true;
+			} else if (safe === "false") {
+				safe = false
+			} else {
+				return res.status(400).json({ errors: [{ msg: '"Mentes" mező értéke "true" vagy "false" lehet!' }] });
+			}
+
+			if (!picture) {
+				return res.status(400).json({ errors: [{ msg: 'Nincs feltöltött kép!' }] });
+			}
+
+			picture.mv("../frontend/public/img/drinks/" + picture.name);
+
+			const newDrink = new Drink(
+				{
+					name,
+					price: +price,
+					safe,
+					id: +id,
+					ingredients: null,
+					allergens: null,
+					pic: picture.name.split('.')[0]
+				}
+			);
+
+			await newDrink.save();
+
+			return res.send("Az új termék felkerült a listára!");
+		default:
+			return res.json(null);
+	}
+});
+
 //DELETE - DELETE /api/admin/reservations/:id
 //DELETE - Delete a reservation by id
 //private

@@ -3,7 +3,8 @@ import {
 	MENU_ITEMS, ADMIN_RESERV_LIST, ADMIN_UNIQUE_OPEN, ADMIN_UNIQUE_OPEN_ERROR, OPENING_CHANGE_SUCCESS,
 	OPENING_CHANGE_ERROR, DELETE_RESERVATION, DELETE_RESERVATION_ERROR, ADMIN_RESERV_UNIQUE,
 	CLEAR_RESERVATION_DATA, RESERVATION_CHANGE_SUCCESS, RESERVATION_CHANGE_ERROR, ADMIN_FILTER_RESERVATION,
-	DELETE_MENUITEM, DELETE_MENUITEM_ERROR, ADMIN_UNIQUE_MENU, CLEAR_MENUITEM_DATA
+	DELETE_MENUITEM, DELETE_MENUITEM_ERROR, ADMIN_UNIQUE_MENU, CLEAR_MENUITEM_DATA, NEW_MENUITEM_SUCCESS,
+	NEW_MENUITEM_ERROR
 } from "../types";
 import { setAlert } from '../actions/alert';
 
@@ -135,6 +136,30 @@ export const clearMenuItemData = () => async dispatch => {
 		type: CLEAR_MENUITEM_DATA,
 		payload: null
 	});
+};
+
+export const postNewMenuItem = (menu, formData, setShow, setInputs) => async dispatch => {
+
+	try {
+		const res = await axios.post(`${URL}/admin/menu/${menu}`, formData)
+
+		dispatch({
+			type: NEW_MENUITEM_SUCCESS,
+			payload: res.data
+		});
+
+		dispatch(setAlert(res.data, 'success'));
+		setShow(false);
+		setInputs({ name: '', price: '', safe: '', ingredients: '', allergens: '', id: '', picture: '' })
+	} catch (err) {
+		const errors = err.response.data.errors;
+		if (errors) {
+			errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+		}
+		dispatch({
+			type: NEW_MENUITEM_ERROR
+		});
+	}
 };
 
 //update
