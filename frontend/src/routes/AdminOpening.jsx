@@ -12,13 +12,6 @@ const AdminOpening = ({ isAuthenticated, allData, getOpenings }) => {
 		getOpenings()
 	}, [getOpenings]);
 
-	//PUT request egy új /api/admin/openings endpointra
-	//szigorúan csak egyeséve llehet módosítani a napokok
-
-	//vasárnap mindenképp maradjon tiltva
-
-	//ha közben másik nap is zárva lesz, akkor a kalkulátort is át kell kódolni
-
 	if (!isAuthenticated) {
 		return <Redirect to='/' />
 	}
@@ -31,10 +24,10 @@ const AdminOpening = ({ isAuthenticated, allData, getOpenings }) => {
 				<Alert />
 				{allData.openings &&
 					allData.openings.map((item, index) => (
-						<>
+						<div key={index}>
 							<AdminOpeningModify item={item} index={index} />
 							<hr />
-						</>
+						</div>
 					))
 				}
 			</div>

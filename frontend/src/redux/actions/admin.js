@@ -4,7 +4,7 @@ import {
 	OPENING_CHANGE_ERROR, DELETE_RESERVATION, DELETE_RESERVATION_ERROR, ADMIN_RESERV_UNIQUE,
 	CLEAR_RESERVATION_DATA, RESERVATION_CHANGE_SUCCESS, RESERVATION_CHANGE_ERROR, ADMIN_FILTER_RESERVATION,
 	DELETE_MENUITEM, DELETE_MENUITEM_ERROR, ADMIN_UNIQUE_MENU, CLEAR_MENUITEM_DATA, NEW_MENUITEM_SUCCESS,
-	NEW_MENUITEM_ERROR
+	NEW_MENUITEM_ERROR, MENU_CHANGE_SUCCESS, MENU_CHANGE_ERROR
 } from "../types";
 import { setAlert } from '../actions/alert';
 
@@ -162,32 +162,31 @@ export const postNewMenuItem = (menu, formData, setShow, setInputs) => async dis
 	}
 };
 
-//update
-export const upDateMenuItem = (formData) => async dispatch => {
+export const updateMenuItem = (menu, formData) => async dispatch => {
 
-	/* 	const config = {
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		};
-	
-		try {
-			const res = await axios.put(`${URL}/admin/openings`, formData, config);
-			dispatch({
-				type: OPENING_CHANGE_SUCCESS,
-				payload: res.data
-			});
-	
-			await dispatch(setAlert(res.data, 'success'));
-		} catch (err) {
-			const errors = err.response.data.errors;
-			if (errors) {
-				errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
-			}
-			dispatch({
-				type: OPENING_CHANGE_ERROR
-			});
-		} */
+	const config = {
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	};
+
+	try {
+		const res = await axios.put(`${URL}/admin/menu/${menu}`, formData, config);
+		dispatch({
+			type: MENU_CHANGE_SUCCESS,
+			payload: res.data
+		});
+
+		await dispatch(setAlert(res.data, 'success'));
+	} catch (err) {
+		const errors = err.response.data.errors;
+		if (errors) {
+			errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+		}
+		dispatch({
+			type: MENU_CHANGE_ERROR
+		});
+	}
 };
 
 export const deleteMenuItem = (type, id) => async dispatch => {

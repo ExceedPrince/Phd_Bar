@@ -45,7 +45,7 @@ const AdminReservation = ({ admin, isAuthenticated, getAdminReservations, delete
 			<div id="admin-listed-reservations">
 				{admin.reservations &&
 					admin.reservations.map((item, index) => (
-						<>
+						<div key={index}>
 							<div className="admin-listed-reservation-item" key={index}>
 								<span>{item.date}</span>
 								<span>{item.time}</span>
@@ -56,13 +56,13 @@ const AdminReservation = ({ admin, isAuthenticated, getAdminReservations, delete
 								<span>Kód: {item.code}</span>
 								<span>
 									<Link to={`/admin/reservation/${item._id}`} >
-										<button><i class="fa fa-edit"></i></button>
+										<button><i className="fa fa-edit"></i></button>
 									</Link>
-									<button onClick={() => deleteReservation(item._id)} ><i class="fa fa-trash"></i></button>
+									<button onClick={() => deleteReservation(item._id)} ><i className="fa fa-trash"></i></button>
 								</span>
 							</div>
 							<hr />
-						</>
+						</div>
 					))
 				}
 			</div>

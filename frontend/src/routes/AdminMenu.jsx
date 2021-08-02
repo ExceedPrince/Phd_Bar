@@ -84,7 +84,7 @@ const AdminMenu = ({ allData, getMenu, clearMenuData, adminFilterMenu, isAuthent
 				<input type="text" name="name" value={filtered} onChange={e => setFiltered(e.target.value)} />
 			</div>
 			<div id="adminNewMenuItem">
-				<button onClick={() => setShow(!show)}>{!show ? "új terméket veszek fel" : "inkább mégsem"}</button>
+				<button onClick={() => setShow(!show)}>{!show ? "Új terméket veszek fel" : "Inkább mégsem"}</button>
 				{show && (
 					<form onSubmit={e => onSubmit(e)}>
 						<div className="adminNewMenuPostContainer">
@@ -120,7 +120,7 @@ const AdminMenu = ({ allData, getMenu, clearMenuData, adminFilterMenu, isAuthent
 							</span>
 							<span>
 								<label htmlFor="file">Képfeltöltés: <br /> (csak .png, max. 500px széles)</label> <br />
-								<input type="file" name="picture" onChange={e => { setInputs({ ...inputs, picture: e.target.files[0] }); setImageSrc(URL.createObjectURL(e.target.files[0])) }} /> <br />
+								<input type="file" name="picture" accept="image/png" onChange={e => { setInputs({ ...inputs, picture: e.target.files[0] }); setImageSrc(URL.createObjectURL(e.target.files[0])) }} /> <br />
 							</span>
 						</div>
 						<div>

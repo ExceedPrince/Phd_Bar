@@ -51,14 +51,14 @@ const Navbar = ({ login, isAuthenticated, logout, history }) => {
 				<Fade right when={clicked} delay={200}>
 					{!showForm && (isAuthenticated === true || isAuthenticated === false) ? (
 						<ul>
-							<Link to="/#" exact ><li onClick={clickEvent}>Fő oldal</li></Link>
+							<Link to="/#" exact ><li onClick={clickEvent}>Főoldal</li></Link>
 							<Link to="/menu/#" exact ><li onClick={clickEvent}>Kínálataink</li></Link>
 							<Link to="/#form_container" exact ><li onClick={openForm}>Asztalfoglalás</li></Link>
 							<Link to="/reservations/#" exact ><li onClick={clickEvent}>Aktuális Foglalások</li></Link>
 							<Link to="/contacts/#" exact ><li onClick={clickEvent}>Elérhetőségeink</li></Link>
 							{isAuthenticated ? (
 								<>
-									<Link to="/admin/#" exact ><li onClick={clickEvent}>Admin felület</li></Link>
+									<Link to="/admin/#" exact ><li onClick={clickEvent}>Admin Felület</li></Link>
 									<Link to="/#" exact ><li onClick={() => { logout(); setShowForm(!showForm); setFormData({ ...formData, email: '', password: '' }) }}>
 										<i className="fa fa-sign-out"></i>{' '}Kijelentkezés
 									</li></Link>

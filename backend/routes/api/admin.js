@@ -1,4 +1,6 @@
 const express = require('express');
+const mongoose = require('mongoose');
+const fs = require('fs')
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const auth = require('../../middleware/auth');
@@ -334,6 +336,221 @@ router.post('/menu/:type', async (req, res) => {
 			await newDrink.save();
 
 			return res.send("Az új termék felkerült a listára!");
+		default:
+			return res.json(null);
+	}
+});
+
+
+//PUT - PUT /api/admin/menu/:type
+//PUT - Change the values of a certain menuitem
+//private
+router.put('/menu/:type', auth, async (req, res) => {
+	let { id, name, price, safe, ingredients, allergens, itemId } = req.body;
+
+	//checking for errors
+	if (name.length < 5) return res.status(400).json({ errors: [{ msg: 'Legalább 5 karaktert írjon be!' }] });
+	if (+price < 90) return res.status(400).json({ errors: [{ msg: '90 Ft lehet a legolcsóbb ár!' }] });
+	if (safe === '') return res.status(400).json({ errors: [{ msg: '"Mentes" mező kitöltése kötelező!' }] });
+	if (itemId === '') return res.status(400).json({ errors: [{ msg: 'Azonosító megadása kötelező!' }] });
+	if (ingredients.length === 0) return res.status(400).json({ errors: [{ msg: 'Adjon meg összetevő(ke)t!' }] });
+	if (allergens.length === 0) return res.status(400).json({ errors: [{ msg: 'Adjon meg allergén(eke)t!' }] });
+	if (req.files && req.files.picture.name.split('.')[1] !== "png") return res.status(400).json({ errors: [{ msg: 'Csak PNG kép tölthető fel!' }] });
+
+	switch (req.params.type) {
+		case 'hamburgers':
+			const hamburgers = await Hamburger.findOne({ $or: [{ 'name': name }, { '_id': mongoose.Types.ObjectId(id) }] });
+			if (!hamburgers) {
+				return res.status(400).json({ errors: [{ msg: 'Ilyen termék nem létezik a listán!' }] });
+			};
+
+			if (safe === "true") {
+				safe = true;
+			} else if (safe === "false") {
+				safe = false
+			} else {
+				return res.status(400).json({ errors: [{ msg: '"Mentes" mező értéke "true" vagy "false" lehet!' }] });
+			}
+
+			try {
+				let chosen = await Hamburger.findOne({ _id: mongoose.Types.ObjectId(id) });
+
+				if (!chosen) {
+					return res.status(400).json({ errors: [{ msg: 'Hibás azonosító' }] });
+				};
+
+				let menuFields = {};
+				menuFields.name = name;
+				menuFields.price = +price;
+				if (safe === "true") {
+					menuFields.safe = true;
+				} else {
+					menuFields.safe = false;
+				};
+				menuFields.id = +itemId;
+				menuFields.ingredients = ingredients.split(",");
+				menuFields.allergens = allergens.split(",");
+
+				if (req.files) {
+					let { picture } = req.files;
+
+					menuFields.pic = picture.name.split('.')[0];
+
+					try {
+						fs.unlinkSync(`../frontend/public/img/hamburgers/${chosen.pic}.png`)
+						//file removed
+					} catch (err) {
+						console.error(err)
+					}
+
+					picture.mv("../frontend/public/img/hamburgers/" + picture.name);
+				} else {
+					menuFields.pic = chosen.pic;
+				}
+
+				if (chosen) {
+					// Update
+					chosen = await Hamburger.findOneAndUpdate(
+						{ _id: mongoose.Types.ObjectId(id) },
+						{ $set: menuFields },
+						{ new: true, upsert: true }
+					);
+
+					return res.json('Termék sikeresen módosítva');
+				}
+			} catch (err) {
+				console.error(err.message);
+				return res.status(500).send('Server Error');
+			}
+
+		case 'pizzas':
+			const pizza = await Pizza.findOne({ $or: [{ 'name': name }, { '_id': mongoose.Types.ObjectId(id) }] });
+			if (!pizza) {
+				return res.status(400).json({ errors: [{ msg: 'Ilyen termék nem létezik a listán!' }] });
+			};
+
+			if (safe === "true") {
+				safe = true;
+			} else if (safe === "false") {
+				safe = false
+			} else {
+				return res.status(400).json({ errors: [{ msg: '"Mentes" mező értéke "true" vagy "false" lehet!' }] });
+			}
+
+			try {
+				let chosen = await Pizza.findOne({ _id: mongoose.Types.ObjectId(id) });
+
+				if (!chosen) {
+					return res.status(400).json({ errors: [{ msg: 'Hibás azonosító' }] });
+				};
+
+				let menuFields = {};
+				menuFields.name = name;
+				menuFields.price = +price;
+				if (safe === "true") {
+					menuFields.safe = true;
+				} else {
+					menuFields.safe = false;
+				};
+				menuFields.id = +itemId;
+				menuFields.ingredients = ingredients.split(",");
+				menuFields.allergens = allergens.split(",");
+
+				if (req.files) {
+					let { picture } = req.files;
+
+					menuFields.pic = picture.name.split('.')[0];
+
+					try {
+						fs.unlinkSync(`../frontend/public/img/pizzas/${chosen.pic}.png`)
+						//file removed
+					} catch (err) {
+						console.error(err)
+					}
+
+					picture.mv("../frontend/public/img/pizzas/" + picture.name);
+				} else {
+					menuFields.pic = chosen.pic;
+				}
+
+				if (chosen) {
+					// Update
+					chosen = await Pizza.findOneAndUpdate(
+						{ _id: mongoose.Types.ObjectId(id) },
+						{ $set: menuFields },
+						{ new: true, upsert: true }
+					);
+
+					return res.json('Termék sikeresen módosítva');
+				}
+			} catch (err) {
+				console.error(err.message);
+				return res.status(500).send('Server Error');
+			}
+		case 'drinks':
+			const drink = await Drink.findOne({ $or: [{ 'name': name }, { '_id': mongoose.Types.ObjectId(id) }] });
+			if (!drink) {
+				return res.status(400).json({ errors: [{ msg: 'Ilyen termék nem létezik a listán!' }] });
+			};
+
+			if (safe === "true") {
+				safe = true;
+			} else if (safe === "false") {
+				safe = false
+			} else {
+				return res.status(400).json({ errors: [{ msg: '"Mentes" mező értéke "true" vagy "false" lehet!' }] });
+			}
+
+			try {
+				let chosen = await Drink.findOne({ _id: mongoose.Types.ObjectId(id) });
+
+				if (!chosen) {
+					return res.status(400).json({ errors: [{ msg: 'Hibás azonosító' }] });
+				};
+
+				let menuFields = {};
+				menuFields.name = name;
+				menuFields.price = +price;
+				if (safe === "true") {
+					menuFields.safe = true;
+				} else {
+					menuFields.safe = false;
+				};
+				menuFields.id = +itemId;
+				menuFields.ingredients = null;
+				menuFields.allergens = null;
+
+				if (req.files) {
+					let { picture } = req.files;
+
+					menuFields.pic = picture.name.split('.')[0];
+
+					try {
+						fs.unlinkSync(`../frontend/public/img/drinks/${chosen.pic}.png`)
+						//file removed
+					} catch (err) {
+						console.error(err)
+					}
+
+					picture.mv("../frontend/public/img/drinks/" + picture.name);
+				} else {
+					menuFields.pic = chosen.pic;
+				}
+
+				if (chosen) {
+					// Update
+					chosen = await Drink.findOneAndUpdate(
+						{ _id: mongoose.Types.ObjectId(id) },
+						{ $set: menuFields },
+						{ new: true, upsert: true }
+					);
+
+					return res.json('Termék sikeresen módosítva');
+				}
+			} catch (err) {
+				console.error(err.message);
+				return res.status(500).send('Server Error');
+			}
 		default:
 			return res.json(null);
 	}

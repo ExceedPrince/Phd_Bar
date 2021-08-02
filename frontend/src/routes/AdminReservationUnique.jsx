@@ -36,7 +36,7 @@ const AdminReservationUnique = ({ match, admin, isAuthenticated, getAdminUniqueR
 			code: code || admin.reservation.code
 		}
 
-		upDateReservation(formData, admin.reservation._id);
+		upDateReservation(formData);
 
 	};
 
