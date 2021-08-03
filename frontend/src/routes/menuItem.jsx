@@ -297,7 +297,7 @@ const MenuItem = ({ allData, getMenu, clearMenuData, getMenuItem }) => {
 									{id === "pizzas" || id === "hamburgers" ? 'Gluténmentes' : 'Alkoholmentes'}
 								</span>
 									: null}
-								<img className={`cardImages ${id}`} src={`/img/${id}/${item.pic}.png`} alt={item.pic} /> <br />
+								<img className={`cardImages ${id}`} src={`data:image/gif;base64,${item.picURL}`} alt={item.pic} /> <br />
 								<span className="itemName">{item.name}</span><br />
 								<div className="itemNamePrice">
 									<span>{item.price}{id === "drinks" ? " Ft/dl" : " Ft"}</span>

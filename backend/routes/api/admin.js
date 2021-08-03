@@ -228,6 +228,7 @@ router.post('/menu/:type', async (req, res) => {
 	const { picture } = req.files;
 
 	if (picture.name.split('.')[1] !== "png") return res.status(400).json({ errors: [{ msg: 'Csak PNG kép tölthető fel!' }] });
+	if (picture.size > 1000000) return res.status(400).json({ errors: [{ msg: 'Fájl mérete nem lehet nagyobb 1 MB-nál!' }] });
 
 	switch (req.params.type) {
 		case 'hamburgers':
@@ -248,7 +249,7 @@ router.post('/menu/:type', async (req, res) => {
 				return res.status(400).json({ errors: [{ msg: 'Nincs feltöltött kép!' }] });
 			}
 
-			picture.mv("../frontend/public/img/hamburgers/" + picture.name);
+			picture.mv("./img/hamburgers/" + picture.name);
 
 			const newHamburger = new Hamburger(
 				{
@@ -258,7 +259,8 @@ router.post('/menu/:type', async (req, res) => {
 					id: +id,
 					ingredients: ingredients.split(", "),
 					allergens: allergens.split(","),
-					pic: picture.name.split('.')[0]
+					pic: picture.name.split('.')[0],
+					picURL: picture.data
 				}
 			);
 
@@ -284,7 +286,7 @@ router.post('/menu/:type', async (req, res) => {
 				return res.status(400).json({ errors: [{ msg: 'Nincs feltöltött kép!' }] });
 			}
 
-			picture.mv("../frontend/public/img/pizzas/" + picture.name);
+			picture.mv("./img/hamburgers/" + picture.name);
 
 			const newPizza = new Pizza(
 				{
@@ -294,7 +296,8 @@ router.post('/menu/:type', async (req, res) => {
 					id: +id,
 					ingredients: ingredients.split(", "),
 					allergens: allergens.split(","),
-					pic: picture.name.split('.')[0]
+					pic: picture.name.split('.')[0],
+					picURL: picture.data
 				}
 			);
 
@@ -319,7 +322,7 @@ router.post('/menu/:type', async (req, res) => {
 				return res.status(400).json({ errors: [{ msg: 'Nincs feltöltött kép!' }] });
 			}
 
-			picture.mv("../frontend/public/img/drinks/" + picture.name);
+			picture.mv("./img/drinks/" + picture.name);
 
 			const newDrink = new Drink(
 				{
@@ -329,7 +332,8 @@ router.post('/menu/:type', async (req, res) => {
 					id: +id,
 					ingredients: null,
 					allergens: null,
-					pic: picture.name.split('.')[0]
+					pic: picture.name.split('.')[0],
+					picURL: picture.data
 				}
 			);
 
@@ -394,16 +398,19 @@ router.put('/menu/:type', auth, async (req, res) => {
 				if (req.files) {
 					let { picture } = req.files;
 
+					if (picture.size > 1000000) return res.status(400).json({ errors: [{ msg: 'Fájl mérete nem lehet nagyobb 1 MB-nál!' }] });
+
 					menuFields.pic = picture.name.split('.')[0];
+					menuFields.picURL = picture.data;
 
 					try {
-						fs.unlinkSync(`../frontend/public/img/hamburgers/${chosen.pic}.png`)
+						fs.unlinkSync(`./img/hamburgers/${chosen.pic}.png`)
 						//file removed
 					} catch (err) {
 						console.error(err)
 					}
 
-					picture.mv("../frontend/public/img/hamburgers/" + picture.name);
+					picture.mv("./img/hamburgers/" + picture.name);
 				} else {
 					menuFields.pic = chosen.pic;
 				}
@@ -459,16 +466,19 @@ router.put('/menu/:type', auth, async (req, res) => {
 				if (req.files) {
 					let { picture } = req.files;
 
+					if (picture.size > 1000000) return res.status(400).json({ errors: [{ msg: 'Fájl mérete nem lehet nagyobb 1 MB-nál!' }] });
+
 					menuFields.pic = picture.name.split('.')[0];
+					menuFields.picURL = picture.data;
 
 					try {
-						fs.unlinkSync(`../frontend/public/img/pizzas/${chosen.pic}.png`)
+						fs.unlinkSync(`./img/pizzas/${chosen.pic}.png`)
 						//file removed
 					} catch (err) {
 						console.error(err)
 					}
 
-					picture.mv("../frontend/public/img/pizzas/" + picture.name);
+					picture.mv("./img/pizzas/" + picture.name);
 				} else {
 					menuFields.pic = chosen.pic;
 				}
@@ -523,16 +533,19 @@ router.put('/menu/:type', auth, async (req, res) => {
 				if (req.files) {
 					let { picture } = req.files;
 
+					if (picture.size > 1000000) return res.status(400).json({ errors: [{ msg: 'Fájl mérete nem lehet nagyobb 1 MB-nál!' }] });
+
 					menuFields.pic = picture.name.split('.')[0];
+					menuFields.picURL = picture.data;
 
 					try {
-						fs.unlinkSync(`../frontend/public/img/drinks/${chosen.pic}.png`)
+						fs.unlinkSync(`./img/drinks/${chosen.pic}.png`)
 						//file removed
 					} catch (err) {
 						console.error(err)
 					}
 
-					picture.mv("../frontend/public/img/drinks/" + picture.name);
+					picture.mv("./img/drinks/" + picture.name);
 				} else {
 					menuFields.pic = chosen.pic;
 				}
@@ -826,3 +839,5 @@ router.put('/openings', [
 });
 
 module.exports = router;
+
+/* .select('-password'); */

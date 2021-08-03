@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import Fade from 'react-reveal/Fade';
-import { getMenu } from '../redux/actions';
+import { getMenuNoImg } from '../redux/actions';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import MenuCards from '../components/menuCards';;
 
-const HomeMenu = ({ allData, getMenu }) => {
+const HomeMenu = ({ allData, getMenuNoImg }) => {
 	const [menu, setMenu] = useState("pizzas");
 
 	useEffect(() => {
-		getMenu(menu)
-	}, [getMenu, menu])
+		getMenuNoImg(menu)
+	}, [getMenuNoImg, menu])
 
 	const options = ["pizzas", "hamburgers", "drinks"]
 
@@ -64,7 +64,7 @@ const HomeMenu = ({ allData, getMenu }) => {
 };
 
 HomeMenu.propTypes = {
-	getMenu: PropTypes.func.isRequired,
+	getMenuNoImg: PropTypes.func.isRequired,
 	allData: PropTypes.object.isRequired
 };
 
@@ -72,4 +72,4 @@ const mapStateToProps = state => ({
 	allData: state.allData
 });
 
-export default connect(mapStateToProps, { getMenu })(HomeMenu);
+export default connect(mapStateToProps, { getMenuNoImg })(HomeMenu);

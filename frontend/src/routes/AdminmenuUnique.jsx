@@ -77,10 +77,10 @@ const AdminmenuUnique = ({ location: { state: { menu } }, admin, isAuthenticated
 						</>)}
 					<label htmlFor="itemId">Azonosító:</label> <br />
 					<input type="number" name="itemId" defaultValue={admin.menu.id} onChange={e => onChange(e)} placeholder={admin.menu.id} readOnly /> <br />
-					<label htmlFor="file">Képfeltöltés: (csak .png, max. 500px széles)</label>
+					<label htmlFor="file">Képfeltöltés: (csak .png, maximum 1 MB)</label>
 					<div id="file-upload">
 						<input type="file" name="file" accept="image/png" onChange={e => { setInputs({ ...inputs, picture: e.target.files[0] }); setImageSrc(URL.createObjectURL(e.target.files[0])) }} /> <br />
-						<img src={imageSrc === '' ? `/img/${menu}/${admin.menu.pic}.png` : imageSrc} alt="" />
+						<img src={imageSrc === '' ? `data:image/gif;base64,${admin.menu.picURL}` : imageSrc} alt="" />
 					</div>
 					<input type="submit" value="Adatok módosítása" />
 				</form>

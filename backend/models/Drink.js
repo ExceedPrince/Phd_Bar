@@ -9,6 +9,10 @@ const DrinkSchema = new mongoose.Schema({
 		required: true,
 		unique: true
 	},
+	picURL: {
+		type: Object,
+		required: true,
+	},
 	id: {
 		type: Number,
 		required: true
