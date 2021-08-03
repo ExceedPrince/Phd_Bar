@@ -7,13 +7,13 @@ import {
 import { setAlert } from '../actions/alert';
 import setAuthToken from '../../setAuthToken';
 
-export const URL = "http://localhost:8080/api"
+export const URL = process.env.REACT_APP_BE_URL;
 
 //Basic GET requests
 
 export const getMenu = (item) => async dispatch => {
 
-	const request = await axios.get(`${URL}/menu/${item}`)
+	const request = await axios.get(`${URL}/api/menu/${item}`)
 
 	dispatch({
 		type: MENU_ITEMS,
@@ -23,7 +23,7 @@ export const getMenu = (item) => async dispatch => {
 
 export const getMenuItem = (item, id) => async dispatch => {
 
-	const request = await axios.get(`${URL}/menu/${item}/${id}`)
+	const request = await axios.get(`${URL}/api/menu/${item}/${id}`)
 
 	dispatch({
 		type: UNIQUE_ITEMS,
@@ -33,7 +33,7 @@ export const getMenuItem = (item, id) => async dispatch => {
 
 export const getReservations = () => async dispatch => {
 
-	const request = await axios.get(`${URL}/reservations`)
+	const request = await axios.get(`${URL}/api/reservations`)
 
 	dispatch({
 		type: RESERV_LIST,
@@ -43,7 +43,7 @@ export const getReservations = () => async dispatch => {
 
 export const filterReservations = (date) => async dispatch => {
 
-	const request = await axios.get(`${URL}/reservations/${date}`)
+	const request = await axios.get(`${URL}/api/reservations/${date}`)
 
 	dispatch({
 		type: RESERV_LIST,
@@ -53,7 +53,7 @@ export const filterReservations = (date) => async dispatch => {
 
 export const getOpenings = () => async dispatch => {
 
-	const request = await axios.get(`${URL}/openings`);
+	const request = await axios.get(`${URL}/api/openings`);
 	dispatch({
 		type: OPENINGS,
 		payload: request.data
@@ -77,7 +77,7 @@ export const postData = (formData, resetData) => async dispatch => {
 		}
 	}
 	try {
-		const res = await axios.post(`${URL}/reservations/`, formData, config);
+		const res = await axios.post(`${URL}/api/reservations/`, formData, config);
 
 		dispatch({
 			type: RESERV_POST,
@@ -109,7 +109,7 @@ export const reservValidate = (formData, history) => async dispatch => {
 	}
 
 	try {
-		const res = await axios.post(`${URL}/reservations/validate/`, formData, config);
+		const res = await axios.post(`${URL}/api/reservations/validate/`, formData, config);
 
 		dispatch({
 			type: RESERV_OK,
@@ -148,7 +148,7 @@ export const askNewPassword = (formData) => async dispatch => {
 	}
 
 	try {
-		const res = await axios.post(`${URL}/admin/newpass/`, formData, config);
+		const res = await axios.post(`${URL}/api/admin/newpass/`, formData, config);
 
 		dispatch({
 			type: NEW_PASSWORD,
@@ -175,7 +175,7 @@ export const validateNewPassword = (formData, history) => async dispatch => {
 	}
 
 	try {
-		const res = await axios.post(`${URL}/admin/validatepass/`, formData, config);
+		const res = await axios.post(`${URL}/api/admin/validatepass/`, formData, config);
 
 		dispatch({
 			type: VALIDATE_PASSWORD,
@@ -206,7 +206,7 @@ export const loadUser = () => async dispatch => {
 
 	try {
 		setAuthToken(localStorage.token);
-		const res = await axios.get(`${URL}/admin/auth`);
+		const res = await axios.get(`${URL}/api/admin/auth`);
 		dispatch({
 			type: USER_LOADED,
 			payload: res.data
@@ -229,7 +229,7 @@ export const login = (email, password, history, clickevent) => async dispatch =>
 	const body = JSON.stringify({ email, password });
 
 	try {
-		const res = await axios.post(`${URL}/admin/login`, body, config);
+		const res = await axios.post(`${URL}/api/admin/login`, body, config);
 		dispatch({
 			type: LOGIN_SUCCESS,
 			payload: res.data

@@ -120,7 +120,7 @@ const AdminMenu = ({ allData, getMenu, clearMenuData, adminFilterMenu, isAuthent
 							</span>
 							<span>
 								<label htmlFor="file">Képfeltöltés: <br /> (csak .png, max. 500px széles)</label> <br />
-								<input type="file" name="picture" accept="image/png" onChange={e => { setInputs({ ...inputs, picture: e.target.files[0] }); setImageSrc(URL.createObjectURL(e.target.files[0])) }} /> <br />
+								<input type="file" name="picture" accept="image/png" onChange={e => { setInputs({ ...inputs, picture: e.target.files[0] }); setImageSrc(URL.createObjectURL(e.target.files[0])) }} required /> <br />
 							</span>
 						</div>
 						<div>

@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const fs = require('fs')
+const fs = require('fs');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const auth = require('../../middleware/auth');

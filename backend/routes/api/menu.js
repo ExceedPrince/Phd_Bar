@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-
+const fs = require('fs');
+const path = require('path');
 const Hamburger = require('../../models/Hamburger');
 const Pizza = require('../../models/Pizza');
 const Drink = require('../../models/Drink');

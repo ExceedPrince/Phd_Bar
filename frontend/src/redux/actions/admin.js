@@ -8,13 +8,13 @@ import {
 } from "../types";
 import { setAlert } from '../actions/alert';
 
-export const URL = "http://localhost:8080/api"
+export const URL = process.env.REACT_APP_BE_URL;
 
 //Basic GET requests
 
 export const getAdminReservations = () => async dispatch => {
 
-	const request = await axios.get(`${URL}/admin/reservations`)
+	const request = await axios.get(`${URL}/api/admin/reservations`)
 
 	dispatch({
 		type: ADMIN_RESERV_LIST,
@@ -30,7 +30,7 @@ export const adminFilterReservation = (formData) => async dispatch => {
 		}
 	};
 
-	const res = await axios.post(`${URL}/admin/reservation-filter`, formData, config);
+	const res = await axios.post(`${URL}/api/admin/reservation-filter`, formData, config);
 
 	dispatch({
 		type: ADMIN_FILTER_RESERVATION,
@@ -40,7 +40,7 @@ export const adminFilterReservation = (formData) => async dispatch => {
 
 export const getAdminUniqueReservation = (id) => async dispatch => {
 
-	const request = await axios.get(`${URL}/admin/reservations/${id}`)
+	const request = await axios.get(`${URL}/api/admin/reservations/${id}`)
 
 	dispatch({
 		type: ADMIN_RESERV_UNIQUE,
@@ -65,7 +65,7 @@ export const upDateReservation = (formData) => async dispatch => {
 	};
 
 	try {
-		const res = await axios.put(`${URL}/admin/reservations/`, formData, config);
+		const res = await axios.put(`${URL}/api/admin/reservations/`, formData, config);
 		dispatch({
 			type: RESERVATION_CHANGE_SUCCESS,
 			payload: res.data
@@ -86,7 +86,7 @@ export const upDateReservation = (formData) => async dispatch => {
 export const deleteReservation = (id) => async dispatch => {
 
 	try {
-		const res = await axios.delete(`${URL}/admin/reservations/${id}`);
+		const res = await axios.delete(`${URL}/api/admin/reservations/${id}`);
 
 		dispatch({
 			type: DELETE_RESERVATION,
@@ -112,7 +112,7 @@ export const adminFilterMenu = (formData) => async dispatch => {
 		}
 	};
 
-	const res = await axios.post(`${URL}/admin/menu-filter`, formData, config);
+	const res = await axios.post(`${URL}/api/admin/menu-filter`, formData, config);
 
 	dispatch({
 		type: MENU_ITEMS,
@@ -122,7 +122,7 @@ export const adminFilterMenu = (formData) => async dispatch => {
 
 export const getAdminUniqueMenuItem = (menu, id) => async dispatch => {
 
-	const request = await axios.get(`${URL}/admin/menu/${menu}/${id}`)
+	const request = await axios.get(`${URL}/api/admin/menu/${menu}/${id}`)
 
 	dispatch({
 		type: ADMIN_UNIQUE_MENU,
@@ -141,7 +141,7 @@ export const clearMenuItemData = () => async dispatch => {
 export const postNewMenuItem = (menu, formData, setShow, setInputs) => async dispatch => {
 
 	try {
-		const res = await axios.post(`${URL}/admin/menu/${menu}`, formData)
+		const res = await axios.post(`${URL}/api/admin/menu/${menu}`, formData)
 
 		dispatch({
 			type: NEW_MENUITEM_SUCCESS,
@@ -171,7 +171,7 @@ export const updateMenuItem = (menu, formData) => async dispatch => {
 	};
 
 	try {
-		const res = await axios.put(`${URL}/admin/menu/${menu}`, formData, config);
+		const res = await axios.put(`${URL}/api/admin/menu/${menu}`, formData, config);
 		dispatch({
 			type: MENU_CHANGE_SUCCESS,
 			payload: res.data
@@ -192,7 +192,7 @@ export const updateMenuItem = (menu, formData) => async dispatch => {
 export const deleteMenuItem = (type, id) => async dispatch => {
 
 	try {
-		const res = await axios.delete(`${URL}/admin/menu/${type}/${id}`);
+		const res = await axios.delete(`${URL}/api/admin/menu/${type}/${id}`);
 
 		dispatch({
 			type: DELETE_MENUITEM,
@@ -213,7 +213,7 @@ export const deleteMenuItem = (type, id) => async dispatch => {
 export const adminGetUniqueOpening = (id) => async dispatch => {
 
 	try {
-		const request = await axios.get(`${URL}/admin/openings/${id}`)
+		const request = await axios.get(`${URL}/api/admin/openings/${id}`)
 
 		dispatch({
 			type: ADMIN_UNIQUE_OPEN,
@@ -239,7 +239,7 @@ export const adminChangeOpenings = (formData) => async dispatch => {
 	};
 
 	try {
-		const res = await axios.put(`${URL}/admin/openings`, formData, config);
+		const res = await axios.put(`${URL}/api/admin/openings`, formData, config);
 		dispatch({
 			type: OPENING_CHANGE_SUCCESS,
 			payload: res.data
