@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Fade from 'react-reveal/Fade';
-import { getMenu, clearMenuData, getMenuItem } from '../redux/actions';
+import { getMenu, clearMenuData, getMenuItem, URL } from '../redux/actions';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -297,7 +297,7 @@ const MenuItem = ({ allData, getMenu, clearMenuData, getMenuItem }) => {
 									{id === "pizzas" || id === "hamburgers" ? 'Gluténmentes' : 'Alkoholmentes'}
 								</span>
 									: null}
-								<img className={`cardImages ${id}`} src={`data:image/gif;base64,${item.picURL}`} alt={item.pic} /> <br />
+								<img className={`cardImages ${id}`} src={`${URL}/img/${id}/${item.pic}.png`} alt={item.pic} /> <br />
 								<span className="itemName">{item.name}</span><br />
 								<div className="itemNamePrice">
 									<span>{item.price}{id === "drinks" ? " Ft/dl" : " Ft"}</span>
@@ -309,7 +309,7 @@ const MenuItem = ({ allData, getMenu, clearMenuData, getMenuItem }) => {
 				}
 			</div>
 			{clicked === true ?
-				<Modal itemData={allData.unique} type={id} close={() => setClicked} />
+				<Modal itemData={allData.unique} URL={URL} type={id} close={() => setClicked} />
 				: null}
 		</div>
 	)

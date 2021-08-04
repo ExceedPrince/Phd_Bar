@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Redirect, useParams } from 'react-router-dom';
-import { getAdminUniqueMenuItem, clearMenuItemData, updateMenuItem } from '../redux/actions/admin';
+import { getAdminUniqueMenuItem, clearMenuItemData, updateMenuItem, URL } from '../redux/actions/admin';
 import Alert from '../components/Alert';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -77,10 +77,10 @@ const AdminmenuUnique = ({ location: { state: { menu } }, admin, isAuthenticated
 						</>)}
 					<label htmlFor="itemId">Azonosító:</label> <br />
 					<input type="number" name="itemId" defaultValue={admin.menu.id} onChange={e => onChange(e)} placeholder={admin.menu.id} readOnly /> <br />
-					<label htmlFor="file">Képfeltöltés: (csak .png, maximum 1 MB)</label>
+					<label htmlFor="file">Képfeltöltés: (csak .png, max. 500px széles)</label>
 					<div id="file-upload">
 						<input type="file" name="file" accept="image/png" onChange={e => { setInputs({ ...inputs, picture: e.target.files[0] }); setImageSrc(URL.createObjectURL(e.target.files[0])) }} /> <br />
-						<img src={imageSrc === '' ? `data:image/gif;base64,${admin.menu.picURL}` : imageSrc} alt="" />
+						<img src={imageSrc === '' ? `${URL}/img/${menu}/${admin.menu.pic}.png` : imageSrc} alt="" />
 					</div>
 					<input type="submit" value="Adatok módosítása" />
 				</form>

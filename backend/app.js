@@ -14,6 +14,7 @@ app.use(allowCors);
 app.use(fileUpload(uploadParameters));
 app.use(express.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
+app.use('/img', express.static(__dirname + '/img'));
 
 //GET - Basic route
 //Public

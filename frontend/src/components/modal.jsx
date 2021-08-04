@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Modal = ({ itemData, type, close }) => {
+const Modal = ({ itemData, URL, type, close }) => {
 
 
 	return (
@@ -11,7 +11,7 @@ const Modal = ({ itemData, type, close }) => {
 					{itemData.name ?
 						<div className="innerContent">
 							<p id="ModalGluten" className="ModalText">{itemData.glutenfree ? "Gluténmentes" : null}</p>
-							<img id="modalPic" src={`/img/${type}/${itemData.pic}.png`} />
+							<img id="modalPic" src={`${URL}/img/${type}/${itemData.pic}.png`} />
 							<p id="modalName" className="ModalText">{itemData.name}</p>
 							<p id="modalPrice" className="ModalText">{itemData.price}{type === "drinks" ? " Ft/dl" : " Ft"}</p>
 							{type !== "drinks" ?

@@ -21,16 +21,6 @@ export const getMenu = (item) => async dispatch => {
 	});
 }
 
-export const getMenuNoImg = (item) => async dispatch => {
-
-	const request = await axios.get(`${URL}/api/menu/${item}/no-img`)
-
-	dispatch({
-		type: MENU_ITEMS,
-		payload: request.data
-	});
-}
-
 export const getMenuItem = (item, id) => async dispatch => {
 
 	const request = await axios.get(`${URL}/api/menu/${item}/${id}`)

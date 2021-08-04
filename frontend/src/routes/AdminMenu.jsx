@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { getMenuNoImg, clearMenuData } from '../redux/actions';
+import { getMenu, clearMenuData } from '../redux/actions';
 import { adminFilterMenu, deleteMenuItem, postNewMenuItem } from '../redux/actions/admin';
 import Alert from '../components/Alert';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-const AdminMenu = ({ allData, getMenuNoImg, clearMenuData, adminFilterMenu, isAuthenticated,
+const AdminMenu = ({ allData, getMenu, clearMenuData, adminFilterMenu, isAuthenticated,
 	deleteMenuItem, postNewMenuItem }) => {
 	const [menu, setMenu] = useState("pizzas");
 	const [filtered, setFiltered] = useState("");
@@ -17,12 +17,12 @@ const AdminMenu = ({ allData, getMenuNoImg, clearMenuData, adminFilterMenu, isAu
 	const { name, price, safe, ingredients, allergens, id, picture } = inputs;
 
 	useEffect(() => {
-		getMenuNoImg(menu);
+		getMenu(menu);
 
 		return () => {
 			clearMenuData()
 		}
-	}, [getMenuNoImg, menu, clearMenuData]);
+	}, [getMenu, menu, clearMenuData]);
 
 	useEffect(() => {
 		let formData = { name: filtered, type: menu }
@@ -119,7 +119,7 @@ const AdminMenu = ({ allData, getMenuNoImg, clearMenuData, adminFilterMenu, isAu
 								<input type="number" name="id" value={id} onChange={e => onChange(e)} /> <br />
 							</span>
 							<span>
-								<label htmlFor="file">Képfeltöltés: <br /> (csak .png, maximum 1 MB)</label> <br />
+								<label htmlFor="file">Képfeltöltés: <br /> (csak .png, max. 500px széles)</label> <br />
 								<input type="file" name="picture" accept="image/png" onChange={e => { setInputs({ ...inputs, picture: e.target.files[0] }); setImageSrc(URL.createObjectURL(e.target.files[0])) }} required /> <br />
 							</span>
 						</div>
@@ -160,7 +160,7 @@ const AdminMenu = ({ allData, getMenuNoImg, clearMenuData, adminFilterMenu, isAu
 };
 
 AdminMenu.propTypes = {
-	getMenuNoImg: PropTypes.func.isRequired,
+	getMenu: PropTypes.func.isRequired,
 	clearMenuData: PropTypes.func.isRequired,
 	adminFilterMenu: PropTypes.func.isRequired,
 	deleteMenuItem: PropTypes.func.isRequired,
@@ -175,5 +175,5 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-	getMenuNoImg, clearMenuData, adminFilterMenu, deleteMenuItem, postNewMenuItem
+	getMenu, clearMenuData, adminFilterMenu, deleteMenuItem, postNewMenuItem
 })(AdminMenu);

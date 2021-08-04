@@ -213,7 +213,7 @@ router.post('/menu-filter', auth, async (req, res) => {
 //POST - POST /api/admin/menu/:type/
 //POST - Post a new menu item
 //private
-router.post('/menu/:type', async (req, res) => {
+router.post('/menu/:type', auth, async (req, res) => {
 	let { name, price, safe, id, ingredients, allergens } = req.body;
 
 	//checking for errors
@@ -228,7 +228,6 @@ router.post('/menu/:type', async (req, res) => {
 	const { picture } = req.files;
 
 	if (picture.name.split('.')[1] !== "png") return res.status(400).json({ errors: [{ msg: 'Csak PNG kép tölthető fel!' }] });
-	if (picture.size > 1000000) return res.status(400).json({ errors: [{ msg: 'Fájl mérete nem lehet nagyobb 1 MB-nál!' }] });
 
 	switch (req.params.type) {
 		case 'hamburgers':
@@ -259,8 +258,7 @@ router.post('/menu/:type', async (req, res) => {
 					id: +id,
 					ingredients: ingredients.split(", "),
 					allergens: allergens.split(","),
-					pic: picture.name.split('.')[0],
-					picURL: picture.data
+					pic: picture.name.split('.')[0]
 				}
 			);
 
@@ -296,8 +294,7 @@ router.post('/menu/:type', async (req, res) => {
 					id: +id,
 					ingredients: ingredients.split(", "),
 					allergens: allergens.split(","),
-					pic: picture.name.split('.')[0],
-					picURL: picture.data
+					pic: picture.name.split('.')[0]
 				}
 			);
 
@@ -332,8 +329,7 @@ router.post('/menu/:type', async (req, res) => {
 					id: +id,
 					ingredients: null,
 					allergens: null,
-					pic: picture.name.split('.')[0],
-					picURL: picture.data
+					pic: picture.name.split('.')[0]
 				}
 			);
 
@@ -398,10 +394,7 @@ router.put('/menu/:type', auth, async (req, res) => {
 				if (req.files) {
 					let { picture } = req.files;
 
-					if (picture.size > 1000000) return res.status(400).json({ errors: [{ msg: 'Fájl mérete nem lehet nagyobb 1 MB-nál!' }] });
-
 					menuFields.pic = picture.name.split('.')[0];
-					menuFields.picURL = picture.data;
 
 					try {
 						fs.unlinkSync(`./img/hamburgers/${chosen.pic}.png`)
@@ -466,10 +459,7 @@ router.put('/menu/:type', auth, async (req, res) => {
 				if (req.files) {
 					let { picture } = req.files;
 
-					if (picture.size > 1000000) return res.status(400).json({ errors: [{ msg: 'Fájl mérete nem lehet nagyobb 1 MB-nál!' }] });
-
 					menuFields.pic = picture.name.split('.')[0];
-					menuFields.picURL = picture.data;
 
 					try {
 						fs.unlinkSync(`./img/pizzas/${chosen.pic}.png`)
@@ -533,10 +523,7 @@ router.put('/menu/:type', auth, async (req, res) => {
 				if (req.files) {
 					let { picture } = req.files;
 
-					if (picture.size > 1000000) return res.status(400).json({ errors: [{ msg: 'Fájl mérete nem lehet nagyobb 1 MB-nál!' }] });
-
 					menuFields.pic = picture.name.split('.')[0];
-					menuFields.picURL = picture.data;
 
 					try {
 						fs.unlinkSync(`./img/drinks/${chosen.pic}.png`)
