@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 //Sending email to verify a reservation
 const validationEmail = (email, name, code, date) => {
 	return {

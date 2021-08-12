@@ -1,0 +1,1235 @@
+openapi: 3.0.1
+info:
+  title: PhD Bar
+  description: This is the backend documentation of my second MERN application, about
+    the PhD Bar. This was made for a Codecool's competition originally, and later
+    I've improved it to a fully functionally MERN application. Enjoy it!
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: jadenprince93@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+- url: http://localhost:8080/api
+tags:
+- name: menu
+  description: Get list of items from the menu
+- name: openings
+  description: See the opening and the closing hours of all days
+- name: reservations
+  description: Requests about the reservations
+- name: admin
+  description: Everything what only the admin can do
+paths:
+  /menu/{type}:
+    get:
+      tags:
+      - menu
+      summary: Get menu items
+      description: Returns all items from the chosen menu type
+      operationId: getMenu
+      parameters:
+      - name: type
+        in: path
+        description: Name of the chosen menu type
+        required: true
+        schema:
+          type: string
+          enum: 
+            - pizzas
+            - hamburgers
+            - drinks
+      responses:
+        200:
+          description: An array containing all menu items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  anyOf:
+                    - $ref: '#/components/schemas/Pizza'
+                    - $ref: '#/components/schemas/Hamburger'
+                    - $ref: '#/components/schemas/Drink'
+  /menu/{type}/{id}:
+    get:
+      tags:
+      - menu
+      summary: Get unique menu item
+      description: Returns one item from the chosen menu type
+      operationId: getMenuItem
+      parameters:
+      - name: type
+        in: path
+        description: Name of the chosen menu type
+        required: true
+        schema:
+          type: string
+          enum: 
+            - pizzas
+            - hamburgers
+            - drinks
+      - name: id
+        in: path
+        description: Id of a menu item
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: An object containing a menu item
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Pizza'
+                  - $ref: '#/components/schemas/Hamburger'
+                  - $ref: '#/components/schemas/Drink'
+  /openings/:
+    get:
+      tags:
+      - openings
+      summary: Get list of opening and closing hours
+      description: Returns the opening and closing hours of all day
+      operationId: getOpenings
+      responses:
+        200:
+          description: An array containing objects of all day
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Opening'
+  /reservations/:
+    get:
+      tags:
+      - reservations
+      summary: Get list of all reservation
+      description: Returns all of the reservations with secreted email addresses
+      operationId: getReservations
+      responses:
+        200:
+          description: An array containing objects of all reservation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Reservation'
+    post:
+      tags:
+      - reservations
+      summary: Add a new reservation to the database
+      operationId: postData
+      requestBody:
+        description: Reservation object that needs to be sent to the backend
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Reservation'
+        required: true
+      responses:
+        200:
+          description: An array containing a boolean and a string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  oneOf:
+                    - type: boolean
+                    - type: string
+                example:
+                  - false
+                  - "Ön már foglalt nálunk erre a napra!"
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        msg:
+                          type: string
+                          example:
+                            "Legalább 5 karaktert írjon be!"
+  /reservations/{date}:
+    get:
+      tags:
+      - reservations
+      summary: Get one reservation data
+      description: Returns one specified reservation from the database by chosen date
+      operationId: filterReservations
+      parameters:
+      - name: date
+        in: path
+        description: Chosen date
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: An array containing a boolean and a string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  oneOf:
+                    - type: boolean
+                    - type: string
+                example:
+                  - false
+                  - "Ön már foglalt nálunk erre a napra!"
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        msg:
+                          type: string
+                          example:
+                            "Jelszó szükséges!"
+  /reservations/validate/:
+    post:
+      tags:
+      - reservations
+      summary: Validate a new reservation
+      operationId: reservValidate
+      requestBody:
+        description: After receiving a validation email, the user must validate his/her request
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                   type: string
+                validation:
+                  type: string
+                reservDate:
+                  type: string
+                date:
+                  type: string
+        required: true
+      responses:
+        200:
+          description: An array containing a boolean and a string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  oneOf:
+                    - type: boolean
+                    - type: string
+                example:
+                  - true
+                  - "Foglalását sikeresen megerősítette, visszairányítjuk a főoldalra!"
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        msg:
+                          type: string
+                          example:
+                            "Adja meg a megerősítő kódját!"
+  /admin/login/:
+    post:
+      tags:
+      - admin
+      summary: Logging in the admin
+      operationId: login
+      requestBody:
+        description: Logging system checks the email and password
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                   type: string
+                password:
+                  type: string
+        required: true
+      responses:
+        200:
+          description: A token which gives acces to other routes
+          content:
+            application/json:
+              schema:
+                type: string
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        msg:
+                          type: string
+                          example:
+                            "Jelszó szükséges!"
+  /admin/newpass/:  
+    post:
+      tags:
+      - admin
+      summary: Admin asks for new password
+      operationId: askNewPassword
+      requestBody:
+        description: Sending an email to check if it's the admin's email
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                   type: string
+        required: true
+      responses:
+        200:
+          description: A token which gives acces to other routes
+          content:
+            application/json:
+              schema:
+                type: string
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        msg:
+                          type: string
+                          example:
+                            "Helytelen email címet adott meg!"
+  /admin/validatepass/:   
+    post:
+      tags:
+      - admin
+      summary: Validation of the new password
+      operationId: validateNewPassword
+      requestBody:
+        description: An object which contains the new user data to login
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                   type: string
+                password:
+                   type: string
+                code:
+                   type: string
+                time:
+                   type: string
+        required: true
+      responses:
+        200:
+          description: A string which guarantees the new password
+          content:
+            application/json:
+              schema:
+                type: string
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        msg:
+                          type: string
+                          example:
+                            "Lejárt a módosítási idő! Kérjen új jelszót!"
+  /admin/auth/:
+    get:
+      tags:
+      - admin
+      summary: The authentication of the admin
+      description: Returns all data of the admin except the password
+      operationId: loadUser
+      responses:
+        200:
+          description: Returns the User model except with the password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        401:
+          description: Authorization denied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    example:
+                      "Token is not valid"
+        500:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: string
+                example:
+                    "Server Error"
+      security: 
+        - bearerAuth: [] 
+  /admin/menu/{type}/:
+    post:
+      tags:
+      - admin
+      summary: Post a new menu item in to the data base
+      operationId: postNewMenuItem
+      parameters:
+      - name: type
+        in: path
+        description: Name of the chosen menu type
+        required: true
+        schema:
+          type: string
+          enum: 
+            - pizzas
+            - hamburgers
+            - drinks
+      requestBody:
+        description: An object which contains the important data and a file
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                   type: string
+                price:
+                   type: string
+                safe:
+                   type: string
+                id:
+                   type: string
+                ingredients:
+                   type: string
+                allergens:
+                   type: string
+                picture:
+                   type: object
+        required: true
+      responses:
+        200:
+          description: A string which guarantees the new password
+          content:
+            application/json:
+              schema:
+                type: string
+                example:
+                      "Az új termék felkerült a listára!"
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        msg:
+                          type: string
+                          example:
+                            "Adjon meg összetevő(ke)t!"
+        401:
+          description: Authorization denied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    example:
+                      "Token is not valid"
+      security: 
+        - bearerAuth: []                    
+    put:
+      tags:
+      - admin
+      summary: Update an existing menu item
+      operationId: updateMenuItem
+      parameters:
+      - name: type
+        in: path
+        description: Name of the chosen menu type
+        required: true
+        schema:
+          type: string
+          enum: 
+            - pizzas
+            - hamburgers
+            - drinks
+      requestBody:
+        description: An object which contains the important data and a file
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                id:
+                   type: string
+                name:
+                   type: string
+                price:
+                   type: string
+                safe:
+                   type: string
+                ingredients:
+                   type: string
+                allergens:
+                   type: string
+                picture:
+                   type: object
+        required: true
+      responses:
+        200:
+          description: A string which guarantees the new password
+          content:
+            application/json:
+              schema:
+                type: string
+                example:
+                      "Termék sikeresen módosítva"
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        msg:
+                          type: string
+                          example:
+                            "90 Ft lehet a legolcsóbb ár!"
+        401:
+          description: Authorization denied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    example:
+                      "Token is not valid"
+        500:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: string
+                example:
+                    "Server Error"
+      security: 
+        - bearerAuth: []
+  /admin/menu/{type}/{id}/:
+    get:
+      tags:
+      - admin
+      summary: Get unique menu item by admin
+      description: Returns one item from the chosen menu type
+      operationId: getAdminUniqueMenuItem
+      parameters:
+      - name: type
+        in: path
+        description: Name of the chosen menu type
+        required: true
+        schema:
+          type: string
+          enum: 
+            - pizzas
+            - hamburgers
+            - drinks
+      - name: id
+        in: path
+        description: Id of a menu item
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: An object containing a menu item
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Pizza'
+                  - $ref: '#/components/schemas/Hamburger'
+                  - $ref: '#/components/schemas/Drink'        
+        401:
+          description: Authorization denied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    example:
+                      "Token is not valid"
+      security: 
+        - bearerAuth: []
+    delete:
+      tags:
+      - admin
+      summary: Delete an existing menu item
+      operationId: deleteMenuItem
+      parameters:
+      - name: type
+        in: path
+        description: Name of the chosen menu type
+        required: true
+        schema:
+          type: string
+          enum: 
+            - pizzas
+            - hamburgers
+            - drinks
+      - name: id
+        in: path
+        description: Id of a menu item
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: An array containing all remaining item from the chosen type
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Pizza'
+                  - $ref: '#/components/schemas/Hamburger'
+                  - $ref: '#/components/schemas/Drink'  
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        msg:
+                          type: string
+                          example:
+                            "Hiba a törlés során!"
+        401:
+          description: Authorization denied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    example:
+                      "Token is not valid"
+      security: 
+        - bearerAuth: []
+  /admin/menu-filter/:
+    post:
+      tags:
+      - admin
+      summary: Get a filtered list from the menus by frontend requests
+      operationId: adminFilterMenu
+      requestBody:
+        description: An object which contains the filtering properties from frontend
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                   type: string
+                type:
+                   type: string
+        required: true
+      responses:
+        200:
+          description: A filtered array from the chosen menu type
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Pizza'
+                  - $ref: '#/components/schemas/Hamburger'
+                  - $ref: '#/components/schemas/Drink'  
+        401:
+          description: Authorization denied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    example:
+                      "Token is not valid"
+      security: 
+        - bearerAuth: []
+  /admin/reservations/:                          
+    get:
+      tags:
+      - admin
+      summary: Get list of all reservation
+      description: Returns all of the reservations with fully visible email adresses
+      operationId: getAdminReservations
+      responses:
+        200:
+          description: An array containing objects of all reservation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Reservation'
+        401:
+          description: Authorization denied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    example:
+                      "Token is not valid"
+      security: 
+        - bearerAuth: []
+    put:
+      tags:
+      - admin
+      summary: Update an existing reservation
+      operationId: upDateReservation
+      requestBody:
+        description: An object which contains the important data to update with
+        content:
+         application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                   type: integer
+                name:
+                   type: string
+                email:
+                   type: string
+                date:
+                   type: string
+                time:
+                   type: string
+                guests:
+                   type: number
+                isValiated:
+                   type: string
+                code:
+                   type: string
+        required: true
+      responses:
+        200:
+          description: A string which guarantees the new password
+          content:
+            application/json:
+              schema:
+                type: string
+                example:
+                      "Asztalfoglalás sikeresen módosítva"
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        msg:
+                          type: string
+                          example:
+                            "Záróra előtti 1 órán belül és utánra sem lehet módosítani"
+        401:
+          description: Authorization denied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    example:
+                      "Token is not valid"
+        500:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: string
+                example:
+                    "Server Error"
+      security: 
+        - bearerAuth: []
+  /admin/reservations/{id}/: 
+    get:
+      tags:
+      - admin
+      summary: Get one reservation by it's id
+      description: Returns all of the reservations with fully visible email adresses
+      operationId: getAdminUniqueReservation
+      parameters:
+      - name: id
+        in: path
+        description: Id of a menu item
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: An array containing objects of all reservation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Reservation' 
+        401:
+          description: Authorization denied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    example:
+                      "Token is not valid"
+      security: 
+        - bearerAuth: []
+    delete:
+      tags:
+      - admin
+      summary: Delete an existing menu item
+      operationId: deleteReservation
+      parameters:
+      - name: id
+        in: path
+        description: Id of a menu item
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: An array containing all remaining item from the chosen type
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Reservation' 
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        msg:
+                          type: string
+                          example:
+                            "Hiba a törlés során!"
+        401:
+          description: Authorization denied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    example:
+                      "Token is not valid"
+      security: 
+        - bearerAuth: []
+  /admin/reservation-filter/:
+    post:
+      tags:
+      - admin
+      summary: Returns a filtered and sorted 
+      operationId: adminFilterReservation
+      requestBody:
+        description: An object which contains the filtering properties from frontend
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                date:
+                   type: string
+                name:
+                   type: string
+                email:
+                   type: string
+        required: true
+      responses:
+        200:
+          description: An array containing objects of filtered reservations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Reservation'
+        401:
+          description: Authorization denied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    example:
+                      "Token is not valid"
+      security: 
+        - bearerAuth: [] 
+  /admin/openings/:
+    put:
+      tags:
+      - admin
+      summary: Update an existing reservation
+      operationId: adminChangeOpenings
+      requestBody:
+        description: An object which contains the neccessary data to update
+        content:
+         application/json:
+            schema:
+              type: object
+              properties:
+                opening:
+                   type: number
+                closing:
+                   type: number
+                id:
+                   type: integer
+        required: true
+      responses:
+        200:
+          description: A string which guarantees the new password
+          content:
+            application/json:
+              schema:
+                type: string
+                example:
+                      "Nyitvatartás sikeresen módosítva"
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        msg:
+                          type: string
+                          example:
+                            "0 és 23 között adjon meg számot!"
+        401:
+          description: Authorization denied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    example:
+                      "Token is not valid"
+        500:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: string
+                example:
+                    "Server Error"
+      security: 
+        - bearerAuth: []
+  /admin/openings/{id}/:   
+    get:
+      tags:
+      - admin
+      summary: Get one opening by it's id
+      description: Returns an object by id
+      operationId: adminGetUniqueOpening
+      parameters:
+      - name: id
+        in: path
+        description: Id of a day of opening hours
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: An object of the chosen day
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Opening'
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        msg:
+                          type: string
+                          example:
+                            "Hibás azonosító"
+        401:
+          description: Authorization denied
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    example:
+                      "Token is not valid"
+      security: 
+        - bearerAuth: []    
+components:
+  schemas:
+    Pizza:
+      type: object
+      properties:
+        _id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        pic:
+          type: string
+        id:
+          type: integer
+          format: int32
+        price:
+          type: integer
+          format: int32
+        safe:
+          type: boolean
+        ingredients:
+          type: array
+          items:
+            type: string
+        allergens:
+          type: array
+          items:
+            type: string
+        date:
+          type: string
+    Hamburger:
+      type: object
+      properties:
+        _id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        pic:
+          type: string
+        id:
+          type: integer
+          format: int32
+        price:
+          type: integer
+          format: int32
+        safe:
+          type: boolean
+        ingredients:
+          type: array
+          items:
+            type: string
+        allergens:
+          type: array
+          items:
+            type: string
+        date:
+          type: string
+    Drink:
+      type: object
+      properties:
+        _id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        pic:
+          type: string
+        id:
+          type: integer
+          format: int32
+        price:
+          type: integer
+          format: int32
+        safe:
+          type: boolean
+        ingredients:
+          type: string
+          default: null
+        allergens:
+          type: string
+          default: null
+        date:
+          type: string
+    Opening:
+      type: object
+      properties:
+        _id:
+          type: integer
+          format: int64
+        index:
+          type: integer
+          format: int32
+        day:
+          type: string
+        open:
+          type: array
+          items:
+            type: integer
+            format: int32
+          default: null
+        close:
+          type: array
+          items:
+            type: integer
+            format: int32
+          default: null
+        date:
+          type: string
+    Reservation:
+      type: object
+      properties:
+        _id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        email:
+          type: string
+        date:
+          type: string
+        time:
+          type: string
+        guests:
+          type: integer
+          format: int32
+        isValiated:
+          type: boolean
+        code:
+          type: string
+        createdDate:
+          type: string
+    User:
+      type: object
+      properties:
+        _id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        code:
+          type: string
+        isAdmin:
+          type: boolean
+        date:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

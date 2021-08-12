@@ -9,7 +9,6 @@ const { validationEmail, successEmail } = require('../../utils/sendGridEmails');
 const Reservation = require('../../models/Reservation');
 
 //Connect to SendGrid
-require('dotenv').config();
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 //GET - GET /api/reservations

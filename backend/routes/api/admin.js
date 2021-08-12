@@ -17,7 +17,6 @@ const Hamburger = require('../../models/Hamburger');
 const Drink = require('../../models/Drink');
 
 //Connect to SendGrid
-require('dotenv').config();
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 
@@ -613,8 +612,8 @@ router.get('/reservations/:id', auth, async (req, res) => {
 	res.json(reservations);
 });
 
-//GET - GET /api/admin/reservation-filter
-//GET - Get filtered reservation coming from frontend
+//POST - POST /api/admin/reservation-filter
+//POST - Get filtered reservation coming from frontend
 //private
 router.post('/reservation-filter', auth, async (req, res) => {
 	const { date, name, email } = req.body;
@@ -753,7 +752,7 @@ router.delete('/reservations/:id', auth, async (req, res) => {
 });
 
 //GET - GET /api/admin/openings/:id
-//GET - Get reservations uncensored for admin
+//GET - Get unique opening for admin
 //private
 router.get('/openings/:id', auth, async (req, res) => {
 	const open = await Opening.findOne({ _id: req.params.id });
@@ -826,5 +825,3 @@ router.put('/openings', [
 });
 
 module.exports = router;
-
-/* .select('-password'); */

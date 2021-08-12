@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 //Can post from frontend
 exports.corsOptions = {
 	origin: process.env.FRONTEND_PORT,
