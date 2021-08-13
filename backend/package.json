@@ -3,6 +3,14 @@
   "version": "1.0.0",
   "description": "backend for PHD BAR",
   "main": "server.js",
+  "author": "Bodorkós Tamás Péter",
+  "license": "UNLICENSED",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "start": "node server",
+    "server": "nodemon server"
+  },
   "dependencies": {
     "@sendgrid/mail": "^7.4.5",
     "bcryptjs": "^2.4.3",
@@ -13,17 +21,16 @@
     "express-fileupload": "^1.2.1",
     "express-validator": "^6.12.0",
     "jsonwebtoken": "^8.5.1",
+    "mongodb-memory-server": "^7.3.6",
     "mongoose": "^5.13.2",
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "supertest": "^6.1.5"
   },
   "devDependencies": {
+    "jest": "^27.0.6",
     "nodemon": "^2.0.12"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server",
-    "server": "nodemon server"
-  },
-  "author": "Bodorkós Tamás Péter",
-  "license": "UNLICENSED"
+  "jest": {
+    "testEnvironment": "node"
+  }
 }
