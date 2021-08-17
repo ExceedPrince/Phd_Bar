@@ -61,7 +61,7 @@ router.get('/:date', async (req, res) => {
 router.post('/', [
 	body('name', 'Legalább 5 karaktert írjon be!').isLength({ min: 5 }),
 	body('email', 'Adjon meg valós email címet!').isEmail(),
-	body('guests', '1 és 10 között válasszon helyet!').isLength({ min: 1, max: 10 }),
+	body('guests', '1 és 10 között válasszon helyet!').isFloat({ min: 1, max: 10 }),
 	body('date', 'Válasszon másik dátumot!').not().isEmpty(),
 	body('time', 'Válasszon másik időpontot!').not().isEmpty()
 ], async (req, res) => {
