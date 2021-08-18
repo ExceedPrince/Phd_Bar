@@ -645,7 +645,7 @@ router.post('/reservation-filter', auth, async (req, res) => {
 	}
 });
 
-//PUT - PUT /api/admin/reservations/:id
+//PUT - PUT /api/admin/reservations/
 //PUT - Change the values of a certain reservation
 //private
 router.put('/reservations/', [

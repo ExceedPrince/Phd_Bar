@@ -1,6 +1,5 @@
 const app = require("../app");
 const bcrypt = require("bcryptjs");
-const axios = require("axios");
 const supertest = require("supertest");
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
@@ -10,7 +9,7 @@ const request = supertest(app);
 const User = require("../models/User");
 
 
-describe("testing some easy case", () => {
+describe("testing the login system", () => {
 	let mongoServer;
 	beforeAll(async () => {
 		mongoServer = await MongoMemoryServer.create();

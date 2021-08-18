@@ -7,7 +7,7 @@ const request = supertest(app);
 
 const Reservation = require("../models/Reservation");
 
-describe("testing some easy case", () => {
+describe("testing the whole reservation process", () => {
 	let mongoServer;
 	beforeAll(async () => {
 		mongoServer = await MongoMemoryServer.create();
