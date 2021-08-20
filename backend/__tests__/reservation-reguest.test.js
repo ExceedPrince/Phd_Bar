@@ -2,12 +2,16 @@ const app = require("../app");
 const supertest = require("supertest");
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
+const MockDate = require('mockdate');
 
 const request = supertest(app);
 
 const Reservation = require("../models/Reservation");
+const Opening = require("../models/Opening");
 
 describe("testing the whole reservation process", () => {
+	MockDate.set('2021-08-20');
+
 	let mongoServer;
 	beforeAll(async () => {
 		mongoServer = await MongoMemoryServer.create();
@@ -18,6 +22,10 @@ describe("testing the whole reservation process", () => {
 				useCreateIndex: true,
 				useUnifiedTopology: true
 			});
+
+		await Opening.create(
+			{ index: 1, day: "Hétfő", open: [10, 0], close: [19, 0] },
+		);
 	});
 
 	afterEach(async () => {
@@ -25,6 +33,8 @@ describe("testing the whole reservation process", () => {
 	});
 
 	afterAll(async () => {
+		await Opening.deleteMany();
+
 		await mongoose.connection.close();
 		await mongoose.disconnect();
 		if (mongoServer) {
@@ -35,10 +45,11 @@ describe("testing the whole reservation process", () => {
 	//Reservation process
 
 	test("After a success reservation it should return an array with 'true' and a string", async () => {
+
 		const res = await request.post("/api/reservations").send({
 			name: "Bodorkós Tamás",
 			email: "tamas.bodorkos@hotmail.hu",
-			date: "2050-01-01", //Monday
+			date: "2021-08-23", //Monday
 			time: "12:30",
 			guests: 3,
 		});
@@ -59,10 +70,11 @@ describe("testing the whole reservation process", () => {
 	});
 
 	test("If the same person (by email) reserves for the same day twice it should return an array with 'false' and a string", async () => {
+
 		const res = await request.post("/api/reservations").send({
 			name: "Bodorkós Tamás",
 			email: "tamas.bodorkos@hotmail.hu",
-			date: "2050-01-01", //Monday
+			date: "2021-08-23", //Monday
 			time: "12:30",
 			guests: 3,
 		});
@@ -70,7 +82,7 @@ describe("testing the whole reservation process", () => {
 		const resSecond = await request.post("/api/reservations").send({
 			name: "Bodorkós Tamás",
 			email: "tamas.bodorkos@hotmail.hu",
-			date: "2050-01-01", //Monday
+			date: "2021-08-23", //Monday
 			time: "15:50",
 			guests: 8,
 		});
@@ -87,10 +99,11 @@ describe("testing the whole reservation process", () => {
 	});
 
 	test("Without proper name it should return a string: 'Legalább 5 karaktert írjon be!'", async () => {
+
 		const res = await request.post("/api/reservations").send({
 			name: "BoT",
 			email: "tamas.bodorkos@hotmail.hu",
-			date: "2050-01-01", //Monday
+			date: "2021-08-23", //Monday
 			time: "12:30",
 			guests: 3,
 		});
@@ -107,7 +120,7 @@ describe("testing the whole reservation process", () => {
 		const res = await request.post("/api/reservations").send({
 			name: "Bodorkós Tamás",
 			email: "tamas.bodorkoshotmail.hu",
-			date: "2050-01-01", //Monday
+			date: "2021-08-23", //Monday
 			time: "12:30",
 			guests: 3,
 		});
@@ -121,10 +134,11 @@ describe("testing the whole reservation process", () => {
 	});
 
 	test("Without proper guest number it should return a string: '1 és 10 között válasszon helyet!'", async () => {
+
 		const res = await request.post("/api/reservations").send({
 			name: "Bodorkós Tamás",
 			email: "tamas.bodorkos@hotmail.hu",
-			date: "2050-01-01", //Monday
+			date: "2021-08-23", //Monday
 			time: "12:30",
 			guests: 12,
 		});
@@ -155,10 +169,11 @@ describe("testing the whole reservation process", () => {
 	});
 
 	test("Without time it should return a string: 'Válasszon másik időpontot!'", async () => {
+
 		const res = await request.post("/api/reservations").send({
 			name: "Bodorkós Tamás",
 			email: "tamas.bodorkos@hotmail.hu",
-			date: "2050-01-01", //Monday
+			date: "2021-08-23", //Monday
 			time: "",
 			guests: 3,
 		});
@@ -174,10 +189,11 @@ describe("testing the whole reservation process", () => {
 	//Reservation verification
 
 	test("If verification is correct, it should return an array with 'true' and a string'", async () => {
+
 		await request.post("/api/reservations").send({
 			name: "Bodorkós Tamás",
 			email: "tamas.bodorkos@hotmail.hu",
-			date: "2050-01-01", //Monday
+			date: "2021-08-23", //Monday
 			time: "12:30",
 			guests: 3,
 		});
@@ -207,10 +223,11 @@ describe("testing the whole reservation process", () => {
 	});
 
 	test("Without proper email it should return a string: 'Adjon meg valós email címet!'", async () => {
+
 		await request.post("/api/reservations").send({
 			name: "Bodorkós Tamás",
 			email: "tamas.bodorkos@hotmail.hu",
-			date: "2050-01-01", //Monday
+			date: "2021-08-23", //Monday
 			time: "12:30",
 			guests: 3,
 		});
@@ -230,10 +247,11 @@ describe("testing the whole reservation process", () => {
 	});
 
 	test("Without validation code it should return a string: 'Adja meg a megerősítő kódját!'", async () => {
+
 		await request.post("/api/reservations").send({
 			name: "Bodorkós Tamás",
 			email: "tamas.bodorkos@hotmail.hu",
-			date: "2050-01-01", //Monday
+			date: "2021-08-23", //Monday
 			time: "12:30",
 			guests: 3,
 		});
@@ -253,10 +271,11 @@ describe("testing the whole reservation process", () => {
 	});
 
 	test("With wrong email, it should return: 'Ezzel a címmel nincs erre a napra érvényesítendő foglalás!'", async () => {
+
 		await request.post("/api/reservations").send({
 			name: "Bodorkós Tamás",
 			email: "tamas.bodorkos@hotmail.hu",
-			date: "2050-01-01", //Monday
+			date: "2021-08-23", //Monday
 			time: "12:30",
 			guests: 3,
 		});
@@ -276,10 +295,11 @@ describe("testing the whole reservation process", () => {
 	});
 
 	test("With more then 5 minutes timeout, it should return an array with 'false' and a string", async () => {
+
 		await request.post("/api/reservations").send({
 			name: "Bodorkós Tamás",
 			email: "tamas.bodorkos@hotmail.hu",
-			date: "2050-01-01", //Monday
+			date: "2021-08-23", //Monday
 			time: "12:30",
 			guests: 3,
 		});
@@ -304,10 +324,11 @@ describe("testing the whole reservation process", () => {
 	});
 
 	test("With wrong code, it should return an array with 'false' and a string", async () => {
+
 		await request.post("/api/reservations").send({
 			name: "Bodorkós Tamás",
 			email: "tamas.bodorkos@hotmail.hu",
-			date: "2050-01-01", //Monday
+			date: "2021-08-23", //Monday
 			time: "12:30",
 			guests: 3,
 		});

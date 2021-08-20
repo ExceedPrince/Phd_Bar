@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const supertest = require("supertest");
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
+const MockDate = require('mockdate');
 
 const request = supertest(app);
 
@@ -12,6 +13,8 @@ const Reservation = require("../models/Reservation");
 const Opening = require("../models/Opening");
 
 describe("testing some authorization-needed requests", () => {
+	MockDate.set('2021-08-15');
+
 	let mongoServer;
 	let res;
 	beforeAll(async () => {
@@ -83,8 +86,8 @@ describe("testing some authorization-needed requests", () => {
 	test("After authorization and a success reservation DELETE request it should return an array with 1 item", async () => {
 		//insert a reservation
 		await Reservation.insertMany([
-			{ _id: "60ee2269f9ff9760981a4e24", name: "Vak Béla", email: "vabe@gmail.com", date: "2050-01-03", time: "15:30", guests: 4, isValiated: true, code: "gdf643" },
-			{ _id: "40ee2269f9ff9760981a4e25", name: "Sas Tamás", email: "sata@gmail.com", date: "2050-01-04", time: "12:30", guests: 7, isValiated: true, code: "ggdfg5" }
+			{ _id: "60ee2269f9ff9760981a4e24", name: "Vak Béla", email: "vabe@gmail.com", date: "2021-08-19", time: "15:30", guests: 4, isValiated: true, code: "gdf643" },
+			{ _id: "40ee2269f9ff9760981a4e25", name: "Sas Tamás", email: "sata@gmail.com", date: "2021-08-20", time: "12:30", guests: 7, isValiated: true, code: "ggdfg5" }
 		]);
 
 		const reservs = await Reservation.find();

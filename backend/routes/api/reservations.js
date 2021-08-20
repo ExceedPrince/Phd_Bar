@@ -7,6 +7,7 @@ const timeZoneTime = require('../../utils/timeZoneTime');
 const { validationEmail, successEmail } = require('../../utils/sendGridEmails');
 
 const Reservation = require('../../models/Reservation');
+const Opening = require('../../models/Opening');
 
 //Connect to SendGrid
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -73,6 +74,31 @@ router.post('/', [
 	const reservations = await Reservation.find();
 
 	const { name, email, date, time, guests } = req.body;
+
+	//Check if date is in the past
+	if (new Date().getTime() > new Date(date).getTime()) {
+		return res.status(400).json({ errors: [{ msg: 'Elmúlt napra nem lehet foglalni!' }] });
+	}
+
+	//Check if chosen day is closed
+	const dayIndex = new Date(date).getDay();
+
+	const choosenDay = await Opening.findOne({ index: dayIndex });
+
+	if (dayIndex === 0) {
+		return res.status(400).json({ errors: [{ msg: 'Vasárnapra nem lehet foglalni' }] });
+	}
+	if (choosenDay.open === null || choosenDay.close === null) {
+		return res.status(400).json({ errors: [{ msg: 'Zárt napra nem lehet foglalni' }] });
+	}
+
+	//check if time is correct
+	if (choosenDay.open[0] > +time.split(':')[0]) {
+		return res.status(400).json({ errors: [{ msg: 'Nyitás előttre nem lehet foglalni' }] });
+	}
+	if (+time.split(':')[0] >= choosenDay.close[0] - 1) {
+		return res.status(400).json({ errors: [{ msg: 'Záróra előtti 1 órán belül és utánra sem lehet foglalni' }] });
+	}
 
 	//Collect all dates that this email user has in the database
 	let dateArr = []

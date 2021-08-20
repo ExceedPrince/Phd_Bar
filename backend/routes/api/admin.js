@@ -555,8 +555,8 @@ router.put('/menu/:type', auth, async (req, res) => {
 	}
 });
 
-//DELETE - DELETE /api/admin/reservations/:id
-//DELETE - Delete a reservation by id
+//DELETE - DELETE /api/menu/:type/:id
+//DELETE - Delete a menu item by id
 //private
 router.delete('/menu/:type/:id', auth, async (req, res) => {
 	switch (req.params.type) {

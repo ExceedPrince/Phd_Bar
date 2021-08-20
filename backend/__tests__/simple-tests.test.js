@@ -2,6 +2,7 @@ const app = require("../app");
 const supertest = require("supertest");
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
+const MockDate = require('mockdate');
 
 const request = supertest(app);
 
@@ -73,10 +74,12 @@ describe("testing some easy case", () => {
 	});
 
 	test("Loading up more objects it should return an array of reservations (email is secreted)", async () => {
+		MockDate.set('2020-08-22');
+
 		await Reservation.insertMany([
-			{ name: "Kiss Bernadett", email: "kibe@freemail.hu", date: "2022-02-16", time: "15:00", guests: 5, isValiated: true, code: "abc012" },
-			{ name: "Nagy Ádám", email: "naad@freemail.hu", date: "2022-02-15", time: "12:00", guests: 3, isValiated: true, code: "fdf543" },
-			{ name: "Feke Árpád", email: "fear@freemail.hu", date: "2022-02-17", time: "19:00", guests: 2, isValiated: true, code: "fge755" },
+			{ name: "Kiss Bernadett", email: "kibe@freemail.hu", date: "2020-08-25", time: "15:00", guests: 5, isValiated: true, code: "abc012" },
+			{ name: "Nagy Ádám", email: "naad@freemail.hu", date: "2020-08-24", time: "12:00", guests: 3, isValiated: true, code: "fdf543" },
+			{ name: "Feke Árpád", email: "fear@freemail.hu", date: "2020-08-26", time: "19:00", guests: 2, isValiated: true, code: "fge755" },
 		]);
 
 		const reservation = await Reservation.find();
@@ -90,7 +93,7 @@ describe("testing some easy case", () => {
 		expect(response.body[0]._id).not.toBe(undefined);
 		expect(response.body[0].name).toBe("Nagy Ádám");
 		expect(response.body[1].email).toBe("k**e@freemail.hu");
-		expect(response.body[1].date).toBe("2022-02-16");
+		expect(response.body[1].date).toBe("2020-08-25");
 		expect(response.body[2].time).toBe("19:00");
 		expect(response.body[2].isValiated).toBeTruthy()
 		expect(response.body[2].code).toBe("fge755");
