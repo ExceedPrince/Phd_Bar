@@ -1,17 +1,9 @@
-# Phd Bar
-
-## Fullstack Api Exam Project
-
-This is a Fullstack MERN (MongoDB, Express.js, React, Node.js) application about a fictional restaurant.
-I've used Redux on the client side for the requests and responses for the server side communication.
-This project also has some jest tests, but only on the server side, testing the endpoints.
+# Phd Bar Server Side
 
 There are some secret/dynamic information in this code, which can be found in .env files in both sides of the project.
 Of course, they are not in this repository because of the gitignore (and in dockerignore, too), so if you would like to run the code, you should use your own API keys and of course your own MongoDB database.
 
-Details about environment variables:
-- Frontend:
-	REACT_APP_BE_URL= The URL of the server side where it runs with the number of the PORT on its end
+Details about environment variables in this folder:
 
 - Backend:
 	MONGOURI= The connection code from MongoDB
@@ -20,7 +12,6 @@ Details about environment variables:
 	SENDGRID_API_KEY= An API key from SendGrid to send emails at certain events
 
 For running the server side you have multiple options, but the most flexible way is open the 'backend' folder, type in the 'npm install' command and then: npm run server 
-For running the client side you should open the 'frontend' folder and type in the 'npm install' command and then: npm start
 
 ## !Important!
 
@@ -28,4 +19,3 @@ If you wish to use this application with its full capacity, you're going to need
 There is no any endpoint to register a user with the User schema, so your only options are: You should upload one manually in your database; or create a new endpoint where you can post or insert a new user with a valid email!
 
 Thank you reading me and and have fun!
-
