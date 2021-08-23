@@ -39,12 +39,19 @@ There is no any endpoint to register a user with the User schema, so your only o
 
 That user object should be something like this:
 {
-	name: "randomName" - string
-	email: "aValidEmailWhatYouUse" - string
-	password: "BcryptedPassword" - string (bcrypt required)
-	isAdmin: true - boolean
-	date: JSGeneratedNewDate - Date
-	code: "random6DigitsCode" - string
+
+	name: "randomName" - string,
+
+	email: "aValidEmailWhatYouUse" - string,
+
+	password: "BcryptedPassword" - string (bcrypt required),
+
+	isAdmin: true - boolean,
+
+	date: JSGeneratedNewDate - Date,
+
+	code: "random6DigitsCode" - string,
+
 }
 
 Thank you reading me and and have fun!
