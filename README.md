@@ -11,13 +11,20 @@ Of course, they are not in this repository because of the gitignore (and in dock
 
 ## Details about environment variables:
 - Frontend:
+
 	REACT_APP_BE_URL= The URL of the server side where it runs with the number of the PORT on its end
 
+
 - Backend:
+
 	MONGOURI= The connection code from MongoDB
+
 	FRONTEND_PORT= The URL of the client side where it runs with the number of the PORT on its end
+
 	JWTSECRET= Basicly this can be anything but you will need it for authentication
+
 	SENDGRID_API_KEY= An API key from SendGrid to send emails at certain events
+
 
 ## Run the application: 
 
