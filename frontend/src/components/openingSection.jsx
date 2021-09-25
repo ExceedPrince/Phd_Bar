@@ -92,7 +92,12 @@ const OpeningSection = ({ allData }) => {
 
 		if (allData.openings) {
 			thisDay = allData.openings.filter(day => day.index === todayIndex)[0];
-			nextDay = allData.openings.filter(day => day.index === todayIndex + 1)[0];
+
+			if (todayIndex >= 1 && todayIndex < 6) {
+				nextDay = allData.openings.filter(day => day.index === todayIndex + 1)[0];
+			} else if (todayIndex === 6) {
+				nextDay = allData.openings.filter(day => day.index === 0)[0];
+			}
 
 			if (thisDay.open !== null && nextDay.open === null) {
 				openSection(thisDay.open[0], thisDay.close[0], nextDay.open);
